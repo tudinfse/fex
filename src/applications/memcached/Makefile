@@ -2,7 +2,7 @@
 NAME := memcached
 
 MEMCACHED_SRC := ${BIN_PATH}/memcached/src/
-LIBEVENT_BUILD := $(COMP_BENCH)/experiments/build/parsec_libs/libevent/$(ACTION)
+LIBEVENT_BUILD := $(BUILD_ROOT)/libs/libevent/$(ACTION)
 
 CONFIG_OPT := --prefix=$(BUILD_PATH) \
 				--with-libevent==$(LIBEVENT_BUILD) \
@@ -32,9 +32,9 @@ buildmemcached:
 	make -C $(MEMCACHED_SRC)  > $(CONFIG_SCRIPT_LOG)
 	make install -C $(MEMCACHED_SRC)  > $(CONFIG_SCRIPT_LOG)
 
-buildlibs: export BENCH_SUITE=parsec_libs
+buildlibs: export BENCH_SUITE=libs
 buildlibs:
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/experiments/makefiles -C $(COMP_BENCH)/src/parsec_libs/libevent
+	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/libs/libevent
 
 pre_clean:
 	$(MAKE) -C $(MEMCACHED_SRC) clean > $(CONFIG_SCRIPT_LOG) || true

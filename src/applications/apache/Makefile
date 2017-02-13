@@ -2,10 +2,10 @@
 NAME := apache
 
 APACHE_SRC := ${BIN_PATH}/httpd/src/
-SSL_BUILD := $(COMP_BENCH)/experiments/build/parsec_libs/ssl/$(ACTION)
-APR_BUILD := $(COMP_BENCH)/experiments/build/parsec_libs/apr/$(ACTION)/bin
-APRUTIL_BUILD := $(COMP_BENCH)/experiments/build/parsec_libs/apr-util/$(ACTION)/bin
-PCRE_BUILD := $(COMP_BENCH)/experiments/build/parsec_libs/pcre/$(ACTION)/bin/pcre-config
+SSL_BUILD := $(BUILD_ROOT)/libs/ssl/$(ACTION)
+APR_BUILD := $(BUILD_ROOT)/libs/apr/$(ACTION)/bin
+APRUTIL_BUILD := $(BUILD_ROOT)/libs/apr-util/$(ACTION)/bin
+PCRE_BUILD := $(BUILD_ROOT)/libs/pcre/$(ACTION)/bin/pcre-config
 
 CONFIG_OPT := --prefix=$(BUILD_PATH) \
 				--with-apr=$(APR_BUILD) \
@@ -75,12 +75,12 @@ buildapache:
 	make -C $(APACHE_SRC) > $(CONFIG_SCRIPT_LOG)
 	make install -C $(APACHE_SRC) > $(CONFIG_SCRIPT_LOG)
 
-buildlibs: export BENCH_SUITE=parsec_libs
+buildlibs: export BENCH_SUITE=libs
 buildlibs:
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/experiments/makefiles -C $(COMP_BENCH)/src/parsec_libs/ssl
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/experiments/makefiles -C $(COMP_BENCH)/src/parsec_libs/apr
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/experiments/makefiles -C $(COMP_BENCH)/src/parsec_libs/apr-util
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/experiments/makefiles -C $(COMP_BENCH)/src/parsec_libs/pcre
+	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/libs/ssl
+	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/libs/apr
+	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/libs/apr-util
+	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/libs/pcre
 
 pre_clean:
 	$(MAKE) -C $(APACHE_SRC) distclean > $(CONFIG_SCRIPT_LOG) || true

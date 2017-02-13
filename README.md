@@ -120,7 +120,7 @@ Under the hood it looks at all installation scripts in the `install` directory a
 ```
 
 This command runs the experiment named *foo_bar* (located in `experiments/exp_foo_bar`) M times and using, if possible, N threads.
-Build constants (and any other parameters) are defined in Makefile `experiments/makefiles/Makefile.baz`.
+Build constants (and any other parameters) are defined in Makefile `makefiles/Makefile.baz`.
 
 * **collect** - collect statistics based on received results
 

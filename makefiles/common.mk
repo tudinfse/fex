@@ -5,8 +5,6 @@ ifndef ACTION
 $(error ACTION is not specified)
 endif
 
-include local.mk
-
 BUILD_PATH = $(COMP_BENCH)/experiments/build/$(BENCH_SUITE)/$(NAME)/$(ACTION)
 LIBC_BUILD_PATH = $(COMP_BENCH)/experiments/build/libc-util/$(ACTION)
 ACTION_MAKEFILE = Makefile.$(ACTION)

@@ -6,6 +6,6 @@ gen
 
 # Project
 data*/
-experiments/build/*
+build/*
 publications/*
 

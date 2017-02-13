@@ -1,4 +1,4 @@
-IMG_NAME = mpx_evaluation
+IMG_NAME = fex
 CONTAINER_NAME = cb_${ID}
 
 DOCKER = sudo docker

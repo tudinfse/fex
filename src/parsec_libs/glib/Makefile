@@ -4,8 +4,8 @@ include common.mk
 include $(ACTION_MAKEFILE)
 
 # zlib is always compiled before glib, so we can rely on files existing
-CFLAGS  += -I$(COMP_BENCH)/experiments/build/parsec_libs/zlib/$(ACTION)/include
-LDFLAGS += -L$(COMP_BENCH)/experiments/build/parsec_libs/zlib/$(ACTION)/lib
+CFLAGS  += -I$(BUILD_ROOT)/libs/zlib/$(ACTION)/include
+LDFLAGS += -L$(BUILD_ROOT)/libs/zlib/$(ACTION)/lib
 
 CFLAGS += $(CCOMFLAGS)
 CXXFLAGS += $(CCOMFLAGS)

@@ -239,10 +239,10 @@ def exec_scripts(path, name_pattern):
 
 def run_python_module(exp_name, file_name, benchmark_name=None):
     try:
-        module = import_module("experiments.exp_%s.%s" % (exp_name, file_name))
+        module = import_module("experiments.%s.%s" % (exp_name, file_name))
         output = module.main(benchmark_name) if benchmark_name else module.main()
     except ImportError as e:
-        logging.error("Probably, file experiments/exp_%s/%s.py not found" % (exp_name, file_name))
+        logging.error("Probably, file experiments/%s/%s.py not found" % (exp_name, file_name))
         raise e
 
     return output
@@ -286,7 +286,7 @@ class Manager:
         if action == 'install':
             for name in self.names:
                 logging.info('Installing %s' % name)
-                check_call("mkdir -p %s/experiments/build/" % os.environ["COMP_BENCH"], shell=True)
+                check_call("mkdir -p %s/build/" % os.environ["COMP_BENCH"], shell=True)
                 found = exec_scripts("install/compilers/", "%s.(sh|py)" % name)
                 if not found:
                     exec_scripts("install/benchmarks/", "%s.(sh|py)" % name)
@@ -300,7 +300,6 @@ class Manager:
         elif action == 'plot':
             for name in self.names:
                 try:
-                    # check_call("Rscript experiments/exp_%s/%s.R" % (name, os.environ["PLOT_TYPE"]), shell=True)
                     run_python_module(exp_name=name, file_name='plot', benchmark_name=os.environ["PLOT_TYPE"])
                 except CalledProcessError as e:
                     logging.error(
