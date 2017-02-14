@@ -31,4 +31,4 @@ all:
 
 .PHONY: prebuild
 prebuild:
-	$(foreach dir,$(SUB_DIRS),$(MAKE) -C src/$(dir) &&) echo ""
+	$(foreach dir,$(SUB_DIRS),$(MAKE) -C src/$(dir) &&) printf ""
