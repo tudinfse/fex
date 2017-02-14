@@ -50,12 +50,6 @@ RUN mkdir -p /root/bin/benchmarks
 COPY ./ ${COMP_BENCH}
 RUN chmod -R 755 ${COMP_BENCH}/install
 
-# ssh
-RUN mkdir -p /root/.ssh/ && \
-    cp ${COMP_BENCH}/install/ssh/id_rsa /root/.ssh/ && \
-    chmod 700 /root/.ssh/id_rsa && \
-    ssh-keygen -y -f /root/.ssh/id_rsa > /root/.ssh/id_rsa.pub
-
 # == Interface ==
 VOLUME /data
 WORKDIR ${COMP_BENCH}
