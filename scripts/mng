@@ -3,7 +3,7 @@
 export DATA_PATH="data/"
 export COMP_BENCH="./"
 
-excludes="--exclude data/ --exclude publications/ --exclude mpx.* --exclude build/ --exclude tmp/ --exclude raw_results/"
+excludes="--exclude data/ --exclude publications/ --exclude mpx.* --exclude experiments/build/ --exclude tmp/ --exclude raw_results/"
 ssh_flags=""
 
 # select a server
