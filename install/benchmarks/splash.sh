@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 
 echo "=== Downloading inputs ==="
-mkdir -p ${DATA_PATH}/inputs/
-rsync -r alex@141.76.44.133:shared/inputs/splash/  "${DATA_PATH}/inputs/splash/"
+cd ${DATA_PATH}/
+
+if [ -d "inputs" ]; then
+    rm -rf inputs/
+fi
+
+set +e
+wget -nc https://github.com/tudinfse/fex-inputs/archive/master.zip
+set -e
+
+unzip master.zip
+mv ${DATA_PATH}/fex-inputs-master/ ${DATA_PATH}/inputs/
+rm master.zip
+
+cd -
 echo "Splash installed"
