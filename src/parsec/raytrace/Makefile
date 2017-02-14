@@ -5,9 +5,12 @@ SUB_DIRS := LRT MiniView RTTL
 SRC += $(SUB_DIRS)
 
 VPATH := src
+
+include common.mk
+
 CCOMFLAGS += -pthread -DUSE_PBOS=1
 
-MESA_BUILD_PATH:=$(COMP_BENCH)/experiments/build/parsec_libs/mesa/$(ACTION)
+MESA_BUILD_PATH:=$(BUILD_ROOT)/parsec_libs/mesa/$(ACTION)
 LIB_DIRS += $(MESA_BUILD_PATH)/lib
 LIBS += -lglut -lGL -lGLU -lXmu -lXext -lXau -lX11 -ldl
 
@@ -17,7 +20,6 @@ INC_DIR += $(COMP_BENCH)/src/parsec/raytrace/src \
 	       $(COMP_BENCH)/src/parsec/raytrace/src/LRT/include $(COMP_BENCH)/src/parsec/raytrace/src/LRT/
 INC_DIR += $(MESA_BUILD_PATH)/include
 
-include common.mk
 include $(ACTION_MAKEFILE)
 include ../parsec_common.mk
 

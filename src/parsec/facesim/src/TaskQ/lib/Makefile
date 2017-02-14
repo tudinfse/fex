@@ -4,7 +4,7 @@ SRC := taskQDistCommon
 CCOMFLAGS += -DTASKQ_DIST_FIXED
 
 include common.mk
-BUILD_PATH = $(COMP_BENCH)/experiments/build/$(BENCH_SUITE)/facesim/$(ACTION)
+BUILD_PATH = $(BUILD_ROOT)/$(BENCH_SUITE)/facesim/$(ACTION)
 include $(ACTION_MAKEFILE)
 include $(COMP_BENCH)/src/parsec/parsec_common.mk
 

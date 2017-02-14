@@ -2,11 +2,10 @@
 
 cd $COMP_BENCH
 
-echo "Phoenix"
+echo "  ==  Phoenix  =="
 ./fex.py run -n phoenix_perf -t gcc_native gcc_asan --multithreaded_build -i test
 
-echo ""
-echo "Parsec"
+printf "\n  ==  Parsec  ==\n"
 ./fex.py run -n parsec_perf -t gcc_native gcc_asan --multithreaded_build -i test
 
 cd -

@@ -5,12 +5,14 @@ SRC := ferret-serial arena assign bench bitmap cass cass_dist cass_reg cuckoo_ha
 
 VPATH := src
 
+include common.mk
+
 INC_DIR += $(COMP_BENCH)/src/parsec/ferret/src/include
 CFLAGS += -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wno-int-to-pointer-cast
 CXXFLAGS += -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wno-int-to-pointer-cast
 
-LIB_DIRS += $(COMP_BENCH)/experiments/build/parsec_libs/gsl/$(ACTION)/lib
-LIB_DIRS += $(COMP_BENCH)/experiments/build/parsec_libs/libjpeg/$(ACTION)/lib
+LIB_DIRS += $(BUILD_ROOT)/parsec_libs/gsl/$(ACTION)/lib
+LIB_DIRS += $(BUILD_ROOT)/parsec_libs/libjpeg/$(ACTION)/lib
 LIBS += -lrt -lm -lgsl -lgslcblas -ljpeg
 
 ifneq ($(strip $(NUM_THREADS)),1)
@@ -18,7 +20,6 @@ ifneq ($(strip $(NUM_THREADS)),1)
     SRC += ferret-pthreads tpool queue
 endif
 
-include common.mk
 include $(ACTION_MAKEFILE)
 include ../parsec_common.mk
 

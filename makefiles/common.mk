@@ -5,8 +5,8 @@ ifndef ACTION
 $(error ACTION is not specified)
 endif
 
-BUILD_PATH = $(COMP_BENCH)/experiments/build/$(BENCH_SUITE)/$(NAME)/$(ACTION)
-LIBC_BUILD_PATH = $(COMP_BENCH)/experiments/build/libc-util/$(ACTION)
+BUILD_ROOT = $(COMP_BENCH)/build
+BUILD_PATH = $(BUILD_ROOT)/$(BENCH_SUITE)/$(NAME)/$(ACTION)
 ACTION_MAKEFILE = Makefile.$(ACTION)
 
 M4 := m4

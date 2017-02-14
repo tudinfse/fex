@@ -120,7 +120,7 @@ class Runner:
     def set_common_dirs(self):
         self.dirs = {
             "conf": env["COMP_BENCH"] + "/makefiles",
-            "build": env["COMP_BENCH"] + "/experiments/build/" + self.name,
+            "build": env["COMP_BENCH"] + "/build/" + self.name,
             "results": env["DATA_PATH"] + "/results/" + self.exp_name,
             "log_file": env["DATA_PATH"] + "/results/" + self.exp_name + "/" + self.exp_name + ".log",
             "libc": env["COMP_BENCH"] + "/src/util/libc",

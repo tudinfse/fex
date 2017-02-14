@@ -7,18 +7,19 @@ SRC += $(SUB_DIRS)
 
 VPATH := src
 
+include common.mk
+
 INC_DIR += $(COMP_BENCH)/src/parsec/vips/src/include
 CFLAGS += -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wno-int-to-pointer-cast
 CFLAGS += -funroll-loops -fprefetch-loop-arrays -D restrict=__restrict__
 CFLAGS += -DG_DISABLE_CAST_CHECKS -DHAVE_CONFIG_H -pthread
 CXXFLAGS += -DG_DISABLE_CAST_CHECKS -DHAVE_CONFIG_H -fexceptions -D restrict=__restrict__ -pthread
 
-LIB_DIRS += $(COMP_BENCH)/experiments/build/parsec_libs/zlib/$(ACTION)/lib
-LIB_DIRS += $(COMP_BENCH)/experiments/build/parsec_libs/glib/$(ACTION)/lib
-LIB_DIRS += $(COMP_BENCH)/experiments/build/parsec_libs/libxml2/$(ACTION)/lib
+LIB_DIRS += $(BUILD_ROOT)/parsec_libs/zlib/$(ACTION)/lib
+LIB_DIRS += $(BUILD_ROOT)/parsec_libs/glib/$(ACTION)/lib
+LIB_DIRS += $(BUILD_ROOT)/parsec_libs/libxml2/$(ACTION)/lib
 LIBS += -lgmodule-2.0 -lxml2 -lgobject-2.0 -lgthread-2.0 -lglib-2.0 -lz -ldl
 
-include common.mk
 include $(ACTION_MAKEFILE)
 include ../parsec_common.mk
 
