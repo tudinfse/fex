@@ -80,7 +80,7 @@ class GenericEnvironment(Environment):
     forced_variables = {}
 
     updated_variables = {
-        'LD_LIBRARY_PATH': '/usr/local/lib64/:/usr/local/lib/:%s/install/libs/' % CURR_PATH,
+        'LD_LIBRARY_PATH': '/usr/local/lib64/:/usr/local/lib/:%s/bin/libs/' % CURR_PATH,
     }
 
     default_variables = {
@@ -90,38 +90,6 @@ class GenericEnvironment(Environment):
     }
 
     debug_variables = {}
-
-
-class MPXEnvironment(Environment):
-    default_variables = {
-        'CHKP_RT_BNDPRESERVE': '0',  # support of legacy code, i.e. libraries
-        'CHKP_RT_MODE': 'stop',  # options: count, stop
-        'CHKP_RT_VERBOSE': '0',  # options: 0, 1, 2, 3
-        'CHKP_RT_PRINT_SUMMARY': '0',
-
-    }
-
-    only_build_variables = {
-        "CHKP_RT_MODE": 'count',
-        "CHKP_RT_PRINT_SUMMARY": '0',
-    }
-
-    debug_variables = {
-        "CHKP_RT_VERBOSE": "2",
-    }
-
-
-class SGXEnvironment(Environment):
-    default_variables = {
-        'HEAP': '0xF0000',
-        'MUSL_VERSION': '1',
-        'MUSL_ETHREADS': '4',
-        'MUSL_STHREADS': '4',
-    }
-
-    only_build_variables = {
-        "MUSL_VERSION": '',
-    }
 
 
 class ASanEnvironment(Environment):
@@ -161,8 +129,6 @@ def set_all_environments(debug=False, verbose=False, env_type='both'):
 
     Envs = [
         GenericEnvironment,
-        MPXEnvironment,
-        SGXEnvironment,
         ASanEnvironment
     ]
 

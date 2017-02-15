@@ -61,7 +61,7 @@ results/
 data*/
 data/
 
-!scripts/mng
+scripts/mng
 
 # ignore statistics - it is changed each time a plot is generated
 *.stats.csv
