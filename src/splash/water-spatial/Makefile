@@ -3,8 +3,7 @@ SRC := bndry cnstnt cshift initia interf intraf kineti mdmain poteng predcor sys
 
 VPATH := src:$(BUILD_PATH)
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 include ../config.mk
 
 M4FLAGS += -I $(BUILD_PATH)

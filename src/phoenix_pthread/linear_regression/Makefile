@@ -11,7 +11,6 @@ VPATH := src
 
 CFLAGS += -fno-unroll-loops
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 
 all: $(BUILD_PATH)/$(NAME)

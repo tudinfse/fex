@@ -1,6 +1,5 @@
-include common.mk
 BUILD_PATH = $(BUILD_ROOT)/$(BENCH_SUITE)/raytrace/$(ACTION)/$(NAME)
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 include $(PROJ_ROOT)/src/parsec/parsec_common.mk
 
 # enforce build order

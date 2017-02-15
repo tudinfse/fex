@@ -9,8 +9,7 @@ INC_DIR += $(PROJ_ROOT)/src/parsec/x264/src/
 CCOMFLAGS += -pthread -ffast-math -Wno-aggressive-loop-optimizations -Wno-int-conversion -DHAVE_MALLOC_H -DARCH_X86_64 -DSYS_LINUX -DHAVE_PTHREAD -fomit-frame-pointer
 LIBS += -lm
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 include ../parsec_common.mk
 
 all: $(BUILD_PATH)/$(NAME)

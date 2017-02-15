@@ -1,7 +1,6 @@
 NAME := narrowing
 SRC := narrowing
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 
 all: $(BUILD_PATH)/$(NAME)

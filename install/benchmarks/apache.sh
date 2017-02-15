@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-apt-get install -y libtext-lorem-perl apache2-utils
+apt-get install -y libtext-lorem-perl apache2-utils automake
 
 source ${PROJ_ROOT}/install/common.sh
 
@@ -43,5 +43,10 @@ for lib in *; do
         cp -r ${lib}/src/ ${PROJ_ROOT}/src/libs/${lib}/src/
     fi
 done
+
+# add missing files
+cd ${PROJ_ROOT}/src/libs
+mkdir -p pcre/src/doc
+touch pcre/src/doc/perltest.txt pcre/src/doc/index.html.src
 
 echo "Apache installed"

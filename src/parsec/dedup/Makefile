@@ -3,17 +3,14 @@ SRC := binheap decoder dedup encoder hashtable queue rabin tree util
 
 VPATH := src
 
-include common.mk
-
-CFLAGS += -DMD32_REG_T=int -D_REENTRANT -DL_ENDIAN -DUSE_MMAP -D_XOPEN_SOURCE=600 -U_FORTIFY_SOURCE
-CXXFLAGS += -DMD32_REG_T=int -D_REENTRANT -DL_ENDIAN -DUSE_MMAP -D_XOPEN_SOURCE=600 -U_FORTIFY_SOURCE
+CCOMFLAGS += -DMD32_REG_T=int -D_REENTRANT -DL_ENDIAN -DUSE_MMAP -D_XOPEN_SOURCE=600 -U_FORTIFY_SOURCE
 
 INC_DIR += $(PROJ_ROOT)/src/parsec/dedup/src/include
-LIB_DIRS += $(BUILD_ROOT)/libs/zlib/$(ACTION)/lib \
-            $(BUILD_ROOT)/libs/ssl/$(ACTION)/lib
+LIB_DIRS += $(PROJ_ROOT)/build/libs/zlib/$(ACTION)/lib \
+            $(PROJ_ROOT)/build/libs/ssl/$(ACTION)/lib
 LIBS += -lssl -lz -lcrypto
 
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 include ../parsec_common.mk
 
 .PHONY: buildlibs

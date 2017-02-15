@@ -1,8 +1,7 @@
 NAME := struct
 SRC := struct
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 
 CCOMFLAGS := $(filter-out -O3,$(CCOMFLAGS))
 CCOMFLAGS += -O2

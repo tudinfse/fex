@@ -1,19 +1,13 @@
 NAME := mesa
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 
 CFLAGS += -I$(PROJ_ROOT)/src/libs/mesa
-
-CFLAGS += $(CCOMFLAGS)
-CXXFLAGS += $(CCOMFLAGS)
-export
+$(eval $(call expand-ccflags))
 
 ifdef REBUILD
 all: pre_clean
 endif
-
-# the `> $(CONFIG_SCRIPT_LOG)` redirection is nessesary to silence the build process
 all:
 	ln -s /usr/include/X11 X11 || true  # dirty hack to include X11 headers even under SGX (assumes `/usr/include/X11` exists)
 	$(MAKE) -C src clean > $(CONFIG_SCRIPT_LOG)  || true

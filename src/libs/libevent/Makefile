@@ -1,16 +1,11 @@
 NAME := libevent
 
-include common.mk
-include $(ACTION_MAKEFILE)
-
-CFLAGS += $(CCOMFLAGS)
-CXXFLAGS += $(CCOMFLAGS)
-export
+include Makefile.$(ACTION)
+$(eval $(call expand-ccflags))
 
 ifdef REBUILD
 all: pre_clean
 endif
-
 all:
 	cd src && ./autogen.sh > $(CONFIG_SCRIPT_LOG) || true
 	cd src && ./configure --disable-shared --prefix=$(BUILD_PATH) > $(CONFIG_SCRIPT_LOG)

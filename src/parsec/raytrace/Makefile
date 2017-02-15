@@ -6,11 +6,10 @@ SRC += $(SUB_DIRS)
 
 VPATH := src
 
-include common.mk
 
 CCOMFLAGS += -pthread -DUSE_PBOS=1
 
-MESA_BUILD_PATH:=$(BUILD_ROOT)/libs/mesa/$(ACTION)
+MESA_BUILD_PATH:=$(PROJ_ROOT)/build/libs/mesa/$(ACTION)
 LIB_DIRS += $(MESA_BUILD_PATH)/lib
 LIBS += -lglut -lGL -lGLU -lXmu -lXext -lXau -lX11 -ldl
 
@@ -20,7 +19,7 @@ INC_DIR += $(PROJ_ROOT)/src/parsec/raytrace/src \
 	       $(PROJ_ROOT)/src/parsec/raytrace/src/LRT/include $(PROJ_ROOT)/src/parsec/raytrace/src/LRT/
 INC_DIR += $(MESA_BUILD_PATH)/include
 
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 include ../parsec_common.mk
 
 .PHONY: buildlibs prebuild

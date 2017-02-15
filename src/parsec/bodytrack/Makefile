@@ -18,8 +18,7 @@ INC_DIR += $(PROJ_ROOT)/src/parsec/bodytrack/src/FlexImageLib $(PROJ_ROOT)/src/p
 CCOMFLAGS += -DHAVE_CONFIG_H -std=c++98
 CXXFLAGS += -fexceptions
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 include ../parsec_common.mk
 
 export  # make sure that makefiles in the subdirectories have the same environment

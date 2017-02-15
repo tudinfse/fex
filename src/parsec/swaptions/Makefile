@@ -5,8 +5,7 @@ VPATH := src
 
 CCOMFLAGS += -fstrict-aliasing -fkeep-inline-functions
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 include ../parsec_common.mk
 
 

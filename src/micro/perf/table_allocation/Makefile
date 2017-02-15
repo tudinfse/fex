@@ -1,8 +1,7 @@
 NAME := table_allocation
 SRC := table_allocation
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 
 CCOMFLAGS := $(filter-out -O3,$(CCOMFLAGS))
 CCOMFLAGS += -O0  # we measure OS influence and therefore, the optimization level should be minimized

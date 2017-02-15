@@ -1,6 +1,5 @@
-include common.mk
 BUILD_PATH = $(BUILD_ROOT)/$(BENCH_SUITE)/bodytrack/$(ACTION)/$(NAME)
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 include $(PROJ_ROOT)/src/parsec/parsec_common.mk
 
 all: $(BUILD_PATH)/../$(NAME).$(OBJ_EXT)

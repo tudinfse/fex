@@ -3,8 +3,7 @@ SRC := multithreading_fp
 
 LIBS += -pthread
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 
 # less optimizations for simplicity
 CCOMFLAGS := $(filter-out -O3,$(CCOMFLAGS))

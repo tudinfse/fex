@@ -1,7 +1,6 @@
 NAME := arrayread
 SRC := arrayread
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 
 all: $(BUILD_PATH)/$(NAME)

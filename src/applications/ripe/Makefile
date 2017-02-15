@@ -4,8 +4,7 @@ SRC  := ripe_attack_generator_64
 
 VPATH := src
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 
 CCOMFLAGS += -O0 -g -fno-stack-protector -Wl,-z,execstack -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0
 CCOMFLAGS += -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-format

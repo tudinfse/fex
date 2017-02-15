@@ -3,8 +3,7 @@ SRC := fft
 
 VPATH := src
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 include ../config.mk
 
 all: $(BUILD_PATH)/$(NAME)

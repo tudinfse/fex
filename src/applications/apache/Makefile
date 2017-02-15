@@ -51,20 +51,19 @@ CONFIG_OPT := --prefix=$(BUILD_PATH) \
 					  access_compat auth_basic reqtimeout filter mime log_config env headers setenvif \
 					  version unixd status autoindex dir alias'
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 
-CFLAGS += $(CCOMFLAGS)
-CXXFLAGS += $(CCOMFLAGS)
+
+$(eval $(call expand-ccflags))
 LIBS += -ldl
 export
 
+# Targets
 .PHONY: buildlibs
 
 ifdef REBUILD
 all: pre_clean
 endif
-
 all:
 	@${MAKE} buildlibs
 	@${MAKE} buildapache

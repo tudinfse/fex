@@ -3,8 +3,7 @@ SRC := amal assign bfac bksolve block2 fo malloc mf numLL parts seg solve tree u
 
 VPATH := src:$(BUILD_PATH)
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 include ../config.mk
 
 M4FLAGS += -I $(BUILD_PATH)

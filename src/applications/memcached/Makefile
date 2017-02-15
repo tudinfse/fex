@@ -8,20 +8,18 @@ CONFIG_OPT := --prefix=$(BUILD_PATH) \
 				--with-libevent==$(LIBEVENT_BUILD) \
 				--mandir=/tmp --disable-coverage
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 
 CCOMFLAGS += -std=gnu99 -DHAVE_CONFIG_H -Wall -I/usr/include/x86_64-linux-gnu
-CFLAGS += $(CCOMFLAGS)
-CXXFLAGS += $(CCOMFLAGS)
-export
+$(eval $(call expand-ccflags))
 
+
+# Targets
 .PHONY: buildlibs
 
 ifdef REBUILD
 all: pre_clean
 endif
-
 all:
 	@${MAKE} buildlibs
 	@${MAKE} buildmemcached

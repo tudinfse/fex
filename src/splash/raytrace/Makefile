@@ -3,8 +3,7 @@ SRC := bbox cr env fbuf geo huprn husetup hutv isect main matrix memory poly ray
 
 VPATH := src:$(BUILD_PATH)
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 include ../config.mk
 
 M4FLAGS += -I $(BUILD_PATH)

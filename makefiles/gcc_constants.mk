@@ -1,12 +1,9 @@
 # GCC constants
 
-# == GCC specific constants
-
 # object file extension
 OBJ_EXT := o
 
-
-# == make constants
+# make constants
 CC := gcc
 CXX := g++
 LD := ld

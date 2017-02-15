@@ -1,18 +1,14 @@
 NAME := gsl
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 
 LIBS += -lm
 
-CFLAGS += $(CCOMFLAGS)
-CXXFLAGS += $(CCOMFLAGS)
-export
+$(eval $(call expand-ccflags))
 
 ifdef REBUILD
 all: pre_clean
 endif
-
 all:
 	cd src && ./configure --disable-shared --prefix=$(BUILD_PATH) > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src > $(CONFIG_SCRIPT_LOG)

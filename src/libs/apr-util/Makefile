@@ -1,19 +1,14 @@
 # apr-util-1.5.4, taken from http://mirror.symnds.com/software/Apache/apr/apr-util-1.5.4.tar.gz
 NAME := apr-util
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
+$(eval $(call expand-ccflags))
 
-CFLAGS += $(CCOMFLAGS)
-CXXFLAGS += $(CCOMFLAGS)
-export
 
+# apr & openssl are always compiled before apr-util, so we can rely on files existing
 ifdef REBUILD
 all: pre_clean
 endif
-
-# the `> $(CONFIG_SCRIPT_LOG)` redirection is nessesary to shut the f... ehm, to silence the build process
-# apr & openssl are always compiled before apr-util, so we can rely on files existing
 all:
 	cd src && ./configure --prefix=$(BUILD_PATH) --with-apr=$(BUILD_ROOT)/libs/apr/$(ACTION) --without-pgsql --with-openssl=$(BUILD_ROOT)/libs/ssl/$(ACTION) > $(CONFIG_SCRIPT_LOG)
 	sed -i "s/--mode=link \$$(CC)/--mode=link \$$(CC) -all-static/g" src/Makefile

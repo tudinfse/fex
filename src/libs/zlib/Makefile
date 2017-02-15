@@ -1,16 +1,11 @@
 NAME := zlib
 
-include common.mk
-include $(ACTION_MAKEFILE)
-
-CFLAGS += $(CCOMFLAGS)
-CXXFLAGS += $(CCOMFLAGS)
-export
+include Makefile.$(ACTION)
+$(eval $(call expand-ccflags))
 
 ifdef REBUILD
 all: pre_clean
 endif
-
 all:
 	cd src && ./configure.shared  --prefix=$(BUILD_PATH) > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src > $(CONFIG_SCRIPT_LOG)

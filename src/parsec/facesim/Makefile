@@ -4,8 +4,8 @@ SRC := main FACE_DRIVER FACE_LANDMARK_OPTIMIZATION_GOAL FACE_OPTIMIZATION LANDMA
 VPATH := src
 
 CXXFLAGS += -fexceptions
-INC_DIR += $(PROJ_ROOT)/src/parsec/facesim/src/
-INC_DIR += $(PROJ_ROOT)/src/parsec/facesim/src/TaskQ/include
+INC_DIR += $(PROJ_ROOT)/src/parsec/facesim/src/ \
+ 		   $(PROJ_ROOT)/src/parsec/facesim/src/TaskQ/include
 
 LIB_DIRS += $(PROJ_ROOT)/src/parsec/facesim/src/lib/
 LIBS += -lPhysBAM
@@ -17,8 +17,7 @@ else
 	CCOMFLAGS += -DNEW_SERIAL_IMPLEMENTATIOM
 endif
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(ACTION)
 include ../parsec_common.mk
 
 ifeq ($(CC),icc)
