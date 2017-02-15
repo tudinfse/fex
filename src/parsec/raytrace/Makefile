@@ -14,10 +14,10 @@ MESA_BUILD_PATH:=$(BUILD_ROOT)/libs/mesa/$(ACTION)
 LIB_DIRS += $(MESA_BUILD_PATH)/lib
 LIBS += -lglut -lGL -lGLU -lXmu -lXext -lXau -lX11 -ldl
 
-INC_DIR += $(COMP_BENCH)/src/parsec/raytrace/src \
-	       $(COMP_BENCH)/src/parsec/raytrace/src/RTTL/ $(COMP_BENCH)/src/parsec/raytrace/src/RTTL/common/ \
-	       $(COMP_BENCH)/src/parsec/raytrace/src/RTTL/BVH/ $(COMP_BENCH)/src/parsec/raytrace/src/SG \
-	       $(COMP_BENCH)/src/parsec/raytrace/src/LRT/include $(COMP_BENCH)/src/parsec/raytrace/src/LRT/
+INC_DIR += $(PROJ_ROOT)/src/parsec/raytrace/src \
+	       $(PROJ_ROOT)/src/parsec/raytrace/src/RTTL/ $(PROJ_ROOT)/src/parsec/raytrace/src/RTTL/common/ \
+	       $(PROJ_ROOT)/src/parsec/raytrace/src/RTTL/BVH/ $(PROJ_ROOT)/src/parsec/raytrace/src/SG \
+	       $(PROJ_ROOT)/src/parsec/raytrace/src/LRT/include $(PROJ_ROOT)/src/parsec/raytrace/src/LRT/
 INC_DIR += $(MESA_BUILD_PATH)/include
 
 include $(ACTION_MAKEFILE)
@@ -33,7 +33,7 @@ all:
 
 buildlibs: export BENCH_SUITE=libs
 buildlibs:
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/$(BENCH_SUITE)/mesa
+	$(MAKE) ACTION=$(ACTION) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/mesa
 
 prebuild: export INC_DIR:=$(INC_DIR)
 prebuild: export CCOMFLAGS:=$(CCOMFLAGS)

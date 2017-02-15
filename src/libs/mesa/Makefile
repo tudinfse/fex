@@ -3,7 +3,7 @@ NAME := mesa
 include common.mk
 include $(ACTION_MAKEFILE)
 
-CFLAGS += -I$(COMP_BENCH)/src/libs/mesa
+CFLAGS += -I$(PROJ_ROOT)/src/libs/mesa
 
 CFLAGS += $(CCOMFLAGS)
 CXXFLAGS += $(CCOMFLAGS)

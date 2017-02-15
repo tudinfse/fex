@@ -370,7 +370,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/blackscholes/parsec/avxswift-nati
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/blackscholes//avxswift/blackscholes"
++run_exec="${PROJ_ROOT}/build/blackscholes//avxswift/blackscholes"
 +
 +# Arguments to use
 +run_args="${NTHREADS} in_10M.txt prices.txt"
@@ -517,7 +517,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/blackscholes/parsec/native-native
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/blackscholes//native/blackscholes"
++run_exec="${PROJ_ROOT}/build/blackscholes//native/blackscholes"
 +
 +# Arguments to use
 +run_args="${NTHREADS} in_10M.txt prices.txt"
@@ -541,7 +541,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/blackscholes/parsec/native_nosse-
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/blackscholes//native_nosse/blackscholes"
++run_exec="${PROJ_ROOT}/build/blackscholes//native_nosse/blackscholes"
 +
 +# Arguments to use
 +run_args="${NTHREADS} in_10M.txt prices.txt"
@@ -565,7 +565,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/blackscholes/parsec/swift-native.
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/blackscholes//swift/blackscholes"
++run_exec="${PROJ_ROOT}/build/blackscholes//swift/blackscholes"
 +
 +# Arguments to use
 +run_args="${NTHREADS} in_10M.txt prices.txt"
@@ -589,7 +589,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/blackscholes/parsec/swiftr-native
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/blackscholes//swiftr/blackscholes"
++run_exec="${PROJ_ROOT}/build/blackscholes//swiftr/blackscholes"
 +
 +# Arguments to use
 +run_args="${NTHREADS} in_10M.txt prices.txt"
@@ -613,7 +613,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/bodytrack/parsec/avxswift-native.
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/bodytrack//avxswift/bodytrack"
++run_exec="${PROJ_ROOT}/build/bodytrack//avxswift/bodytrack"
 +
 +# Arguments to use
 +run_args="sequenceB_261 4 261 4000 5 0 ${NTHREADS}"
@@ -764,7 +764,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/bodytrack/parsec/native-native.ru
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/bodytrack//native/bodytrack"
++run_exec="${PROJ_ROOT}/build/bodytrack//native/bodytrack"
 +
 +# Arguments to use
 +run_args="sequenceB_261 4 261 4000 5 0 ${NTHREADS}"
@@ -788,7 +788,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/bodytrack/parsec/native_nosse-nat
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/bodytrack//native_nosse/bodytrack"
++run_exec="${PROJ_ROOT}/build/bodytrack//native_nosse/bodytrack"
 +
 +# Arguments to use
 +run_args="sequenceB_261 4 261 4000 5 0 ${NTHREADS}"
@@ -812,7 +812,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/bodytrack/parsec/swift-native.run
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/bodytrack//swift/bodytrack"
++run_exec="${PROJ_ROOT}/build/bodytrack//swift/bodytrack"
 +
 +# Arguments to use
 +run_args="sequenceB_261 4 261 4000 5 0 ${NTHREADS}"
@@ -836,7 +836,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/bodytrack/parsec/swiftr-native.ru
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/bodytrack//swiftr/bodytrack"
++run_exec="${PROJ_ROOT}/build/bodytrack//swiftr/bodytrack"
 +
 +# Arguments to use
 +run_args="sequenceB_261 4 261 4000 5 0 ${NTHREADS}"
@@ -1299,7 +1299,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/ferret/parsec/avxswift-native.run
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/ferret//avxswift/ferret"
++run_exec="${PROJ_ROOT}/build/ferret//avxswift/ferret"
 +
 +# Arguments to use
 +run_args="corel lsh queries 50 20 ${NTHREADS} output.txt"
@@ -1457,7 +1457,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/ferret/parsec/native-native.runco
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/ferret//native/ferret"
++run_exec="${PROJ_ROOT}/build/ferret//native/ferret"
 +
 +# Arguments to use
 +run_args="corel lsh queries 50 20 ${NTHREADS} output.txt"
@@ -1481,7 +1481,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/ferret/parsec/native_nosse-native
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/ferret//native_nosse/ferret"
++run_exec="${PROJ_ROOT}/build/ferret//native_nosse/ferret"
 +
 +# Arguments to use
 +run_args="corel lsh queries 50 20 ${NTHREADS} output.txt"
@@ -1505,7 +1505,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/ferret/parsec/swift-native.runcon
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/ferret//swift/ferret"
++run_exec="${PROJ_ROOT}/build/ferret//swift/ferret"
 +
 +# Arguments to use
 +run_args="corel lsh queries 50 20 ${NTHREADS} output.txt"
@@ -1529,7 +1529,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/ferret/parsec/swiftr-native.runco
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/ferret//swiftr/ferret"
++run_exec="${PROJ_ROOT}/build/ferret//swiftr/ferret"
 +
 +# Arguments to use
 +run_args="corel lsh queries 50 20 ${NTHREADS} output.txt"
@@ -1553,7 +1553,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/fluidanimate/parsec/avxswift-nati
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/fluidanimate//avxswift/fluidanimate"
++run_exec="${PROJ_ROOT}/build/fluidanimate//avxswift/fluidanimate"
 +
 +# Arguments to use
 +run_args="${NTHREADS} 500 in_500K.fluid out.fluid"
@@ -1701,7 +1701,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/fluidanimate/parsec/native-native
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/fluidanimate//native/fluidanimate"
++run_exec="${PROJ_ROOT}/build/fluidanimate//native/fluidanimate"
 +
 +# Arguments to use
 +run_args="${NTHREADS} 500 in_500K.fluid out.fluid"
@@ -1725,7 +1725,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/fluidanimate/parsec/native_nosse-
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/fluidanimate//native_nosse/fluidanimate"
++run_exec="${PROJ_ROOT}/build/fluidanimate//native_nosse/fluidanimate"
 +
 +# Arguments to use
 +run_args="${NTHREADS} 500 in_500K.fluid out.fluid"
@@ -1749,7 +1749,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/fluidanimate/parsec/swift-native.
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/fluidanimate//swift/fluidanimate"
++run_exec="${PROJ_ROOT}/build/fluidanimate//swift/fluidanimate"
 +
 +# Arguments to use
 +run_args="${NTHREADS} 500 in_500K.fluid out.fluid"
@@ -1773,7 +1773,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/fluidanimate/parsec/swiftr-native
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/fluidanimate//swiftr/fluidanimate"
++run_exec="${PROJ_ROOT}/build/fluidanimate//swiftr/fluidanimate"
 +
 +# Arguments to use
 +run_args="${NTHREADS} 500 in_500K.fluid out.fluid"
@@ -2035,7 +2035,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/swaptions/parsec/avxswift-native.
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/swaptions//avxswift/swaptions"
++run_exec="${PROJ_ROOT}/build/swaptions//avxswift/swaptions"
 +
 +# Arguments to use
 +run_args="-ns 128 -sm 1000000 -nt ${NTHREADS}"
@@ -2183,7 +2183,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/swaptions/parsec/native-native.ru
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/swaptions//native/swaptions"
++run_exec="${PROJ_ROOT}/build/swaptions//native/swaptions"
 +
 +# Arguments to use
 +run_args="-ns 128 -sm 1000000 -nt ${NTHREADS}"
@@ -2207,7 +2207,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/swaptions/parsec/native_nosse-nat
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/swaptions//native_nosse/swaptions"
++run_exec="${PROJ_ROOT}/build/swaptions//native_nosse/swaptions"
 +
 +# Arguments to use
 +run_args="-ns 128 -sm 1000000 -nt ${NTHREADS}"
@@ -2231,7 +2231,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/swaptions/parsec/swift-native.run
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/swaptions//swift/swaptions"
++run_exec="${PROJ_ROOT}/build/swaptions//swift/swaptions"
 +
 +# Arguments to use
 +run_args="-ns 128 -sm 1000000 -nt ${NTHREADS}"
@@ -2255,7 +2255,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/swaptions/parsec/swiftr-native.ru
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/swaptions//swiftr/swaptions"
++run_exec="${PROJ_ROOT}/build/swaptions//swiftr/swaptions"
 +
 +# Arguments to use
 +run_args="-ns 128 -sm 1000000 -nt ${NTHREADS}"
@@ -2279,7 +2279,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/vips/parsec/avxswift-native.runco
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/vips//avxswift/vips"
++run_exec="${PROJ_ROOT}/build/vips//avxswift/vips"
 +
 +# VIPS expects the number of threads in an environment variable
 +export IM_CONCURRENCY=${NTHREADS}
@@ -2433,7 +2433,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/vips/parsec/native-native.runconf
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/vips//native/vips"
++run_exec="${PROJ_ROOT}/build/vips//native/vips"
 +
 +# VIPS expects the number of threads in an environment variable
 +export IM_CONCURRENCY=${NTHREADS}
@@ -2460,7 +2460,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/vips/parsec/native_nosse-native.r
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/vips//native_nosse/vips"
++run_exec="${PROJ_ROOT}/build/vips//native_nosse/vips"
 +
 +# VIPS expects the number of threads in an environment variable
 +export IM_CONCURRENCY=${NTHREADS}
@@ -2487,7 +2487,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/vips/parsec/swift-native.runconf
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/vips//swift/vips"
++run_exec="${PROJ_ROOT}/build/vips//swift/vips"
 +
 +# VIPS expects the number of threads in an environment variable
 +export IM_CONCURRENCY=${NTHREADS}
@@ -2514,7 +2514,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/vips/parsec/swiftr-native.runconf
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/vips//swiftr/vips"
++run_exec="${PROJ_ROOT}/build/vips//swiftr/vips"
 +
 +# VIPS expects the number of threads in an environment variable
 +export IM_CONCURRENCY=${NTHREADS}
@@ -2541,7 +2541,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/x264/parsec/avxswift-native.runco
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/x264//avxswift/x264"
++run_exec="${PROJ_ROOT}/build/x264//avxswift/x264"
 +
 +# Arguments to use
 +run_args="--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --b-pyramid --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads ${NTHREADS} -o eledream.264 eledream_1920x1080_512.y4m"
@@ -2739,7 +2739,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/x264/parsec/native-native.runconf
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/x264//native/x264"
++run_exec="${PROJ_ROOT}/build/x264//native/x264"
 +
 +# Arguments to use
 +run_args="--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --b-pyramid --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads ${NTHREADS} -o eledream.264 eledream_1920x1080_512.y4m"
@@ -2763,7 +2763,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/x264/parsec/native_nosse-native.r
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/x264//native_nosse/x264"
++run_exec="${PROJ_ROOT}/build/x264//native_nosse/x264"
 +
 +# Arguments to use
 +run_args="--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --b-pyramid --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads ${NTHREADS} -o eledream.264 eledream_1920x1080_512.y4m"
@@ -2787,7 +2787,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/x264/parsec/swift-native.runconf
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/x264//swift/x264"
++run_exec="${PROJ_ROOT}/build/x264//swift/x264"
 +
 +# Arguments to use
 +run_args="--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --b-pyramid --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads ${NTHREADS} -o eledream.264 eledream_1920x1080_512.y4m"
@@ -2811,7 +2811,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/apps/x264/parsec/swiftr-native.runconf
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/x264//swiftr/x264"
++run_exec="${PROJ_ROOT}/build/x264//swiftr/x264"
 +
 +# Arguments to use
 +run_args="--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --b-pyramid --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads ${NTHREADS} -o eledream.264 eledream_1920x1080_512.y4m"
@@ -2835,7 +2835,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/canneal/parsec/avxswift-native
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/canneal//avxswift/canneal"
++run_exec="${PROJ_ROOT}/build/canneal//avxswift/canneal"
 +
 +# Arguments to use
 +run_args="${NTHREADS} 15000 2000 2500000.nets 6000"
@@ -2982,7 +2982,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/canneal/parsec/native-native.r
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/canneal//native/canneal"
++run_exec="${PROJ_ROOT}/build/canneal//native/canneal"
 +
 +# Arguments to use
 +run_args="${NTHREADS} 15000 2000 2500000.nets 6000"
@@ -3006,7 +3006,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/canneal/parsec/native_nosse-na
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/canneal//native_nosse/canneal"
++run_exec="${PROJ_ROOT}/build/canneal//native_nosse/canneal"
 +
 +# Arguments to use
 +run_args="${NTHREADS} 15000 2000 2500000.nets 6000"
@@ -3030,7 +3030,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/canneal/parsec/swift-native.ru
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/canneal//swift/canneal"
++run_exec="${PROJ_ROOT}/build/canneal//swift/canneal"
 +
 +# Arguments to use
 +run_args="${NTHREADS} 15000 2000 2500000.nets 6000"
@@ -3054,7 +3054,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/canneal/parsec/swiftr-native.r
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/canneal//swiftr/canneal"
++run_exec="${PROJ_ROOT}/build/canneal//swiftr/canneal"
 +
 +# Arguments to use
 +run_args="${NTHREADS} 15000 2000 2500000.nets 6000"
@@ -3087,7 +3087,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/dedup/parsec/avxswift-native.r
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/dedup//avxswift/dedup"
++run_exec="${PROJ_ROOT}/build/dedup//avxswift/dedup"
 +
 +# Arguments to use
 +run_args="-c -p -v -t ${NTHREADS} -i FC-6-x86_64-disc1.iso -o output.dat.ddp"
@@ -3235,7 +3235,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/dedup/parsec/native-native.run
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/dedup//native/dedup"
++run_exec="${PROJ_ROOT}/build/dedup//native/dedup"
 +
 +# Arguments to use
 +run_args="-c -p -v -t ${NTHREADS} -i FC-6-x86_64-disc1.iso -o output.dat.ddp"
@@ -3259,7 +3259,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/dedup/parsec/native_nosse-nati
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/dedup//native_nosse/dedup"
++run_exec="${PROJ_ROOT}/build/dedup//native_nosse/dedup"
 +
 +# Arguments to use
 +run_args="-c -p -v -t ${NTHREADS} -i FC-6-x86_64-disc1.iso -o output.dat.ddp"
@@ -3283,7 +3283,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/dedup/parsec/swift-native.runc
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/dedup//swift/dedup"
++run_exec="${PROJ_ROOT}/build/dedup//swift/dedup"
 +
 +# Arguments to use
 +run_args="-c -p -v -t ${NTHREADS} -i FC-6-x86_64-disc1.iso -o output.dat.ddp"
@@ -3307,7 +3307,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/dedup/parsec/swiftr-native.run
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/dedup//swiftr/dedup"
++run_exec="${PROJ_ROOT}/build/dedup//swiftr/dedup"
 +
 +# Arguments to use
 +run_args="-c -p -v -t ${NTHREADS} -i FC-6-x86_64-disc1.iso -o output.dat.ddp"
@@ -3363,7 +3363,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/streamcluster/parsec/avxswift-
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/streamcluster//avxswift/streamcluster"
++run_exec="${PROJ_ROOT}/build/streamcluster//avxswift/streamcluster"
 +
 +# Arguments to use
 +run_args="10 20 128 1000000 200000 5000 none output.txt ${NTHREADS}"
@@ -3511,7 +3511,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/streamcluster/parsec/native-na
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/streamcluster//native/streamcluster"
++run_exec="${PROJ_ROOT}/build/streamcluster//native/streamcluster"
 +
 +# Arguments to use
 +run_args="10 20 128 1000000 200000 5000 none output.txt ${NTHREADS}"
@@ -3535,7 +3535,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/streamcluster/parsec/native_no
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/streamcluster//native_nosse/streamcluster"
++run_exec="${PROJ_ROOT}/build/streamcluster//native_nosse/streamcluster"
 +
 +# Arguments to use
 +run_args="10 20 128 1000000 200000 5000 none output.txt ${NTHREADS}"
@@ -3559,7 +3559,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/streamcluster/parsec/swift-nat
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/streamcluster//swift/streamcluster"
++run_exec="${PROJ_ROOT}/build/streamcluster//swift/streamcluster"
 +
 +# Arguments to use
 +run_args="10 20 128 1000000 200000 5000 none output.txt ${NTHREADS}"
@@ -3583,7 +3583,7 @@ diff -r 68245cfd6d02 -r 7ef72605fc49 pkgs/kernels/streamcluster/parsec/swiftr-na
 +
 +
 +# Binary file to execute, relative to installation root
-+run_exec="${COMP_BENCH}/build/streamcluster//swiftr/streamcluster"
++run_exec="${PROJ_ROOT}/build/streamcluster//swiftr/streamcluster"
 +
 +# Arguments to use
 +run_args="10 20 128 1000000 200000 5000 none output.txt ${NTHREADS}"

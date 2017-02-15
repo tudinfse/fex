@@ -6,7 +6,7 @@ ifneq ($(strip $(NUM_THREADS)),1)
 	LIBS += -pthread
 endif
 
-INC_DIR := ${COMP_BENCH}/src/phoenix_pthread/include
+INC_DIR := ${PROJ_ROOT}/src/phoenix_pthread/include
 VPATH := src
 
 include common.mk

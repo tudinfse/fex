@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd $COMP_BENCH
+cd $PROJ_ROOT
 
 echo "  ==  Phoenix  =="
 ./fex.py run -n phoenix_perf -t gcc_native gcc_asan --multithreaded_build -i test

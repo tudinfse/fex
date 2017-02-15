@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-source ${COMP_BENCH}/install/common.sh
+source ${PROJ_ROOT}/install/common.sh
 download_and_link ycsb-traces https://bitbucket.org/alexo_o/simd-swift-dependencies/downloads/ycsb-traces.tar.gz ${BIN_PATH}/benchmarks/ycsb-traces
 
 mkdir -p ${DATA_PATH}/postgres/

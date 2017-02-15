@@ -7,7 +7,7 @@ VPATH := src
 
 include common.mk
 
-INC_DIR += $(COMP_BENCH)/src/parsec/ferret/src/include
+INC_DIR += $(PROJ_ROOT)/src/parsec/ferret/src/include
 CFLAGS += -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wno-int-to-pointer-cast
 CXXFLAGS += -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wno-int-to-pointer-cast
 
@@ -32,6 +32,6 @@ all:
 buildlibs: export BENCH_SUITE=libs
 
 buildlibs:
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/$(BENCH_SUITE)/gsl
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/$(BENCH_SUITE)/libjpeg
+	$(MAKE) ACTION=$(ACTION) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/gsl
+	$(MAKE) ACTION=$(ACTION) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/libjpeg
 

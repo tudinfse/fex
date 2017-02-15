@@ -2,7 +2,7 @@
 NAME := nginx
 SRC_PATH := $(BIN_PATH)/nginx/src
 
-SSL_PATH := $(COMP_BENCH)/src/libs/ssl/src/
+SSL_PATH := $(PROJ_ROOT)/src/libs/ssl/src/
 SSL_OPT := threads no-zlib no-dso no-shared no-test no-apps no-asm
 
 include common.mk

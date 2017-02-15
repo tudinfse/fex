@@ -8,7 +8,7 @@ include common.mk
 CFLAGS += -DMD32_REG_T=int -D_REENTRANT -DL_ENDIAN -DUSE_MMAP -D_XOPEN_SOURCE=600 -U_FORTIFY_SOURCE
 CXXFLAGS += -DMD32_REG_T=int -D_REENTRANT -DL_ENDIAN -DUSE_MMAP -D_XOPEN_SOURCE=600 -U_FORTIFY_SOURCE
 
-INC_DIR += $(COMP_BENCH)/src/parsec/dedup/src/include
+INC_DIR += $(PROJ_ROOT)/src/parsec/dedup/src/include
 LIB_DIRS += $(BUILD_ROOT)/libs/zlib/$(ACTION)/lib \
             $(BUILD_ROOT)/libs/ssl/$(ACTION)/lib
 LIBS += -lssl -lz -lcrypto
@@ -25,6 +25,6 @@ all:
 buildlibs: export BENCH_SUITE=libs
 
 buildlibs:
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/$(BENCH_SUITE)/zlib
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/$(BENCH_SUITE)/ssl
+	$(MAKE) ACTION=$(ACTION) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/zlib
+	$(MAKE) ACTION=$(ACTION) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/ssl
 

@@ -84,7 +84,7 @@ class GenericEnvironment(Environment):
     }
 
     default_variables = {
-        'COMP_BENCH': CURR_PATH,
+        'PROJ_ROOT': CURR_PATH,
         'DATA_PATH': CURR_PATH + '/data/',
         'BIN_PATH': CURR_PATH + '/bin/'
     }

@@ -1,11 +1,11 @@
 # The following variables have to be specified at this point:
-# COMP_BENCH, NAME, ACTION
+# PROJ_ROOT, NAME, ACTION
 
 ifndef ACTION
 $(error ACTION is not specified)
 endif
 
-BUILD_ROOT = $(COMP_BENCH)/build
+BUILD_ROOT = $(PROJ_ROOT)/build
 BUILD_PATH = $(BUILD_ROOT)/$(BENCH_SUITE)/$(NAME)/$(ACTION)
 ACTION_MAKEFILE = Makefile.$(ACTION)
 

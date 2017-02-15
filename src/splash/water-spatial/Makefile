@@ -12,7 +12,7 @@ INC_DIR += $(BUILD_PATH) src
 
 all: headers $(BUILD_PATH)/$(NAME)
 all:
-	-cp src/random.in ${COMP_BENCH}
+	-cp src/random.in ${PROJ_ROOT}
 	@${MAKE} headers
 	@${MAKE} $(BUILD_PATH)/$(NAME)
 

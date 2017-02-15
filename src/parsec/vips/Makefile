@@ -9,7 +9,7 @@ VPATH := src
 
 include common.mk
 
-INC_DIR += $(COMP_BENCH)/src/parsec/vips/src/include
+INC_DIR += $(PROJ_ROOT)/src/parsec/vips/src/include
 CFLAGS += -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wno-int-to-pointer-cast
 CFLAGS += -funroll-loops -fprefetch-loop-arrays -D restrict=__restrict__
 CFLAGS += -DG_DISABLE_CAST_CHECKS -DHAVE_CONFIG_H -pthread
@@ -33,9 +33,9 @@ all:
 
 buildlibs: export BENCH_SUITE=libs
 buildlibs:
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/$(BENCH_SUITE)/zlib
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/$(BENCH_SUITE)/glib
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/$(BENCH_SUITE)/libxml2
+	$(MAKE) ACTION=$(ACTION) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/zlib
+	$(MAKE) ACTION=$(ACTION) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/glib
+	$(MAKE) ACTION=$(ACTION) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/libxml2
 
 prebuild: export INC_DIR:=$(INC_DIR)
 prebuild: export CFLAGS:=$(CFLAGS)

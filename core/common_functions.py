@@ -21,7 +21,7 @@ def build_libc(t, conf_path):
 
 def build_benchmark(b, t, makefile, build_path):
     logging.debug(BUILD_MSG % (b, t))
-    common_makefiles = env["COMP_BENCH"] + "/makefiles"
+    common_makefiles = env["PROJ_ROOT"] + "/makefiles"
 
     if not env.get("EXP_NO_BUILD"):
         quiet = '-s' if not VERBOSE else ''

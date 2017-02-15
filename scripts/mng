@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export DATA_PATH="data/"
-export COMP_BENCH="./"
+export PROJ_ROOT="./"
 
 excludes="--exclude data/ --exclude publications/ --exclude mpx.* --exclude experiments/build/ --exclude tmp/ --exclude raw_results/"
 ssh_flags=""

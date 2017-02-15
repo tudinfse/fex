@@ -286,7 +286,7 @@ class Manager:
         if action == 'install':
             for name in self.names:
                 logging.info('Installing %s' % name)
-                check_call("mkdir -p %s/build/" % os.environ["COMP_BENCH"], shell=True)
+                check_call("mkdir -p %s/build/" % os.environ["PROJ_ROOT"], shell=True)
                 found = exec_scripts("install/compilers/", "%s.(sh|py)" % name)
                 if not found:
                     exec_scripts("install/benchmarks/", "%s.(sh|py)" % name)

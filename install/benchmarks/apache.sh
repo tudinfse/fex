@@ -3,7 +3,7 @@ set -e
 
 apt-get install -y libtext-lorem-perl apache2-utils
 
-source ${COMP_BENCH}/install/common.sh
+source ${PROJ_ROOT}/install/common.sh
 
 # ============
 # apache
@@ -40,7 +40,7 @@ cd ${DATA_PATH}/apache_libs/
 
 for lib in *; do
     if [ -d "${lib}" ]; then
-        cp -r ${lib}/src/ ${COMP_BENCH}/src/libs/${lib}/src/
+        cp -r ${lib}/src/ ${PROJ_ROOT}/src/libs/${lib}/src/
     fi
 done
 

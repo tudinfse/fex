@@ -119,19 +119,19 @@ class Runner:
     # ==============
     def set_common_dirs(self):
         self.dirs = {
-            "conf": env["COMP_BENCH"] + "/makefiles",
-            "build": env["COMP_BENCH"] + "/build/" + self.name,
+            "conf": env["PROJ_ROOT"] + "/makefiles",
+            "build": env["PROJ_ROOT"] + "/build/" + self.name,
             "results": env["DATA_PATH"] + "/results/" + self.exp_name,
             "log_file": env["DATA_PATH"] + "/results/" + self.exp_name + "/" + self.exp_name + ".log",
-            "libc": env["COMP_BENCH"] + "/src/util/libc",
+            "libc": env["PROJ_ROOT"] + "/src/util/libc",
             "input": env["DATA_PATH"] + "/inputs/" + self.name,
         }
 
         if self.bench_suite:
             env["BENCH_SUITE"] = self.name
-            self.dirs["suite_src"] = env["COMP_BENCH"] + "/src/" + self.name
+            self.dirs["suite_src"] = env["PROJ_ROOT"] + "/src/" + self.name
         else:
-            self.dirs["bench_src"] = env["COMP_BENCH"] + "/src/applications/" + self.name
+            self.dirs["bench_src"] = env["PROJ_ROOT"] + "/src/applications/" + self.name
 
     def set_experiment_parameters(self):
         self.threads = env["NUM_THREADS"].split(" ")

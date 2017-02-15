@@ -14,7 +14,7 @@ endif
 SRC += $(SUB_DIRS)
 
 VPATH := src
-INC_DIR += $(COMP_BENCH)/src/parsec/bodytrack/src/FlexImageLib $(COMP_BENCH)/src/parsec/bodytrack/src
+INC_DIR += $(PROJ_ROOT)/src/parsec/bodytrack/src/FlexImageLib $(PROJ_ROOT)/src/parsec/bodytrack/src
 CCOMFLAGS += -DHAVE_CONFIG_H -std=c++98
 CXXFLAGS += -fexceptions
 

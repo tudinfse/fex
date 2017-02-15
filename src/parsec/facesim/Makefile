@@ -4,10 +4,10 @@ SRC := main FACE_DRIVER FACE_LANDMARK_OPTIMIZATION_GOAL FACE_OPTIMIZATION LANDMA
 VPATH := src
 
 CXXFLAGS += -fexceptions
-INC_DIR += $(COMP_BENCH)/src/parsec/facesim/src/
-INC_DIR += $(COMP_BENCH)/src/parsec/facesim/src/TaskQ/include
+INC_DIR += $(PROJ_ROOT)/src/parsec/facesim/src/
+INC_DIR += $(PROJ_ROOT)/src/parsec/facesim/src/TaskQ/include
 
-LIB_DIRS += $(COMP_BENCH)/src/parsec/facesim/src/lib/
+LIB_DIRS += $(PROJ_ROOT)/src/parsec/facesim/src/lib/
 LIBS += -lPhysBAM
 
 

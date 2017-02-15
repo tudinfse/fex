@@ -4,7 +4,7 @@ apt-get install -y libgmp3-dev libmpfr-dev libmpfr-doc libmpfr4 libmpfr4-dbg lib
 
 
 set -e
-source ${COMP_BENCH}/install/common.sh
+source ${PROJ_ROOT}/install/common.sh
 
 # ============
 # gcc

@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-source ${COMP_BENCH}/install/common.sh
+source ${PROJ_ROOT}/install/common.sh
 
 apt-get install -y pkg-config gettext \
                    libbsd-dev libx11-dev x11proto-xext-dev libxext-dev libxt-dev libxi-dev libxmu-dev \
@@ -14,7 +14,7 @@ cd ${DATA_PATH}/
 if [ -d "inputs" ]; then
     rm -rf inputs/parsec/
 fi
-mkdir inputs/
+mkdir -p inputs/
 
 set +e
 wget -nc https://wwwpub.zih.tu-dresden.de/~s7030030/inputs.tar.gz
@@ -47,7 +47,7 @@ cd ${DATA_PATH}/parsec_libs/
 
 for lib in *; do
     if [ -d "${lib}" ]; then
-        cp -r ${lib}/src/ ${COMP_BENCH}/src/libs/${lib}/src/
+        cp -r ${lib}/src/ ${PROJ_ROOT}/src/libs/${lib}/src/
     fi
 done
 

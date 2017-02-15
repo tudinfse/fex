@@ -34,7 +34,7 @@ buildmemcached:
 
 buildlibs: export BENCH_SUITE=libs
 buildlibs:
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/libs/libevent
+	$(MAKE) ACTION=$(ACTION) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/libs/libevent
 
 pre_clean:
 	$(MAKE) -C $(MEMCACHED_SRC) clean > $(CONFIG_SCRIPT_LOG) || true
