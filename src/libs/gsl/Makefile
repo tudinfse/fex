@@ -1,5 +1,9 @@
 NAME := gsl
 
+# undefine variables from recursive calls
+undefine BUILD_PATH
+
+# import type-specific configuration
 include Makefile.$(BUILD_TYPE)
 
 LIBS += -lm
