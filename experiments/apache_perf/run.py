@@ -23,14 +23,18 @@ class ApachePerf(Runner):
     exp_name = "apache_perf"
     bench_suite = False
 
-    benchmarks     = {"bin/httpd": ""}
+    benchmarks = {"bin/httpd": ""}
+    test_benchmarks = {"bin/httpd": ""}
     client_numbers = [1, 5, 9, 13, 17, 21, 25, 29, 31, 33, 35]
-    ab             = "ab"
-    duration       = 20     # in seconds
-    requests_num   = 1000000 # some huge number so we always take 20 seconds
+    ab = "ab"
+    duration = 20  # in seconds
+    requests_num = 1000000  # some huge number so we always take 20 seconds
 
-    if env.get("TESTRUN"):
-        client_numbers = [1]
+    def __init__(self, *args, **kwargs):
+        super(ApachePerf, self).__init__(*args, **kwargs)
+
+        if self.config.input_type == "test":
+            self.client_numbers = [1]
 
     def per_benchmark_action(self, type_, benchmark, args):
         build_path = "/".join([self.dirs["build"], type_])
