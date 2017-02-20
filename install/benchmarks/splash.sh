@@ -1,19 +1,9 @@
 #!/usr/bin/env bash
 
-echo "=== Downloading inputs ==="
-cd ${DATA_PATH}/
+echo "Installing Splash..."
 
-if [ -d "inputs" ]; then
-    rm -rf inputs/
-fi
+source ${PROJ_ROOT}/install/common.sh
 
-set +e
-wget -nc https://github.com/tudinfse/fex-inputs/archive/master.zip
-set -e
+install_dependency "Splash inputs" "${PROJ_ROOT}/install/dependencies/splash_inputs.sh"
 
-unzip master.zip
-mv ${DATA_PATH}/fex-inputs-master/ ${DATA_PATH}/inputs/
-rm master.zip
-
-cd -
 echo "Splash installed"

@@ -1,13 +1,15 @@
-NAME := word_count
-SRC := word_count-seq
+NAME := pca
+SRC := pca-seq
 
 ifneq ($(strip $(NUM_THREADS)),1)
-	SRC := word_count-pthread sort-pthread
+	SRC := pca-pthread
 	LIBS += -pthread
 endif
 
-INC_DIR := ${PROJ_ROOT}/src/phoenix_pthread/include
+INC_DIR += ${PROJ_ROOT}/src/phoenix/include
 VPATH := src
+
+CFLAGS := $(CFLAGS)
 
 include Makefile.$(BUILD_TYPE)
 

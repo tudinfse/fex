@@ -10,7 +10,7 @@ class PhoenixPerf(Runner):
     Runs Phoenix benchmarks
     """
 
-    name = "phoenix_pthread"
+    name = "phoenix"
     exp_name = "phoenix_perf"
     bench_suite = True
 

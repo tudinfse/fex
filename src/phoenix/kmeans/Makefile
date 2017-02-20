@@ -1,12 +1,12 @@
-NAME := string_match
-SRC := string_match-seq
+NAME := kmeans
+SRC := kmeans-seq
 
 ifneq ($(strip $(NUM_THREADS)),1)
-	SRC := string_match-pthread
+	SRC := kmeans-pthread
 	LIBS += -pthread
 endif
 
-INC_DIR := ${PROJ_ROOT}/src/phoenix_pthread/include
+INC_DIR := ${PROJ_ROOT}/src/phoenix/include
 VPATH := src
 
 include Makefile.$(BUILD_TYPE)

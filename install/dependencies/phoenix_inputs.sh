@@ -1,15 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-#==============================================================================#
-# download inputs and move them into corresponding dirs
-#==============================================================================#
+echo "Downloading inputs..."
 
 set -x #echo on
 
 declare -a benchmarks=("histogram" "linear_regression" "string_match" "word_count")
 
-mkdir -p $DATA_PATH/inputs/phoenix_pthread/
-cd $DATA_PATH/inputs/phoenix_pthread/
+mkdir -p $DATA_PATH/inputs/phoenix/
+cd $DATA_PATH/inputs/phoenix/
 
 for bmidx in "${!benchmarks[@]}"; do
   bm="${benchmarks[$bmidx]}"
@@ -21,3 +19,6 @@ for bmidx in "${!benchmarks[@]}"; do
   rm -rf ${bm}_datafiles/
 done
 
+cd -
+
+echo "Inputs installed"

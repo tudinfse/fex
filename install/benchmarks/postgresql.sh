@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
+echo "Installing PostgreSQL..."
+
 set -e
 source ${PROJ_ROOT}/install/common.sh
-download_and_link ycsb-traces https://bitbucket.org/alexo_o/simd-swift-dependencies/downloads/ycsb-traces.tar.gz ${BIN_PATH}/benchmarks/ycsb-traces
 
 mkdir -p ${DATA_PATH}/postgres/
 cd ${DATA_PATH}/postgres/
@@ -13,3 +14,7 @@ cd postgres-REL9_5_1
 set +e
 
 useradd --no-create-home postgres || true  # non-root user is needed for interaction with postgres
+
+install_dependency "YCSB traces (inputs)" "${PROJ_ROOT}/install/dependencies/ycsb_traces.sh"
+
+echo "PostgreSQL installed"
