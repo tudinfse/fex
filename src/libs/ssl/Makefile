@@ -2,7 +2,11 @@
 # NOTE: we disable asm because most compiler mechanisms cannot work with it
 NAME := ssl
 
-include Makefile.$(ACTION)
+# undefine variables from recursive calls
+undefine BUILD_PATH
+
+# import type-specific configuration
+include Makefile.$(BUILD_TYPE)
 $(eval $(call expand-ccflags))
 CFLAGS += -DPEDANTIC -pedantic
 CC := $(CC) $(CFLAGS)

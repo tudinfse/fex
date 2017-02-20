@@ -5,8 +5,6 @@
 # - helper functions
 ###############################
 
-$(warning entered common)
-
 # check that required variables are specified
 ifndef PROJ_ROOT
 $(error PROJ_ROOT is not specified)

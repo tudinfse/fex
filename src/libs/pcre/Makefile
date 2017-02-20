@@ -1,6 +1,10 @@
 NAME := pcre
 
-include Makefile.$(ACTION)
+# undefine variables from recursive calls
+undefine BUILD_PATH
+
+# import type-specific configuration
+include Makefile.$(BUILD_TYPE)
 $(eval $(call expand-ccflags))
 
 IGNORE_DOCS := dist_doc_DATA="" dist_html_DATA="" dist_man_MANS="" pcrecpp_html=""

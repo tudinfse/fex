@@ -1,10 +1,14 @@
 NAME := glib
 
-include Makefile.$(ACTION)
+# undefine variables from recursive calls
+undefine BUILD_PATH
+
+# import type-specific configuration
+include Makefile.$(BUILD_TYPE)
 
 # zlib is always compiled before glib, so we can rely on files existing
-CFLAGS  += -I$(BUILD_ROOT)/libs/zlib/$(ACTION)/include
-LDFLAGS += -L$(BUILD_ROOT)/libs/zlib/$(ACTION)/lib
+CFLAGS  += -I$(BUILD_ROOT)/libs/zlib/$(BUILD_TYPE)/include
+LDFLAGS += -L$(BUILD_ROOT)/libs/zlib/$(BUILD_TYPE)/lib
 
 $(eval $(call expand-ccflags))
 

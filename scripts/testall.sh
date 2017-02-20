@@ -2,11 +2,15 @@
 
 cd $PROJ_ROOT
 
+printf "\n  ==  SUITES  ==\n"
+
 echo "  ==  Phoenix  =="
 ./fex.py run -n phoenix_perf -t gcc_native gcc_asan --multithreaded_build -i test
 
 printf "\n  ==  Parsec  ==\n"
 ./fex.py run -n parsec_perf -t gcc_native gcc_asan --multithreaded_build -i test
+
+printf "\n  ==  APPS  ==\n"
 
 printf "\n  ==  Apache  ==\n"
 ./fex.py run -n apache_perf -t gcc_native gcc_asan --multithreaded_build
