@@ -1,9 +1,5 @@
 NAME := glib
 
-# undefine variables from recursive calls
-undefine BUILD_PATH
-
-# import type-specific configuration
 include Makefile.$(BUILD_TYPE)
 
 # zlib is always compiled before glib, so we can rely on files existing

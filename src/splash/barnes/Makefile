@@ -4,7 +4,7 @@ HEADER_DEPS := code.h defs.h util.h vectmath.h load.h code_io.h grav.h getparam.
 
 VPATH := src:$(BUILD_PATH)
 
-include Makefile.$(ACTION)
+include Makefile.$(BUILD_TYPE)
 include ../config.mk
 
 M4FLAGS += -I $(BUILD_PATH)

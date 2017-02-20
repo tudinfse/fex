@@ -1,6 +1,6 @@
 NAME := malloc
 SRC := malloc
 
-include Makefile.$(ACTION)
+include Makefile.$(BUILD_TYPE)
 
 all: $(BUILD_PATH)/$(NAME)

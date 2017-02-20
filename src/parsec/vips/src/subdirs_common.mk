@@ -1,5 +1,5 @@
-BUILD_PATH = $(BUILD_ROOT)/$(BENCH_SUITE)/vips/$(ACTION)/$(NAME)
-include Makefile.$(ACTION)
+BUILD_PATH = $(BUILD_ROOT)/$(BENCH_SUITE)/vips/$(BUILD_TYPE)/$(NAME)
+include Makefile.$(BUILD_TYPE)
 include $(PROJ_ROOT)/src/parsec/parsec_common.mk
 
 all: $(BUILD_PATH)/../$(NAME).$(OBJ_EXT)

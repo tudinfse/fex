@@ -1,6 +1,6 @@
 NAME := funccalls
 SRC := funccalls
 
-include Makefile.$(ACTION)
+include Makefile.$(BUILD_TYPE)
 
 all: $(BUILD_PATH)/$(NAME)

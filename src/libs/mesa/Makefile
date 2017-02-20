@@ -1,9 +1,5 @@
 NAME := mesa
 
-# undefine variables from recursive calls
-undefine BUILD_PATH
-
-# import type-specific configuration
 include Makefile.$(BUILD_TYPE)
 
 CFLAGS += -I$(PROJ_ROOT)/src/libs/mesa

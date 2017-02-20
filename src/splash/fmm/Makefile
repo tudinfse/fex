@@ -3,7 +3,7 @@ SRC := box construct_grid cost_zones defs fmm interactions memory particle parti
 
 VPATH := src:$(BUILD_PATH)
 
-include Makefile.$(ACTION)
+include Makefile.$(BUILD_TYPE)
 include ../config.mk
 
 all: $(BUILD_PATH)/memory.h $(BUILD_PATH)/$(NAME)

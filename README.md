@@ -193,10 +193,10 @@ You can run only a subset of test using two variables:
 NAME=parsec-x264 nose2 -c tests/nose2.cfg tests
 ```
 
-* `ACTION`: build type. E.g.:
+* `BUILD_TYPE`: build type. E.g.:
 
 ```sh
-ACTION=gcc_native nose2 -c tests/nose2.cfg tests
+BUILD_TYPE=gcc_native nose2 -c tests/nose2.cfg tests
 ```
 
 * `BUILD_THREADS_NUM`: number of threads used for a build.

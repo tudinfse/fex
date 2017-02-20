@@ -3,7 +3,7 @@
 NAME := postgresql
 POSTGRESQL_PATH := ${DATA_PATH}/postgres/postgres-REL9_5_1
 
-include Makefile.$(ACTION)
+include Makefile.$(BUILD_TYPE)
 
 all:
 	cd $(POSTGRESQL_PATH) && ./configure --without-readline --without-zlib --prefix=$(BUILD_PATH)

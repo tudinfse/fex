@@ -10,8 +10,8 @@ ifndef PROJ_ROOT
 $(error PROJ_ROOT is not specified)
 endif
 
-ifndef ACTION
-$(error ACTION is not specified)
+ifndef BUILD_TYPE
+$(error BUILD_TYPE is not specified)
 endif
 
 ifndef NAME
@@ -25,18 +25,18 @@ BUILD_ROOT = $(PROJ_ROOT)/build
 endif
 
 ifndef BUILD_PATH
-BUILD_PATH = $(BUILD_ROOT)/$(BENCH_SUITE)/$(NAME)/$(ACTION)
+BUILD_PATH = $(BUILD_ROOT)/$(BENCH_SUITE)/$(NAME)/$(BUILD_TYPE)
 endif
 
-ACTION_MAKEFILE = Makefile.$(ACTION)
+TYPE_MAKEFILE = Makefile.$(BUILD_TYPE)
 
 # build flags
-CCOMFLAGS += -O3
+CCFLAGS += -O3
 
 ifdef DEBUG
-    CCOMFLAGS += -ggdb
+    CCFLAGS += -ggdb
 else
-    CCOMFLAGS += -DNODPRINTF -DNDEBUG
+    CCFLAGS += -DNODPRINTF -DNDEBUG
 endif
 
 ifdef VERBOSE
@@ -54,7 +54,7 @@ M4 := m4
 LLS = $(addprefix $(BUILD_PATH)/, $(addsuffix .$(OBJ_EXT), $(SRC)))
 
 # included directories
-INCLUDE = $(addprefix -I,$(INC_DIR))
+INCLUDE_HEADER_DIRS = $(addprefix -I,$(INC_DIR))
 INCLUDE_LIB_DIRS = $(addprefix -L,$(LIB_DIRS))
 
 
@@ -66,7 +66,7 @@ ifeq ($(shell uname -m),x86_64)
 ARCH = -D__x86_64__
 endif
 
-CCOMFLAGS += $(OS) $(ARCH)
+CCFLAGS += $(OS) $(ARCH)
 
 # ======== Common build targets ========
 .PHONY: all clean make_dirs
@@ -87,30 +87,30 @@ clean:
 
 # object files
 $(BUILD_PATH)/%.$(OBJ_EXT): %.c
-	$(CC) $(CCOMFLAGS) $(CFLAGS) -c $< -o $@ $(INCLUDE)
+	$(CC) $(CCFLAGS) $(CFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
 $(BUILD_PATH)/%.$(OBJ_EXT): %.C
-	$(CC) $(CCOMFLAGS) $(CFLAGS) -c $< -o $@ $(INCLUDE)
+	$(CC) $(CCFLAGS) $(CFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
 $(BUILD_PATH)/%.$(OBJ_EXT): %.cpp
-	$(CXX) $(CCOMFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE)
+	$(CXX) $(CCFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
 $(BUILD_PATH)/%.$(OBJ_EXT): %.cxx
-	$(CXX) $(CCOMFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE)
+	$(CXX) $(CCFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
 $(BUILD_PATH)/%.$(OBJ_EXT): %.cc
-	$(CXX) $(CCOMFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE)
+	$(CXX) $(CCFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
 # executable
 $(BUILD_PATH)/$(NAME): $(LLS)
-	$(CXX) $(CCOMFLAGS) $(CXXFLAGS) -o $@ $^ $(INCLUDE) $(INCLUDE_LIB_DIRS) $(LIBS)
+	$(CXX) $(CCFLAGS) $(CXXFLAGS) -o $@ $^ $(INCLUDE_HEADER_DIRS) $(INCLUDE_LIB_DIRS) $(LIBS)
 
 
 # ======== Helper functions ========
 # $(eval $(call expand-ccflags))
 define expand-ccflags
-	CFLAGS += $(CCOMFLAGS)
-	CXXFLAGS += $(CCOMFLAGS)
+	CFLAGS += $(CCFLAGS)
+	CXXFLAGS += $(CCFLAGS)
 	export
 endef
 

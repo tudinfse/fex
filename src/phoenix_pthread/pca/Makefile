@@ -11,6 +11,6 @@ VPATH := src
 
 CFLAGS := $(CFLAGS)
 
-include Makefile.$(ACTION)
+include Makefile.$(BUILD_TYPE)
 
 all: $(BUILD_PATH)/$(NAME)

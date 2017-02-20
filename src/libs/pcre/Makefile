@@ -1,9 +1,5 @@
 NAME := pcre
 
-# undefine variables from recursive calls
-undefine BUILD_PATH
-
-# import type-specific configuration
 include Makefile.$(BUILD_TYPE)
 $(eval $(call expand-ccflags))
 

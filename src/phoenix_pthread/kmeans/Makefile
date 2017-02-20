@@ -9,6 +9,6 @@ endif
 INC_DIR := ${PROJ_ROOT}/src/phoenix_pthread/include
 VPATH := src
 
-include Makefile.$(ACTION)
+include Makefile.$(BUILD_TYPE)
 
 all: $(BUILD_PATH)/$(NAME)

@@ -3,11 +3,11 @@ SRC := multithreading_fn
 
 LIBS += -pthread
 
-include Makefile.$(ACTION)
+include Makefile.$(BUILD_TYPE)
 
 # less optimizations for simplicity
-CCOMFLAGS := $(filter-out -O3,$(CCOMFLAGS))
-CCOMFLAGS := $(filter-out -O2,$(CCOMFLAGS))
-CCOMFLAGS += -O1
+CCFLAGS := $(filter-out -O3,$(CCFLAGS))
+CCFLAGS := $(filter-out -O2,$(CCFLAGS))
+CCFLAGS += -O1
 
 all: $(BUILD_PATH)/$(NAME)

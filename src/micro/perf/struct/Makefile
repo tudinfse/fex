@@ -1,9 +1,9 @@
 NAME := struct
 SRC := struct
 
-include Makefile.$(ACTION)
+include Makefile.$(BUILD_TYPE)
 
-CCOMFLAGS := $(filter-out -O3,$(CCOMFLAGS))
-CCOMFLAGS += -O2
+CCFLAGS := $(filter-out -O3,$(CCFLAGS))
+CCFLAGS += -O2
 
 all: $(BUILD_PATH)/$(NAME)

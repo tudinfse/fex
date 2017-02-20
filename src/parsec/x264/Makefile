@@ -6,10 +6,10 @@ SRC := x264 matroska muxers \
 VPATH := src
 
 INC_DIR += $(PROJ_ROOT)/src/parsec/x264/src/
-CCOMFLAGS += -pthread -ffast-math -Wno-aggressive-loop-optimizations -Wno-int-conversion -DHAVE_MALLOC_H -DARCH_X86_64 -DSYS_LINUX -DHAVE_PTHREAD -fomit-frame-pointer
+CCFLAGS += -pthread -ffast-math -Wno-aggressive-loop-optimizations -Wno-int-conversion -DHAVE_MALLOC_H -DARCH_X86_64 -DSYS_LINUX -DHAVE_PTHREAD -fomit-frame-pointer
 LIBS += -lm
 
-include Makefile.$(ACTION)
+include Makefile.$(BUILD_TYPE)
 include ../parsec_common.mk
 
 all: $(BUILD_PATH)/$(NAME)

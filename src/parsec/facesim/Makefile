@@ -12,12 +12,12 @@ LIBS += -lPhysBAM
 
 
 ifneq ($(strip $(NUM_THREADS)),1)
-	CCOMFLAGS += -DENABLE_PTHREADS
+	CCFLAGS += -DENABLE_PTHREADS
 else
-	CCOMFLAGS += -DNEW_SERIAL_IMPLEMENTATIOM
+	CCFLAGS += -DNEW_SERIAL_IMPLEMENTATIOM
 endif
 
-include Makefile.$(ACTION)
+include Makefile.$(BUILD_TYPE)
 include ../parsec_common.mk
 
 ifeq ($(CC),icc)

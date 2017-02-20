@@ -1,10 +1,6 @@
 # apr-util-1.5.4, taken from http://mirror.symnds.com/software/Apache/apr/apr-util-1.5.4.tar.gz
 NAME := apr-util
 
-# undefine variables from recursive calls
-undefine BUILD_PATH
-
-# import type-specific configuration
 include Makefile.$(BUILD_TYPE)
 $(eval $(call expand-ccflags))
 
