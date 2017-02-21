@@ -7,7 +7,7 @@ from core import draw
 
 # === helpers === #
 BENCH_NAME = 'parsec_var_input'
-EXP_NAME = '%s_perf' % BENCH_NAME
+EXP_NAME = BENCH_NAME
 BENCHMARK_ORDER = (
     "blackscholes",
     # "bodytrack",

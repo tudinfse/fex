@@ -35,13 +35,13 @@ make run
 
 ```sh
 ./fex.py install -n sqlite3
-./fex.py run -n sqlite3_perf --num_threads 1 2 --num_runs 1
+./fex.py run -n sqlite3 --num_threads 1 2 --num_runs 1
 ```
 
-The results of benchmark runs are aggregated in a log file, saved in your current directory (on host machine, not container) under `data/results/sqlite3_perf`:
+The results of benchmark runs are aggregated in a log file, saved in your current directory (on host machine, not container) under `data/results/sqlite3`:
 
 ```sh
-vim data/results/sqlite3_perf/raw.csv
+vim data/results/sqlite3/raw.csv
 ```
 
 For more commands, see Makefile.
@@ -84,20 +84,20 @@ Afterwards, we can run tests. For example:
 * Build and run Phoenix benchmarks with debug info (careful, debug is slower!)
 
 ```sh
-./fex.py -d run -n phoenix_perf --num_runs 1 --num_threads 1 -t gcc_native gcc_mpx ...
+./fex.py -d run -n phoenix --num_runs 1 --num_threads 1 -t gcc_native gcc_mpx ...
 ```
 
 * Build but not run Phoenix benchmarks without debug info
 
 ```sh
-./fex.py run -n phoenix_perf --num_runs 1 --num_threads 1 --partial_experiment build -t gcc_native gcc_mpx ...
+./fex.py run -n phoenix --num_runs 1 --num_threads 1 --partial_experiment build -t gcc_native gcc_mpx ...
 ```
 
 * Run but not rebuild Phoenix benchmarks
 
 ```sh
  example 3:
-./fex.py -d run -n phoenix_perf --num_runs 5 --num_threads 1 --partial_experiment run -t gcc_native gcc_mpx ...
+./fex.py -d run -n phoenix --num_runs 5 --num_threads 1 --partial_experiment run -t gcc_native gcc_mpx ...
 ```
 
 

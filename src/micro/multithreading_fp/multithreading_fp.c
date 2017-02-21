@@ -7,7 +7,7 @@
  *
  * (1) Better compile at O1 to have simple non-vectorized asm
  * (2) Make sure program runs on two cores, i.e., `--num_threads 2`
- *     (I build with `./entrypoint.py -v -d run -n micro_perf --num_threads 2 --num_runs 10 -t gcc_mpx -b multithreading_fp`)
+ *     (I build with `./entrypoint.py -v -d run -n micro --num_threads 2 --num_runs 10 -t gcc_mpx -b multithreading_fp`)
  *     (I run with   `CHKP_RT_MODE=count CHKP_RT_PRINT_SUMMARY=1 CHKP_RT_VERBOSE=0 build/micro/perf/multithreading_fp/gcc_mpx/multithreading_fp`)
  * (3) In *correct* MPX implementation, no #BR must be output
  *       - in current GCC and ICC implementations, output is #BR sometimes
