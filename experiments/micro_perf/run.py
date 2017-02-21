@@ -10,7 +10,7 @@ class MicroPerf(Runner):
     Runs micro benchmarks
     """
 
-    name = "micro/perf/"
+    name = "micro"
     exp_name = "micro_perf"
     bench_suite = True
 
