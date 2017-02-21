@@ -10,8 +10,12 @@ from subprocess import check_call, STDOUT, Popen, CalledProcessError
 
 import coloredlogs
 
+import config
 from core.environment import Environment, set_all_environments
-from config import Config
+
+
+# config is needed everywhere
+conf = config.Config()
 
 
 def set_logging(verbose=False):
@@ -22,6 +26,7 @@ def set_logging(verbose=False):
     )
 
     logging.addLevelName(21, 'RUNNER')
+    logging.addLevelName(22, 'BUILDER')
     logging.addLevelName(23, 'SCRIPT')
 
 
@@ -52,6 +57,7 @@ def get_arguments():
     parser_install.add_argument(
         '-n', '--names',
         nargs='*',
+        help="List of program names to be installed"
     )
 
     # parser for processing logs
@@ -95,13 +101,13 @@ def get_arguments():
         help="Names of experiments to run"
     )
     parser_perf.add_argument(
-        '--num_runs',
+        '-r', '--num_runs',
         type=str,
         default='1',
         help="How much times to run the experiments (results will be averaged on the collection stage)"
     )
     parser_perf.add_argument(
-        '--num_threads',
+        '-m', '--num_threads',
         nargs='+',
         default='1',
         help='Maximum number of threads (multiple values possible)'
@@ -115,27 +121,33 @@ def get_arguments():
     parser_perf.add_argument(
         '--stats',
         type=str,
-        choices=['perf', 'perf_cache', 'perf_instr', 'perf_ports', 'time', 'mpxcount', 'none'],
+        choices=list(conf.stats_action.keys()),
         default='perf',
-        help='Statistics tool'
+        help='Measurement tool'
     )
     parser_perf.add_argument(
-        '--partial_experiment',
-        choices=['build', 'run'],
-        required=False,
-        help='Perform an experiment partially: build - only build benchmarks, run - only run them'
-    )
-    parser_perf.add_argument(
-        '--multithreaded_build',
+        '--no-build',
         action='store_true',
         required=False,
-        help='Enable multithreading during the build stage'
+        help='Don\'t build benchmarks (previous build is used, if any)'
     )
     parser_perf.add_argument(
-        '--no_rebuild',
+        '--no-run',
+        action='store_true',
+        required=False,
+        help='Don\'t run the experiments (only build)'
+    )
+    parser_perf.add_argument(
+        '--no-clean',
         action='store_true',
         required=False,
         help='Don\'t delete the previous build'
+    )
+    parser_perf.add_argument(
+        '--singlethreaded_build',
+        action='store_true',
+        required=False,
+        help='Disable multithreading during the build stage'
     )
     parser_perf.add_argument(
         '-b', '--benchmark_name',
@@ -150,7 +162,7 @@ def get_arguments():
     parser_perf.add_argument(
         '-i', '--input',
         choices=['native', 'test'],
-        required=False,
+        default="native",
         help='Input type: native - normal run, test - fast run with small inputs'
     )
 
@@ -163,42 +175,15 @@ class CLIEnvironment(Environment):
         super(CLIEnvironment, self).__init__(*args, **kwargs)
 
         # multithreading
-        if getattr(cli_args, "multithreaded_build", ''):
-            self.forced_variables["BUILD_THREADS"] = '8'
-        else:
+        if getattr(cli_args, "singlethreaded_build", ''):
             self.forced_variables["BUILD_THREADS"] = '1'
+        else:
+            self.forced_variables["BUILD_THREADS"] = '8'
 
         # execution parameters
         if cli_args.subparser_name in ['run', 'collect']:
-            stats_action = {
-                "perf": "perf stat " +
-                        "-e cycles,instructions " +
-                        "-e branch-instructions,branch-misses " +
-                        "-e major-faults,minor-faults " +
-                        "-e dTLB-loads,dTLB-load-misses,dTLB-stores,dTLB-store-misses ",
-                "perf_cache": "perf stat " +
-                              "-e instructions " +
-                              "-e L1-dcache-loads,L1-dcache-load-misses " +
-                              "-e L1-dcache-stores,L1-dcache-store-misses " +
-                              "-e LLC-loads,LLC-load-misses " +
-                              "-e LLC-store-misses,LLC-stores ",
-                "perf_instr": "perf stat " +
-                              "-e instructions " +
-                              "-e instructions:u " +
-                              "-e instructions:k " +
-                              "-e mpx:mpx_new_bounds_table",
-                "perf_ports": "perf stat " +       # ports for Intel Skylake!
-                              "-e r02B1 "  +       # UOPS_EXECUTED.CORE
-                              "-e r01A1,r02A1 " +  # ports 0 and 1 (UOPS_DISPATCHED_PORT.PORT_X)
-                              "-e r04A1,r08A1 " +  # ports 2 and 3
-                              "-e r10A1,r20A1 " +  # ports 4 and 5
-                              "-e r40A1,r80A1 ",   # ports 6 and 7
-                "time": "/usr/bin/time --verbose",
-                "mpxcount": "bin/pin/pin -t bin/pin/mpxinscount.so -o mpxcount.tmp --",
-                "none": "",
-            }
             self.forced_variables.update({
-                'STATS_ACTION': stats_action[cli_args.stats],
+                'STATS_ACTION': conf.stats_action[cli_args.stats],
                 'STATS_COLLECT': cli_args.stats,
             })
 
@@ -215,7 +200,7 @@ class CLIEnvironment(Environment):
                 'NUM_RUNS': cli_args.num_runs,
                 'NUM_THREADS': ' '.join(cli_args.num_threads),
                 'TYPES': ' '.join(cli_args.types),
-                'REBUILD': '' if cli_args.no_rebuild else '1',
+                'REBUILD': getattr(cli_args, "no-clean", ""),
                 'TIMEOUT': cli_args.timeout,
             })
 
@@ -253,7 +238,6 @@ class Manager:
 
     def __init__(self, args):
         logging.info("Creating a manager")
-        self.config = Config()
 
         self.names = args.names
         self.benchmark_name = args.benchmark_name if args.subparser_name == 'run' else ''
@@ -264,15 +248,15 @@ class Manager:
             logging.warning("Debug mode is on. These measurements most probably will be incorrect!")
 
     def set_configuration(self, args):
-        self.config.input_type = getattr(args, "input", "native")
+        conf.input_type = getattr(args, "input", "native")
 
     def set_environment(self, args):
         cli_env = CLIEnvironment(args, self.debug, self.verbose)
         cli_env.setup()
 
-        if getattr(args, "partial_experiment", '') == 'build':
+        if getattr(args, "no-run", ''):
             set_all_environments(self.debug, self.verbose, 'build')
-        elif getattr(args, "partial_experiment", '') == 'run':
+        elif getattr(args, "no-build", ''):
             set_all_environments(self.debug, self.verbose, 'run')
         else:
             set_all_environments(self.debug, self.verbose, 'both')
