@@ -2,27 +2,28 @@
 import csv
 import re
 import os
-import logging
+import datetime
+import time
 
 data = os.environ['DATA_PATH'] + '/results'
 
 
 def parse_time(s):
     """
-    Parse time as reported by /usr/bin/time, e.g., "0:00.21" (which is 0.21 seconds)
+    Parse time as reported by /usr/bin/time, i.e., [hours:]minutes:seconds"
     and return it as number of seconds (float )
     Return 0.0 if does not match
     """
     s = s.replace(',', '.')  # due to different locales
 
-    pattern = r"(\d{0,2}):?(\d{1,2}):(\d{1,2}\.\d{1,5})"
+    pattern = r"((\d{0,2}):)?(\d{1,2}):(\d{1,2}\.\d{1,5})"
     match = re.search(pattern, s)
     if not match:
         return 0.0
 
-    hours = int(match.group(1)) if match.group(1) else 0
-    minutes = int(match.group(2))
-    seconds = float(match.group(3))
+    hours = int(match.group(2)) if match.group(2) else 0
+    minutes = int(match.group(3))
+    seconds = float(match.group(4))
 
     return hours * 3600 + minutes * 60 + seconds
 
