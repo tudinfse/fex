@@ -17,7 +17,7 @@ from pwd import getpwnam
 from shutil import rmtree
 
 from core.common_functions import *
-from core.runner import Runner
+from core.run import Runner
 
 
 class PostgreSQLPerf(Runner):

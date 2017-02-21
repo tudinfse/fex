@@ -11,7 +11,7 @@ from subprocess import Popen, PIPE
 import socket
 
 from core.common_functions import *
-from core.runner import Runner
+from core.run import Runner
 
 
 class ApachePerf(Runner):

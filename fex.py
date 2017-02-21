@@ -8,7 +8,6 @@ from argparse import ArgumentParser
 from importlib import import_module
 from subprocess import check_call, STDOUT, Popen, CalledProcessError
 
-import argcomplete
 import coloredlogs
 
 from core.environment import Environment, set_all_environments
@@ -155,7 +154,6 @@ def get_arguments():
         help='Input type: native - normal run, test - fast run with small inputs'
     )
 
-    argcomplete.autocomplete(parser)
     args = parser.parse_args()
     return args
 

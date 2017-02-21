@@ -2,7 +2,7 @@
 from __future__ import print_function
 
 from core.common_functions import *
-from core.runner import Runner
+from core.run import Runner
 
 
 class SplashPerf(Runner):

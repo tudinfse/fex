@@ -14,8 +14,6 @@ RUN apt-get update && \
                        vim \
                        libxml2-dev \
                        cmake \
-                       python-dev \
-                       python-pip \
                        python3-dev\
                        python3-pip \
                        gcc \
@@ -27,9 +25,7 @@ RUN apt-get update && \
                        psmisc \
                        time
 
-RUN pip install argcomplete coloredlogs nose2 && \
-    pip3 install argcomplete coloredlogs nose2 && \
-    activate-global-python-argcomplete --dest=/etc/bash_completion.d/
+RUN pip3 install coloredlogs nose2
 
 # add colors
 RUN echo 'export PS1="\[\033[38;5;172m\][${ID}] \t\[$(tput sgr0)\]\[\033[38;5;15m\]:\[$(tput sgr0)\]\[\033[38;5;33m\]\W\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;1m\]>\[$(tput sgr0)\]\[\033[38;5;11m\]>\[$(tput sgr0)\]\[\033[38;5;40m\]>\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"  && return' > ~/.bashrc

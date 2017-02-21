@@ -2,7 +2,7 @@
 from __future__ import print_function
 
 from core.common_functions import *
-from core.runner import VarInputRunner
+from core.run import VarInputRunner
 
 
 class ParsecVarInput(VarInputRunner):
