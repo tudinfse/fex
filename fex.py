@@ -70,7 +70,7 @@ def get_arguments():
     parser_collect.add_argument(
         '--stats',
         type=str,
-        choices=['perf', 'perf_cache', 'perf_instr', 'time', 'mpxcount', 'none'],
+        choices=list(conf.stats_action.keys()),
         default='perf',
         help='Statistics tool'
     )
@@ -271,7 +271,9 @@ class Manager:
                 check_call("mkdir -p %s/build/" % os.environ["PROJ_ROOT"], shell=True)
                 found = exec_scripts("install/compilers/", "%s.(sh|py)" % name)
                 if not found:
-                    exec_scripts("install/benchmarks/", "%s.(sh|py)" % name)
+                    found = exec_scripts("install/benchmarks/", "%s.(sh|py)" % name)
+                if not found:
+                    exec_scripts("install/dependencies/", "%s.(sh|py)" % name)
         elif action == 'run':
             for name in self.names:
                 logging.info('Running %s' % name)

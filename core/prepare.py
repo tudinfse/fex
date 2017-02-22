@@ -3,8 +3,6 @@ from collections import defaultdict, OrderedDict
 
 from pandas import read_csv, DataFrame, Categorical, Series
 import numpy as np
-from scipy.stats import trim_mean
-from scipy.stats.mstats import mode, gmean, hmean
 
 import logging
 
