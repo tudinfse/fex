@@ -1,20 +1,14 @@
 import logging
-import sys
-
 import numpy as np
-from pandas import Categorical
 
 from core import prepare
 from core import draw
 
-# === helpers === #
 BENCH_NAME = 'postgresql'
 EXP_NAME = BENCH_NAME
 COMPILER_NAME = "long"
 
-# NOTE 1: clang-asan performs ~15% better than clang-native!
-# NOTE 2: icc-mpx performs ~7% better than icc-native!
-# NOTE 3: native clang performs ~10% and icc ~18% worse than gcc!
+
 def main(t="perf"):
     logging.info("Processing data")
     df = prepare.process_results(t)
@@ -28,7 +22,7 @@ def main(t="perf"):
             ylim=(0.15, 0.72),
             yticks=np.arange(0.1, 1, 0.1),
         )
-        plot.save_plot("nginx_%s.pdf" % t)
+        plot.save_plot("postgresql_%s.pdf" % t)
 
     else:
         logging.error("Unknown plot type")

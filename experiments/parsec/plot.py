@@ -1,12 +1,9 @@
 import logging
-
 from pandas import Categorical
-import numpy as np
 
 from core import prepare
 from core import draw
 
-# === helpers === #
 BENCH_NAME = 'parsec'
 EXP_NAME = BENCH_NAME
 BENCHMARK_ORDER = (
@@ -25,29 +22,15 @@ BENCHMARK_ORDER = (
 )
 OVERFLOWS = {
     "perf": (
-        # (9.07,  4.25, "6.65",),
-#        (10.17, 4.25, "7.57",),
         (11.17, 8.25, "12.6",),
     ),
     "mem": (
         (0.87, 6.25, "13.0",),
-#        (1.53, 3.85, "4.98",),
-#        (2.06, 3.85, "4.98",),
         (2.44, 6.25, "34.1",),
-#        (3.87, 3.85, "4.65",),
-#        (4.53, 3.85, "4.94",),
-#        (5.07, 3.85, "5.84",),
-#        (9.53, 4.25, "4.89",),
         (10.43, 8.25, "58.2",),
         (11.27, 8.25, "45",),
         (12.27, 8.25, "45",),
     ),
-    "instr": (
-#        (8.07,  4.25, "5.04",),
-        (10.17, 8.25, "24.2",),
-        (11.17, 8.25, "19.9",),
-#        (12.17, 4.25, "8.06",),
-    )
 }
 
 
@@ -66,7 +49,6 @@ def process_type(t, df, plot_args, benchmark_order):
             "logy": True,
         })
 
-
     elif t == "mem":
         df = prepare.calculate_overhead(df, column="maxsize")
         prepare.reorder_and_rename_benchmarks(df, benchmark_order)
@@ -76,24 +58,6 @@ def process_type(t, df, plot_args, benchmark_order):
         plot_args.update({
             "ylabel": "Memory overhead\n(w.r.t. native)",
             "logy": True,
-        })
-
-    elif t == "mpxcount":
-        columns = ["bndcl", "bndcu", "bndldx", "bndstx", "bndmovreg", "bndmovmem"]
-        df = prepare.calculate_ratio(df, columns, "instructions")
-        prepare.reorder_compilers(df, t)
-        labels = df["compilertype"].unique()
-        for column in columns:
-            df[column] *= 100
-
-        plot = draw.BarplotClusteredStacked()
-        plot_args.update({
-            "ylabel": "MPX instructions\n(w.r.t. all instructions, %)",
-            "xlabels": labels,
-            "ylim": (0, 52),
-            "yticks": range(0, 90, 10),
-            "df_callback": prepare.reorder_and_rename_benchmarks,
-            "df_callback_args": (benchmark_order,)
         })
 
     elif t == "multi":
@@ -230,32 +194,6 @@ def process_type(t, df, plot_args, benchmark_order):
             "ylabel": "Processor IPC\n(instructions/cycle)",
             "ylim": (0, 5.4),
             "yticks": range(0, 10, 1),
-            "ncol": 6,
-        })
-
-    elif t == "mpx_feature_perf":
-        df = prepare.calculate_overhead(df)
-        prepare.reorder_and_rename_benchmarks(df, benchmark_order)
-        prepare.reorder_compilers(df, t)
-
-        plot = draw.BarplotMPXFature()
-        plot_args.update({
-            "ylabel": "Normalized runtime\n(w.r.t. native)",
-            "build_names": "mpx_feature",
-            "logy": True,
-            "ncol": 6,
-        })
-
-    elif t == "mpx_feature_mem":
-        df = prepare.calculate_overhead(df, column="maxsize")
-        prepare.reorder_and_rename_benchmarks(df, benchmark_order)
-        prepare.reorder_compilers(df, t)
-
-        plot = draw.BarplotMPXFature()
-        plot_args.update({
-            "ylabel": "Memory overhead\n(w.r.t. native)",
-            "build_names": "mpx_feature",
-            "logy": True,
             "ncol": 6,
         })
 

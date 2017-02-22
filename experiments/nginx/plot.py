@@ -1,20 +1,14 @@
 import logging
-import sys
-
 import numpy as np
-from pandas import Categorical
 
 from core import prepare
 from core import draw
 
-# === helpers === #
 BENCH_NAME = 'nginx'
 EXP_NAME = BENCH_NAME
 COMPILER_NAME = "long"
 
-# NOTE 1: clang-asan performs ~15% better than clang-native!
-# NOTE 2: icc-mpx performs ~7% better than icc-native!
-# NOTE 3: native clang performs ~10% and icc ~18% worse than gcc!
+
 def main(t="perf"):
     logging.info("Processing data")
     df = prepare.process_results(t)

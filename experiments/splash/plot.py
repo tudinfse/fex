@@ -1,11 +1,9 @@
 import logging
 
-from pandas import Categorical
-
 from core import prepare
 from core import draw
 
-# === helpers === #
+
 BENCH_NAME = 'splash'
 EXP_NAME = BENCH_NAME
 

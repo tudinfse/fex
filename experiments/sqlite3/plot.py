@@ -5,8 +5,7 @@ import numpy as np
 from core import prepare
 from core import draw
 
-# === helpers === #
-BENCH_NAME = 'postgresql'
+BENCH_NAME = 'sqlite3'
 EXP_NAME = BENCH_NAME
 COMPILER_NAME = "long"
 
@@ -24,7 +23,7 @@ def main(t="perf"):
             ylim=(0.15, 0.72),
             yticks=np.arange(0.1, 1, 0.1),
         )
-        plot.save_plot("postgresql_%s.pdf" % t)
+        plot.save_plot("%s_%s.pdf" % (BENCH_NAME, t))
 
     else:
         logging.error("Unknown plot type")

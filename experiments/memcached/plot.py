@@ -1,17 +1,14 @@
 import logging
-import sys
-
 import numpy as np
-from pandas import Categorical
 
 from core import prepare
 from core import draw
 
-# === helpers === #
+
 BENCH_NAME = 'memcached'
 EXP_NAME = BENCH_NAME
 
-# NOTE 1: since all compilers perform roughly the same, we leave gcc only for simplicity
+
 def main(t="perf"):
     logging.info("Processing data")
     df = prepare.process_results(t)
