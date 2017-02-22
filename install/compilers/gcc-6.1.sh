@@ -2,7 +2,7 @@
 
 echo "Installing GCC..."
 
-apt-get install -y libgmp3-dev libmpfr-dev libmpfr-doc libmpfr4 libmpfr4-dbg libmpc-dev build-essential libc6-dev-i386 zlib1g-dev libncurses-dev
+apt-get install -y libgmp3-dev libmpfr-dev libmpfr-doc libmpfr4 libmpfr4-dbg libmpc-dev build-essential libc6-dev-i386 zlib1g-dev libncurses-dev libtool
 
 
 set -e

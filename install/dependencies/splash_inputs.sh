@@ -13,7 +13,7 @@ set +e
 wget -nc https://wwwpub.zih.tu-dresden.de/~s7030030/splash-inputs.tar.gz
 set -e
 
-tar xf splash-inputs.tar.gz
+tar xf splash-inputs.tar.gz -C inputs/
 rm splash-inputs.tar.gz
 
 cd -

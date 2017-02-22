@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+source ${PROJ_ROOT}/install/common.sh
 # ============
 # gdb
 # ============
