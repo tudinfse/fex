@@ -169,6 +169,9 @@ class Runner:
         logging.log(21, "[ {0:>4.1f}% ] {1}".format(self.processed_benchmarks * 100 / self.num_benchmarks, msg))
         self.processed_benchmarks += 1
 
+    def log_build(self, type_, benchmark):
+        logging.log(22, "%s: %s" % (benchmark, type_))
+
     def run(self, real_threads):
         taskset = "taskset -c 0-{real_threads}".format(real_threads=real_threads)
         use_check_call = False

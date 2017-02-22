@@ -49,6 +49,7 @@ class ParsecPerf(Runner):
     }
 
     def per_benchmark_action(self, type_, benchmark, args):
+        self.log_build(type_, benchmark)
         build_path = "/".join([self.dirs["build"], benchmark, type_])
         self.current_exe = build_path + '/' + benchmark
 

@@ -30,6 +30,7 @@ class MemcachedPerf(Runner):
         client_numbers = [32]
 
     def per_benchmark_action(self, type_, benchmark, args):
+        self.log_build(type_, benchmark)
         build_path = "/".join([self.dirs["build"], type_])
         self.current_exe = build_path + '/' + benchmark
 

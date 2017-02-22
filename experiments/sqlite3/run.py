@@ -24,6 +24,7 @@ class SQLitePerf(Runner):
     args = " -l {input_dir}/{input}.load -r {input_dir}/{input}.run -d 6.0 -t {thread}"
 
     def per_benchmark_action(self, type_, benchmark, args):
+        self.log_build(type_, benchmark)
         build_path = "/".join([self.dirs["build"], type_])
         self.current_exe = build_path + '/' + benchmark
 
