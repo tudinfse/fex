@@ -10,6 +10,8 @@ from subprocess import check_call, STDOUT, Popen, CalledProcessError
 
 import coloredlogs
 import cpuinfo
+import platform
+import pprint
 
 import config
 from core.environment import Environment, set_all_environments
@@ -41,12 +43,12 @@ def get_arguments():
 
     parser.add_argument(
         '-v', '--verbose',
-        action='store_true',
+        choices=['1', '2', '3'],
         required=False,
-        help='Verbose mode: shows much more information about build and execution.\n'
-             '-v 1 - (default) basic info\n'
-             '-v 2 - not implemented'
-             '-v 3 - full experiment description, including HW parameters, compilers and flags, etc.'
+        help='Verbosity level: defines how much information to show.'
+             '(-v 1 - [default] basic info;'
+             '-v 2 - not implemented;'
+             '-v 3 - full experiment description, including HW parameters, compilers and flags, etc.)'
     )
 
     parser.add_argument(
@@ -204,7 +206,7 @@ class CLIEnvironment(Environment):
                 'NUM_RUNS': cli_args.num_runs,
                 'NUM_THREADS': ' '.join(cli_args.num_threads),
                 'TYPES': ' '.join(cli_args.types),
-                'REBUILD': getattr(cli_args, "no-clean", ""),
+                'REBUILD': '' if cli_args.no_clean else '1',
                 'TIMEOUT': cli_args.timeout,
             })
 
@@ -254,6 +256,10 @@ class Manager:
     def set_configuration(self, args):
         conf.input_type = getattr(args, "input", "native")
 
+        # if verbosity level is set to 3, also output all experimental parameters
+        if self.verbose == '3':
+            self.print_hw_parameters(args)
+
     def set_environment(self, args):
         cli_env = CLIEnvironment(args, self.debug, self.verbose)
         cli_env.setup()
@@ -269,11 +275,6 @@ class Manager:
         """
         Do the specified action
         """
-        # if verbosity level is 3, output HW parameters first
-        if self.verbose == '3':
-            self.print_hw_parameters()
-
-        # action
         if action == 'install':
             for name in self.names:
                 logging.info('Installing %s' % name)
@@ -313,8 +314,18 @@ class Manager:
         logging.info("Collecting data")
         run_python_module(exp_name=name, file_name='collect')
 
-    def print_hw_parameters(self):
-        pass
+    def print_hw_parameters(self, args):
+        msg = "Experiment parameters:\n"
+
+        info = cpuinfo.get_cpu_info()
+        msg += "CPU: {0} ({1} cores)\n".format(info['brand'], info['count']) + \
+               "Architecture: {0}\n".format(platform.machine()) +\
+               "L2 size: {0}\n".format(info['l2_cache_size']) +\
+               "Platform: {0}\n\n".format(platform.platform()) +\
+               "Environment variables:\n{0}\n\n".format(os.environ) +\
+               "Command line arguments:\n{0}\n\n".format(args.__dict__)
+
+        logging.info(msg)
 
 
 def main():

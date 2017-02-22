@@ -25,7 +25,7 @@ RUN apt-get update && \
                        psmisc \
                        time
 
-RUN pip3 install coloredlogs nose2
+RUN pip3 install coloredlogs nose2 cpuinfo
 
 # add colors
 RUN echo 'export PS1="\[\033[38;5;172m\][${ID}] \t\[$(tput sgr0)\]\[\033[38;5;15m\]:\[$(tput sgr0)\]\[\033[38;5;33m\]\W\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;1m\]>\[$(tput sgr0)\]\[\033[38;5;11m\]>\[$(tput sgr0)\]\[\033[38;5;40m\]>\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"  && return' > ~/.bashrc
