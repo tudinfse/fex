@@ -22,12 +22,16 @@ class MemcachedPerf(Runner):
     bench_suite = False
 
     benchmarks = {"bin/memcached": ""}
+    test_benchmarks = {"bin/memcached": ""}
     client_numbers = (32, 64, 128, 192, 256, 320, 384, 448, 512)
-    memaslap       = "memaslap"
-    duration       = 20     # in seconds
+    memaslap = "memaslap"
+    duration = 20  # in seconds
 
-    if env.get("TESTRUN"):
-        client_numbers = [32]
+    def __init__(self, *args, **kwargs):
+        super(MemcachedPerf, self).__init__(*args, **kwargs)
+
+        if self.config.input_type == "test":
+            self.client_numbers = (32,)
 
     def per_benchmark_action(self, type_, benchmark, args):
         self.log_build(type_, benchmark)

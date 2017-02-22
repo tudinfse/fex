@@ -21,14 +21,18 @@ class NginxPerf(Runner):
     exp_name = "nginx"
     bench_suite = False
 
-    benchmarks     = {"nginx": ""}
+    benchmarks = {"nginx": ""}
+    test_benchmarks = {"nginx": ""}
     client_numbers = [1, 5, 9, 13, 17, 21, 25, 29]
-    ab             = "ab"
-    duration       = 20     # in seconds
-    requests_num   = 1000000 # some huge number so we always take 20 seconds
+    ab = "ab"
+    duration = 20  # in seconds
+    requests_num = 1000000  # some huge number so we always take 20 seconds
 
-    if env.get("TESTRUN"):
-        client_numbers = [1]
+    def __init__(self, *args, **kwargs):
+        super(NginxPerf, self).__init__(*args, **kwargs)
+
+        if self.config.input_type == "test":
+            self.client_numbers = (1,)
 
     def per_benchmark_action(self, type_, benchmark, args):
         self.log_build(type_, benchmark)

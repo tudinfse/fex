@@ -57,6 +57,9 @@ tmp/
 results/
 */input/*
 
+# tests are temporary disabled
+tests/
+
 # shared directory for Docker
 data*/
 data/

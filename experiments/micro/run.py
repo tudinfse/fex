@@ -24,6 +24,7 @@ class MicroPerf(Runner):
         "struct": "",
         "ptrcreation": "",
     }
+    test_benchmarks = benchmarks  # they are already quick
 
     def experiment_setup(self):
         self.set_common_dirs()
