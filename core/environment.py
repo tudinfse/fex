@@ -34,7 +34,7 @@ class Environment(object):
     debug_variables = {}
 
     def __init__(self, debug=False, verbose=False):
-        self.debug   = debug
+        self.debug = debug
         self.verbose = verbose
         env["DEBUG"] = "1" if self.debug else ""
         env["VERBOSE"] = "1" if self.verbose else ""
