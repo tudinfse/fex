@@ -4,7 +4,7 @@ NAME := sqlite3
 SRC := sqlite3 bench
 
 COMFLAGS += -DNDEBUG -DSQLITE_THREADSAFE=1 -DSQLITE_OMIT_LOAD_EXTENSION
-LIBS += -pthread
+LIBS += -pthread -ldl
 
 VPATH := src
 

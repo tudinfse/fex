@@ -1,5 +1,8 @@
 """
 Main configuration file
+
+Warning: this feature (i.e., centralized config file) is still in development
+It will be
 """
 from core.abstract_config import AbstractConfig
 from environment import GenericEnvironment, ASanEnvironment

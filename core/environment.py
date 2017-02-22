@@ -78,7 +78,7 @@ def set_all_environments(debug=False, verbose=False, env_type='both'):
     """
     Simple wrapper
     """
-    Envs = getattr(config.Config(), "environment", [])
+    Envs = getattr(config.Config(), "environments", [])
 
     for EnvClass in Envs:
         env_obj = EnvClass(debug, verbose)

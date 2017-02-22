@@ -29,12 +29,18 @@ class PostgreSQLPerf(Runner):
     bench_suite = False
 
     benchmarks = {"postgresql": "-s 200 -T 60 -S"}
-    # client_numbers = (32, 64, 128, 192, 256, 320, 384, 448, 512)
-    client_numbers = (32,)
+    test_benchmarks = {"postgresql": "-s 200 -T 60 -S"}
+    client_numbers = (32, 64, 128, 192, 256, 320, 384, 448, 512)
 
     db_name = "test"
     inputs_dir = env["BIN_PATH"] + "benchmarks/ycsb-traces"
     server = ''
+
+    def __init__(self, *args, **kwargs):
+        super(PostgreSQLPerf, self).__init__(*args, **kwargs)
+
+        if self.config.input_type == "test":
+            self.client_numbers = (32,)
 
     def experiment_setup(self):
         self.set_common_dirs()
@@ -79,25 +85,25 @@ class PostgreSQLPerf(Runner):
         with open(self.dirs["init_log_file"], "a") as f:
             # initialize a DB
             f.write("-- Initializing a DB --")
-            rmtree("/postgresql_build/bin/data")
-            out = my_check_output("sudo -u postgres /postgresql_build/bin/initdb -D /postgresql_build/bin/data")
+            rmtree("/postgresql_build/data")
+            out = my_check_output("su - postgres -c '/postgresql_build/bin/initdb -D /postgresql_build/data'")
             f.write(out)
 
             # start the server
-            cmd = "/postgresql_build/bin/postgres -D /postgresql_build/bin/data"
+            cmd = "/postgresql_build/bin/postgres -D /postgresql_build/data"
             logging.debug("Starting a DB server: %s" % cmd)
             server = Popen(cmd, shell=True, preexec_fn=postgres_user())
             sleep(1)
 
             # create a DB
             f.write("-- Creating the DB --")
-            out = my_check_output("sudo -u postgres /postgresql_build/bin/createdb %s" % self.db_name)
+            out = my_check_output("su - postgres -c '/postgresql_build/bin/createdb %s'" % self.db_name)
 
         # run the benchmark
         with open(self.dirs["log_file"], "a") as f:
             for client_number in self.client_numbers:
                 # initialize
-                out = my_check_output("sudo -u postgres /postgresql_build/bin/pgbench -i %s" % self.db_name)
+                out = my_check_output("su - postgres -c '/postgresql_build/bin/pgbench -i %s'" % self.db_name)
                 f.write(out)
 
                 # run
@@ -105,7 +111,7 @@ class PostgreSQLPerf(Runner):
                 self.log_run(msg)
                 f.write("[run] " + msg)
 
-                out = my_check_output("sudo -u postgres /postgresql_build/bin/pgbench {args} -c {client_number}  -j {thread_num} {db_name}".format(
+                out = my_check_output("su - postgres -c '/postgresql_build/bin/pgbench {args} -c {client_number}  -j {thread_num} {db_name}'".format(
                     db_name=self.db_name,
                     ** locals()
                 ))

@@ -19,8 +19,9 @@ class SQLitePerf(Runner):
         # "sqlite3": "c_kv1M_op1M",
         # "sqlite3": "d_kv1M_op1M",
     }
+    test_benchmarks = {"sqlite3": "a_kv1M_op1M"}
 
-    input_dir = env["BIN_PATH"] + "benchmarks/ycsb-traces"
+    input_dir = env["DATA_PATH"] + "inputs/ycsb-traces"
     args = " -l {input_dir}/{input}.load -r {input_dir}/{input}.run -d 6.0 -t {thread}"
 
     def per_benchmark_action(self, type_, benchmark, args):

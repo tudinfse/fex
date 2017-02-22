@@ -9,6 +9,7 @@ from importlib import import_module
 from subprocess import check_call, STDOUT, Popen, CalledProcessError
 
 import coloredlogs
+import cpuinfo
 
 import config
 from core.environment import Environment, set_all_environments
@@ -42,7 +43,10 @@ def get_arguments():
         '-v', '--verbose',
         action='store_true',
         required=False,
-        help='Verbose mode: shows much more information about build and execution'
+        help='Verbose mode: shows much more information about build and execution.\n'
+             '-v 1 - (default) basic info\n'
+             '-v 2 - not implemented'
+             '-v 3 - full experiment description, including HW parameters, compilers and flags, etc.'
     )
 
     parser.add_argument(
@@ -254,9 +258,9 @@ class Manager:
         cli_env = CLIEnvironment(args, self.debug, self.verbose)
         cli_env.setup()
 
-        if getattr(args, "no-run", ''):
+        if getattr(args, "no_run", False):
             set_all_environments(self.debug, self.verbose, 'build')
-        elif getattr(args, "no-build", ''):
+        elif getattr(args, "no_build", False):
             set_all_environments(self.debug, self.verbose, 'run')
         else:
             set_all_environments(self.debug, self.verbose, 'both')
@@ -265,6 +269,11 @@ class Manager:
         """
         Do the specified action
         """
+        # if verbosity level is 3, output HW parameters first
+        if self.verbose == '3':
+            self.print_hw_parameters()
+
+        # action
         if action == 'install':
             for name in self.names:
                 logging.info('Installing %s' % name)
@@ -303,6 +312,9 @@ class Manager:
         # collect
         logging.info("Collecting data")
         run_python_module(exp_name=name, file_name='collect')
+
+    def print_hw_parameters(self):
+        pass
 
 
 def main():
