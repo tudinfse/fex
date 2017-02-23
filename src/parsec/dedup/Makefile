@@ -3,17 +3,14 @@ SRC := binheap decoder dedup encoder hashtable queue rabin tree util
 
 VPATH := src
 
-include common.mk
+CCFLAGS += -DMD32_REG_T=int -D_REENTRANT -DL_ENDIAN -DUSE_MMAP -D_XOPEN_SOURCE=600 -U_FORTIFY_SOURCE
 
-CFLAGS += -DMD32_REG_T=int -D_REENTRANT -DL_ENDIAN -DUSE_MMAP -D_XOPEN_SOURCE=600 -U_FORTIFY_SOURCE
-CXXFLAGS += -DMD32_REG_T=int -D_REENTRANT -DL_ENDIAN -DUSE_MMAP -D_XOPEN_SOURCE=600 -U_FORTIFY_SOURCE
-
-INC_DIR += $(COMP_BENCH)/src/parsec/dedup/src/include
-LIB_DIRS += $(BUILD_ROOT)/libs/zlib/$(ACTION)/lib \
-            $(BUILD_ROOT)/libs/ssl/$(ACTION)/lib
+INC_DIR += $(PROJ_ROOT)/src/parsec/dedup/src/include
+LIB_DIRS += $(PROJ_ROOT)/build/libs/zlib/$(BUILD_TYPE)/lib \
+            $(PROJ_ROOT)/build/libs/ssl/$(BUILD_TYPE)/lib
 LIBS += -lssl -lz -lcrypto
 
-include $(ACTION_MAKEFILE)
+include Makefile.$(BUILD_TYPE)
 include ../parsec_common.mk
 
 .PHONY: buildlibs
@@ -25,6 +22,6 @@ all:
 buildlibs: export BENCH_SUITE=libs
 
 buildlibs:
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/$(BENCH_SUITE)/zlib
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/$(BENCH_SUITE)/ssl
+	$(MAKE) BUILD_TYPE=$(BUILD_TYPE) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/zlib
+	$(MAKE) BUILD_TYPE=$(BUILD_TYPE) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/ssl
 

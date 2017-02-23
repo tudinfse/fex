@@ -1,18 +1,17 @@
 # apr-1.5.2, taken from http://mirror.softaculous.com/apache/apr/apr-1.5.2.tar.gz
 NAME := apr
 
-include common.mk
-include $(ACTION_MAKEFILE)
+# undefine variables from recursive calls
+undefine BUILD_PATH
 
-CFLAGS += $(CCOMFLAGS)
-CXXFLAGS += $(CCOMFLAGS)
-export
+# import type-specific configuration
+include Makefile.$(BUILD_TYPE)
+$(eval $(call expand-ccflags))
+
 
 ifdef REBUILD
 all: pre_clean
 endif
-
-# the `> $(CONFIG_SCRIPT_LOG)` redirection is nessesary to shut the f... ehm, to silence the build process
 all:
 	cd src && ./configure --prefix=$(BUILD_PATH) --disable-shared --disable-dso > $(CONFIG_SCRIPT_LOG)
 	sed -i 's/#define APR_HAS_MMAP              1/#define APR_HAS_MMAP              0/g' src/include/apr.h

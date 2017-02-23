@@ -4,8 +4,7 @@ HEADER_DEPS := anl.h user_options.h const.h my_types.h global.h macros.h address
 
 VPATH := src:$(BUILD_PATH)
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(BUILD_TYPE)
 include ../config.mk
 
 M4FLAGS += -I $(BUILD_PATH)

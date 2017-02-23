@@ -1,16 +1,14 @@
 import logging
-
 from pandas import Categorical
 
 from core import prepare
 from core import draw
 
-# === helpers === #
+
 BENCH_NAME = 'parsec_var_input'
-EXP_NAME = '%s_perf' % BENCH_NAME
+EXP_NAME = BENCH_NAME
 BENCHMARK_ORDER = (
     "blackscholes",
-    # "bodytrack",
     "streamcluster",
     "swaptions",
     "canneal",
@@ -75,7 +73,7 @@ def main(t="perf"):
     plot_args = {
         "ylim": (0.8, 10),
         "vline_position": 11.6,
-        "title": "PARSEC",  # uncomment in web version
+        "title": "PARSEC",
         "text_points": OVERFLOWS.get(t, ())
     }
     plot, columns = process_type(t, df, plot_args, BENCHMARK_ORDER)

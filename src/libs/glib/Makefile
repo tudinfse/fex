@@ -1,15 +1,16 @@
 NAME := glib
 
-include common.mk
-include $(ACTION_MAKEFILE)
+# undefine variables from recursive calls
+undefine BUILD_PATH
+
+# import type-specific configuration
+include Makefile.$(BUILD_TYPE)
 
 # zlib is always compiled before glib, so we can rely on files existing
-CFLAGS  += -I$(BUILD_ROOT)/libs/zlib/$(ACTION)/include
-LDFLAGS += -L$(BUILD_ROOT)/libs/zlib/$(ACTION)/lib
+CFLAGS  += -I$(BUILD_ROOT)/libs/zlib/$(BUILD_TYPE)/include
+LDFLAGS += -L$(BUILD_ROOT)/libs/zlib/$(BUILD_TYPE)/lib
 
-CFLAGS += $(CCOMFLAGS)
-CXXFLAGS += $(CCOMFLAGS)
-export
+$(eval $(call expand-ccflags))
 
 # Note: We always compile with thread support enabled because
 # the serial version of glib is broken.
@@ -17,8 +18,6 @@ export
 ifdef REBUILD
 all: pre_clean
 endif
-
-# the `> $(CONFIG_SCRIPT_LOG)` redirection is nessesary to shut the f... ehm, to silence the build process
 all:
 	cd src && ./configure --disable-shared --enable-threads --with-threads=posix --prefix=$(BUILD_PATH) > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src > $(CONFIG_SCRIPT_LOG)

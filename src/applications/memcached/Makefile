@@ -2,26 +2,24 @@
 NAME := memcached
 
 MEMCACHED_SRC := ${BIN_PATH}/memcached/src/
-LIBEVENT_BUILD := $(BUILD_ROOT)/libs/libevent/$(ACTION)
+LIBEVENT_BUILD := $(BUILD_ROOT)/libs/libevent/$(BUILD_TYPE)
 
 CONFIG_OPT := --prefix=$(BUILD_PATH) \
-				--with-libevent==$(LIBEVENT_BUILD) \
+				--with-libevent=$(LIBEVENT_BUILD) \
 				--mandir=/tmp --disable-coverage
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(BUILD_TYPE)
 
-CCOMFLAGS += -std=gnu99 -DHAVE_CONFIG_H -Wall -I/usr/include/x86_64-linux-gnu
-CFLAGS += $(CCOMFLAGS)
-CXXFLAGS += $(CCOMFLAGS)
-export
+CCFLAGS += -std=gnu99 -DHAVE_CONFIG_H -Wall -I/usr/include/x86_64-linux-gnu
+$(eval $(call expand-ccflags))
 
+
+# Targets
 .PHONY: buildlibs
 
 ifdef REBUILD
 all: pre_clean
 endif
-
 all:
 	@${MAKE} buildlibs
 	@${MAKE} buildmemcached
@@ -34,7 +32,7 @@ buildmemcached:
 
 buildlibs: export BENCH_SUITE=libs
 buildlibs:
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/libs/libevent
+	$(MAKE) BUILD_TYPE=$(BUILD_TYPE) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/libs/libevent
 
 pre_clean:
 	$(MAKE) -C $(MEMCACHED_SRC) clean > $(CONFIG_SCRIPT_LOG) || true

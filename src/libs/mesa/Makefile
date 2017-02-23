@@ -1,19 +1,17 @@
 NAME := mesa
 
-include common.mk
-include $(ACTION_MAKEFILE)
+# undefine variables from recursive calls
+undefine BUILD_PATH
 
-CFLAGS += -I$(COMP_BENCH)/src/libs/mesa
+# import type-specific configuration
+include Makefile.$(BUILD_TYPE)
 
-CFLAGS += $(CCOMFLAGS)
-CXXFLAGS += $(CCOMFLAGS)
-export
+CFLAGS += -I$(PROJ_ROOT)/src/libs/mesa
+$(eval $(call expand-ccflags))
 
 ifdef REBUILD
 all: pre_clean
 endif
-
-# the `> $(CONFIG_SCRIPT_LOG)` redirection is nessesary to silence the build process
 all:
 	ln -s /usr/include/X11 X11 || true  # dirty hack to include X11 headers even under SGX (assumes `/usr/include/X11` exists)
 	$(MAKE) -C src clean > $(CONFIG_SCRIPT_LOG)  || true

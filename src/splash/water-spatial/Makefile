@@ -3,8 +3,7 @@ SRC := bndry cnstnt cshift initia interf intraf kineti mdmain poteng predcor sys
 
 VPATH := src:$(BUILD_PATH)
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(BUILD_TYPE)
 include ../config.mk
 
 M4FLAGS += -I $(BUILD_PATH)
@@ -12,7 +11,7 @@ INC_DIR += $(BUILD_PATH) src
 
 all: headers $(BUILD_PATH)/$(NAME)
 all:
-	-cp src/random.in ${COMP_BENCH}
+	-cp src/random.in ${PROJ_ROOT}
 	@${MAKE} headers
 	@${MAKE} $(BUILD_PATH)/$(NAME)
 

@@ -2,10 +2,10 @@
 NAME := apache
 
 APACHE_SRC := ${BIN_PATH}/httpd/src/
-SSL_BUILD := $(BUILD_ROOT)/libs/ssl/$(ACTION)
-APR_BUILD := $(BUILD_ROOT)/libs/apr/$(ACTION)/bin
-APRUTIL_BUILD := $(BUILD_ROOT)/libs/apr-util/$(ACTION)/bin
-PCRE_BUILD := $(BUILD_ROOT)/libs/pcre/$(ACTION)/bin/pcre-config
+SSL_BUILD := $(BUILD_ROOT)/libs/ssl/$(BUILD_TYPE)
+APR_BUILD := $(BUILD_ROOT)/libs/apr/$(BUILD_TYPE)/bin
+APRUTIL_BUILD := $(BUILD_ROOT)/libs/apr-util/$(BUILD_TYPE)/bin
+PCRE_BUILD := $(BUILD_ROOT)/libs/pcre/$(BUILD_TYPE)/bin/pcre-config
 
 CONFIG_OPT := --prefix=$(BUILD_PATH) \
 				--with-apr=$(APR_BUILD) \
@@ -51,20 +51,19 @@ CONFIG_OPT := --prefix=$(BUILD_PATH) \
 					  access_compat auth_basic reqtimeout filter mime log_config env headers setenvif \
 					  version unixd status autoindex dir alias'
 
-include common.mk
-include $(ACTION_MAKEFILE)
+include Makefile.$(BUILD_TYPE)
 
-CFLAGS += $(CCOMFLAGS)
-CXXFLAGS += $(CCOMFLAGS)
+
+$(eval $(call expand-ccflags))
 LIBS += -ldl
 export
 
+# Targets
 .PHONY: buildlibs
 
 ifdef REBUILD
 all: pre_clean
 endif
-
 all:
 	@${MAKE} buildlibs
 	@${MAKE} buildapache
@@ -77,10 +76,10 @@ buildapache:
 
 buildlibs: export BENCH_SUITE=libs
 buildlibs:
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/libs/ssl
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/libs/apr
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/libs/apr-util
-	$(MAKE) ACTION=$(ACTION) -I $(COMP_BENCH)/makefiles -C $(COMP_BENCH)/src/libs/pcre
+	$(MAKE) BUILD_TYPE=$(BUILD_TYPE) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/libs/ssl
+	$(MAKE) BUILD_TYPE=$(BUILD_TYPE) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/libs/apr
+	$(MAKE) BUILD_TYPE=$(BUILD_TYPE) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/libs/apr-util
+	$(MAKE) BUILD_TYPE=$(BUILD_TYPE) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/libs/pcre
 
 pre_clean:
 	$(MAKE) -C $(APACHE_SRC) distclean > $(CONFIG_SCRIPT_LOG) || true

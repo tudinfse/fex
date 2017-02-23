@@ -1,22 +1,42 @@
-# The following variables have to be specified at this point:
-# COMP_BENCH, NAME, ACTION
+###############################
+# Common functionality:
+# - variables and default values
+# - targets
+# - helper functions
+###############################
 
-ifndef ACTION
-$(error ACTION is not specified)
+# check that required variables are specified
+ifndef PROJ_ROOT
+$(error PROJ_ROOT is not specified)
 endif
 
-BUILD_ROOT = $(COMP_BENCH)/build
-BUILD_PATH = $(BUILD_ROOT)/$(BENCH_SUITE)/$(NAME)/$(ACTION)
-ACTION_MAKEFILE = Makefile.$(ACTION)
+ifndef BUILD_TYPE
+$(error BUILD_TYPE is not specified)
+endif
 
-M4 := m4
+ifndef NAME
+$(error NAME is not specified)
+endif
 
-CCOMFLAGS += -O3
+# ======== Main variables ========
+# directories
+ifndef BUILD_ROOT
+BUILD_ROOT = $(PROJ_ROOT)/build
+endif
+
+ifndef BUILD_PATH
+BUILD_PATH = $(BUILD_ROOT)/$(BENCH_SUITE)/$(NAME)/$(BUILD_TYPE)
+endif
+
+TYPE_MAKEFILE = Makefile.$(BUILD_TYPE)
+
+# build flags
+CCFLAGS += -O3
 
 ifdef DEBUG
-    CCOMFLAGS += -ggdb
+    CCFLAGS += -ggdb
 else
-    CCOMFLAGS += -DNODPRINTF -DNDEBUG
+    CCFLAGS += -DNODPRINTF -DNDEBUG
 endif
 
 ifdef VERBOSE
@@ -26,12 +46,15 @@ else
     MAKE += -s
 endif
 
+# programs
+M4 := m4
+
 # ======== LIBS ========
 # sources to be linked together and processed by custom passes (makes sense only for Clang/LLVM)
 LLS = $(addprefix $(BUILD_PATH)/, $(addsuffix .$(OBJ_EXT), $(SRC)))
 
-# Directories
-INCLUDE = $(addprefix -I,$(INC_DIR))
+# included directories
+INCLUDE_HEADER_DIRS = $(addprefix -I,$(INC_DIR))
 INCLUDE_LIB_DIRS = $(addprefix -L,$(LIB_DIRS))
 
 
@@ -43,9 +66,7 @@ ifeq ($(shell uname -m),x86_64)
 ARCH = -D__x86_64__
 endif
 
-CCOMFLAGS += $(OS)
-CCOMFLAGS += $(ARCH)
-
+CCFLAGS += $(OS) $(ARCH)
 
 # ======== Common build targets ========
 .PHONY: all clean make_dirs
@@ -58,4 +79,38 @@ make_dirs:
 
 clean:
 	rm -rf $(BUILD_PATH)
+
+# ======== File-type-specific build targets ========
+# headers
+%.h: %.H
+	$(M4) $(M4FLAGS) $(MACROS) $^ > $(BUILD_PATH)/$@
+
+# object files
+$(BUILD_PATH)/%.$(OBJ_EXT): %.c
+	$(CC) $(CCFLAGS) $(CFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
+
+$(BUILD_PATH)/%.$(OBJ_EXT): %.C
+	$(CC) $(CCFLAGS) $(CFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
+
+$(BUILD_PATH)/%.$(OBJ_EXT): %.cpp
+	$(CXX) $(CCFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
+
+$(BUILD_PATH)/%.$(OBJ_EXT): %.cxx
+	$(CXX) $(CCFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
+
+$(BUILD_PATH)/%.$(OBJ_EXT): %.cc
+	$(CXX) $(CCFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
+
+# executable
+$(BUILD_PATH)/$(NAME): $(LLS)
+	$(CXX) $(CCFLAGS) $(CXXFLAGS) -o $@ $^ $(INCLUDE_HEADER_DIRS) $(INCLUDE_LIB_DIRS) $(LIBS)
+
+
+# ======== Helper functions ========
+# $(eval $(call expand-ccflags))
+define expand-ccflags
+	CFLAGS += $(CCFLAGS)
+	CXXFLAGS += $(CCFLAGS)
+	export
+endef
 

@@ -57,11 +57,14 @@ tmp/
 results/
 */input/*
 
+# tests are temporary disabled
+tests/
+
 # shared directory for Docker
 data*/
 data/
 
-!scripts/mng
+scripts/mng
 
 # ignore statistics - it is changed each time a plot is generated
 *.stats.csv
