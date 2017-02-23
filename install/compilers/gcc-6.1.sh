@@ -36,7 +36,6 @@ make install
 cd -
 
 install_dependency "BinUtils" "${PROJ_ROOT}/install/dependencies/binutils.sh"
-install_dependency "GDB" "${PROJ_ROOT}/install/dependencies/gdb.sh"
 
 set +e
 

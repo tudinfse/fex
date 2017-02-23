@@ -17,7 +17,7 @@ BENCHMARK_ORDER = (
 
 OVERFLOWS = {
     "perf": (
-        (6.27, 8.25, "23.22",),
+        (6.27, 4.25, "5.60",),
     ),
 }
 
@@ -28,7 +28,7 @@ def main(t="perf"):
     # common processing
     df = prepare.process_results(t)
     plot_args = {
-        "ylim": (0.85, 10),
+        "ylim": (0.85, 5),
         "vline_position": 6.6,
         "title": "Phoenix",
         "text_points": OVERFLOWS.get(t, ())

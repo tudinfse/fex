@@ -17,12 +17,8 @@ BENCHMARK_ORDER = (
 
 def reorder_compilers(df):
     df["compilertype"] = Categorical(df["compilertype"], [
-        "gcc-mpx",
-        "gcc-mpx_no_narrow_bounds",
-        "gcc-mpx_only_write",
-        "icc-mpx",
-        "icc-mpx_no_narrow_bounds",
-        "icc-mpx_only_write",
+        "gcc-native",
+        "gcc-asan",
     ])
     df.sort_values(["compilertype"], inplace=True)
 
@@ -36,7 +32,6 @@ def main(t="perf"):
             "ylim"  : (0.9, 6),
             "logy"  : True,
             "ncol"  : 1,
-            "build_names": "mpx_feature",
             "figsize"    : (6, 3),
             "legend_loc" : (0.03, 0.6),
         }

@@ -4,8 +4,6 @@ import re
 import os
 import config
 
-data = os.environ['DATA_PATH'] + '/results'
-
 
 def parse_time(s):
     """
@@ -49,7 +47,14 @@ def get_int_from_string(s):
     return 0
 
 
-def collect(result_file, full_output_file, user_parameters={}, sgx_experiment=False):
+def get_run_argument(name, line):
+    return re.search(r'%s: (\S+);' % name, line).group(1)
+
+
+def collect(result_file, full_output_file, user_parameters={}):
+    """
+    Main collection function
+    """
     conf = config.Config()
     parameters = conf.parsed_data[os.environ['STATS_COLLECT']]
     parameters.update(user_parameters)
@@ -87,8 +92,3 @@ def collect(result_file, full_output_file, user_parameters={}, sgx_experiment=Fa
 
             # write results form a last measurement
             writer.writerow(values)
-
-
-def get_run_argument(name, line):
-    return re.search(r'%s: (\S+);' % name, line).group(1)
-

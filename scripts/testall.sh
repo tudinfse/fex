@@ -37,7 +37,7 @@ else
 
     printf "\n  ==  COMPILERS  ==\n"
 
-    printf "Y\nY\n" | ./fex.py install -n gcc-6.1
+    printf "Y\n" | ./fex.py install -n gcc-6.1
     printf "Y\n" | ./fex.py install -n llvm-3.8.0
 
     printf "\n  ==  MICRO  ==\n"

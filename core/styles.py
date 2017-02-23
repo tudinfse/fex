@@ -50,7 +50,7 @@ class BasicStyle:
 
     def axes(self, ax):
         # axes
-        ax.set_axis_bgcolor("white")  # background
+        ax.set_facecolor("white")  # background
         ax.yaxis.label.set_color('black')
         ax.xaxis.label.set_color('black')
 
