@@ -28,7 +28,10 @@ def build_benchmark(b, t, makefile, build_path):
         threads = env["BUILD_THREADS"]
 
         try:
-            c("make -j{0} BUILD_TYPE={1} -I {2} -C {3} {4}".format(threads, t, common_makefiles, makefile, quiet))
+            build_cmd = "make -j{0} BUILD_TYPE={1} -I {2} -C {3} {4}".format(threads, t, common_makefiles, makefile, quiet)
+            if VERBOSE:
+                logging.debug("Build command: " + build_cmd)
+            c(build_cmd)
         except CalledProcessError as e:
             logging.error("Could not build the benchmark (exit code = %d). See the error message below." % e.returncode)
             logging.debug(e.output)

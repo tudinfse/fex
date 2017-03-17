@@ -5,6 +5,4 @@ from core import collect
 
 
 def main():
-    full_output_file = collect.data + "/micro/micro.log"
-    results_file = collect.data + "/micro/raw.csv"
-    collect.collect(results_file, full_output_file)
+    collect.collect("micro")

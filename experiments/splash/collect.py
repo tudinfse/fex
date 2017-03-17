@@ -5,6 +5,4 @@ from core import collect
 
 
 def main():
-    full_output_file = collect.data + "/splash/splash.log"
-    results_file = collect.data + "/splash/raw.csv"
-    collect.collect(results_file, full_output_file)
+    collect.collect("splash")
