@@ -11,7 +11,6 @@ from subprocess import check_call, STDOUT, Popen, CalledProcessError
 import coloredlogs
 import cpuinfo
 import platform
-import pprint
 
 import config
 from core.environment import Environment, set_all_environments

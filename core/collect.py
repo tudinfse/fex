@@ -4,6 +4,8 @@ import re
 import os
 import config
 
+data = os.environ['DATA_PATH'] + '/results'
+
 
 def parse_time(s):
     """
@@ -51,10 +53,17 @@ def get_run_argument(name, line):
     return re.search(r'%s: (\S+);' % name, line).group(1)
 
 
-def collect(result_file, full_output_file, user_parameters={}):
+def collect(exp_name, result_file="", full_output_file="", user_parameters={}):
     """
     Main collection function
     """
+    # set default directories, if not given
+    if not result_file and not full_output_file:
+        data = os.environ['DATA_PATH'] + '/results'
+        result_file = "%s/%s/%s.log" % (data, exp_name, exp_name)
+        full_output_file = "%s/%s/raw.csv" % (data, exp_name)
+
+    # get current measurement parameters
     conf = config.Config()
     parameters = conf.parsed_data[os.environ['STATS_COLLECT']]
     parameters.update(user_parameters)
