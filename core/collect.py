@@ -60,8 +60,8 @@ def collect(exp_name, result_file="", full_output_file="", user_parameters={}):
     # set default directories, if not given
     if not result_file and not full_output_file:
         data = os.environ['DATA_PATH'] + '/results'
-        result_file = "%s/%s/%s.log" % (data, exp_name, exp_name)
-        full_output_file = "%s/%s/raw.csv" % (data, exp_name)
+        full_output_file = "%s/%s/%s.log" % (data, exp_name, exp_name)
+        result_file = "%s/%s/raw.csv" % (data, exp_name)
 
     # get current measurement parameters
     conf = config.Config()
