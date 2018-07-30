@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function
-
 from core.common_functions import *
 from core.run import Runner
 
@@ -15,23 +13,23 @@ class PhoenixPerf(Runner):
     bench_suite = True
 
     benchmarks = {
-        "histogram": "{input_dir}/input/large.bmp",
-        "kmeans": " ",
-        "linear_regression": "{input_dir}/input/key_file_500MB.txt",
-        "matrix_multiply": "1500 1",
-        "pca": " -r 3000 -c 3000",
-        "string_match": "{input_dir}/input/key_file_500MB.txt",
-        "word_count": "{input_dir}/input/word_100MB.txt",
+        "histogram": "{input_dir}/input/large.bmp {thread}",
+        "kmeans": " -t {thread}",
+        "linear_regression": "{input_dir}/input/key_file_500MB.txt {thread}",
+        "matrix_multiply": "1500 1 {thread}",
+        "pca": " -r 3000 -c 3000 -t {thread}",
+        "string_match": "{input_dir}/input/key_file_500MB.txt {thread}",
+        "word_count": "{input_dir}/input/word_100MB.txt 10 {thread}",
     }
 
     test_benchmarks = {
-        "histogram": "{input_dir}/input/small.bmp",
-        "kmeans": "-d 2 -c 10 -p 100 -s 100",
-        "linear_regression": "{input_dir}/input/key_file_50MB.txt",
-        "matrix_multiply": "15 1",
-        "pca": " -r 30 -c 30",
-        "string_match": "{input_dir}/input/key_file_50MB.txt",
-        "word_count": "{input_dir}/input/word_10MB.txt",
+        "histogram": "{input_dir}/input/small.bmp  {thread}",
+        "kmeans": "-d 2 -c 10 -p 100 -s 100 -t {thread}",
+        "linear_regression": "{input_dir}/input/key_file_50MB.txt {thread}",
+        "matrix_multiply": "15 1 {thread}",
+        "pca": " -r 30 -c 30 -t {thread}",
+        "string_match": "{input_dir}/input/key_file_50MB.txt {thread}",
+        "word_count": "{input_dir}/input/word_10MB.txt 10 {thread}",
     }
 
     def experiment_setup(self):
@@ -39,7 +37,7 @@ class PhoenixPerf(Runner):
         self.set_experiment_parameters()
         self.set_logging()
 
-        self.dirs['dry_run_log'] = self.dirs['results'] + "/phoenix_dry_run.log"
+        self.dirs['dry_run_log'] = self.dirs['results'] + "/dry_run.log"
         self.remove_old_results([self.dirs["log_file"], self.dirs["dry_run_log"]])
         self.remove_old_build()
 
@@ -55,13 +53,17 @@ class PhoenixPerf(Runner):
             build_path=build_path
         )
 
-        args = args.format(input_dir=self.dirs["input"] + '/' + benchmark)
+    def per_thread_action(self, type_, benchmark, args, thread_num):
+        self.current_args = args.format(thread=thread_num, input_dir=self.dirs["input"] + '/' + benchmark)
 
         # Dry run
         if not env.get("EXP_NO_RUN"):
             with open(self.dirs['dry_run_log'], "a") as f:
-                f.write("--- Dry run for {benchmark} (input '{args}') ---\n".format(**locals()))
-                out = my_check_output("{} {}".format(self.current_exe, args))
+                f.write("--- Dry run for {benchmark} (input '{args}') ---\n".format(
+                    benchmark=benchmark,
+                    args=self.current_args,
+                ))
+                out = my_check_output("{} {}".format(self.current_exe, self.current_args))
                 f.write(out)
 
 

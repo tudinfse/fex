@@ -1,5 +1,4 @@
 import logging
-
 from core import prepare
 from ..parsec.plot import process_type
 
@@ -17,7 +16,12 @@ BENCHMARK_ORDER = (
 
 OVERFLOWS = {
     "perf": (
-        (6.27, 4.25, "5.60",),
+        (-0.45, 3, "5.3",),
+        (0.55, 3, "7.9",),
+        (1.55, 3, "5.9",),
+        (2.55, 3.3, "4.0",),
+        (3.55, 3.3, "9.5",),
+        (6.61, 3.3, "4.5",),
     ),
 }
 
@@ -28,10 +32,11 @@ def main(t="perf"):
     # common processing
     df = prepare.process_results(t)
     plot_args = {
-        "ylim": (0.85, 5),
+        "ylim": (0.85, 3.5),
         "vline_position": 6.6,
         "title": "Phoenix",
-        "text_points": OVERFLOWS.get(t, ())
+        "figsize" : (12, 2.5),
+        "text_points": OVERFLOWS.get(t, ()),
     }
     plot, columns = process_type(t, df, plot_args, BENCHMARK_ORDER)
 
