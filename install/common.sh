@@ -38,7 +38,7 @@ function download_and_untar {
     local unpack_path=$2 ; required_str ${unpack_path}
     local strip=${3:-0} ;
 
-    if [ ! -z "$(ls -A ${unpack_path})" ]; then
+    if [ -d ${unpack_path} ] && [ ! -z "$(ls -A ${unpack_path})" ]; then
         echo "The directory ${unpack_path} already exist."
         while true; do
             read -p "Do you wish to reinstall ${unpack_path} [Yn]?" yn
@@ -67,7 +67,7 @@ function clone_git_repo {
     local checkout=$3
     local applypatch=$4
 
-    if [ ! -z "$(ls -A ${path})" ]; then
+    if [ -d ${path} ] && [ ! -z "$(ls -A ${path})" ]; then
         echo "The directory ${path} already exist."
         while true; do
             read -p "Do you wish to reinstall ${path} [Yn]?" yn
