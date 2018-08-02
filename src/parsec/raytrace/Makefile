@@ -9,15 +9,15 @@ VPATH := src
 
 CCFLAGS += -pthread -DUSE_PBOS=1
 
-MESA_BUILD_PATH:=$(PROJ_ROOT)/build/libs/mesa/$(BUILD_TYPE)
-LIB_DIRS += $(MESA_BUILD_PATH)/lib
+MESA_BUILD_DIR:=$(PROJ_ROOT)/build/libs/mesa/$(BUILD_TYPE)
+LIB_DIRS += $(MESA_BUILD_DIR)/lib
 LIBS += -lglut -lGL -lGLU -lXmu -lXext -lXau -lX11 -ldl
 
 INC_DIR += $(PROJ_ROOT)/src/parsec/raytrace/src \
 	       $(PROJ_ROOT)/src/parsec/raytrace/src/RTTL/ $(PROJ_ROOT)/src/parsec/raytrace/src/RTTL/common/ \
 	       $(PROJ_ROOT)/src/parsec/raytrace/src/RTTL/BVH/ $(PROJ_ROOT)/src/parsec/raytrace/src/SG \
 	       $(PROJ_ROOT)/src/parsec/raytrace/src/LRT/include $(PROJ_ROOT)/src/parsec/raytrace/src/LRT/
-INC_DIR += $(MESA_BUILD_PATH)/include
+INC_DIR += $(MESA_BUILD_DIR)/include
 
 include Makefile.$(BUILD_TYPE)
 include ../parsec_common.mk
@@ -28,7 +28,7 @@ include ../parsec_common.mk
 all:
 	@${MAKE} buildlibs
 	@${MAKE} prebuild
-	@${MAKE} $(BUILD_PATH)/$(NAME)
+	@${MAKE} $(BUILD_DIR)/$(NAME)
 
 buildlibs: export BENCH_SUITE=libs
 buildlibs:

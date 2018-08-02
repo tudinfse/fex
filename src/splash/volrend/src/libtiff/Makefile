@@ -137,7 +137,7 @@ ALL=	libtiff.a
 all:	 ${ALL}
 
 ${ALL}:	${OBJS}
-	${AR} rc $(BUILD_PATH)/libtiff.a $?
+	${AR} rc $(BUILD_DIR)/libtiff.a $?
 
 ${OBJS}: tiff.h tiffcompat.h tiffioP.h
 tif_compress.o: tif_compress.c Makefile

@@ -10,4 +10,4 @@ CCFLAGS := $(filter-out -O3,$(CCFLAGS))
 CCFLAGS := $(filter-out -O2,$(CCFLAGS))
 CCFLAGS += -O1
 
-all: $(BUILD_PATH)/$(NAME)
+all: $(BUILD_DIR)/$(NAME)

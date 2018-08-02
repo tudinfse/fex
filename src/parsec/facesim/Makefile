@@ -31,7 +31,7 @@ export
 # enforce build order
 all:
 	@${MAKE} prebuild
-	@${MAKE} $(BUILD_PATH)/$(NAME)
+	@${MAKE} $(BUILD_DIR)/$(NAME)
 
 prebuild:
 	$(MAKE) -C src/TaskQ/lib

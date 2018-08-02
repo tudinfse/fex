@@ -26,7 +26,7 @@ export  # make sure that makefiles in the subdirectories have the same environme
 # enforce build order
 all:
 	@${MAKE} prebuild
-	@${MAKE} $(BUILD_PATH)/$(NAME)
+	@${MAKE} $(BUILD_DIR)/$(NAME)
 
 .PHONY: prebuild
 prebuild:

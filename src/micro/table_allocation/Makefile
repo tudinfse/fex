@@ -10,4 +10,4 @@ CCFLAGS += -O0  # we measure OS influence and therefore, the optimization level 
 # CCFLAGS += -DFREE=1
 
 
-all: $(BUILD_PATH)/$(NAME)
+all: $(BUILD_DIR)/$(NAME)

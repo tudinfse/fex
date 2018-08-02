@@ -16,5 +16,5 @@ ifneq (,$(findstring icc,$(CC)))
     CCFLAGS += -wd144,556,167
 endif
 
-all: $(BUILD_PATH)/$(NAME)
+all: $(BUILD_DIR)/$(NAME)
 

@@ -12,5 +12,5 @@ LIBS += -lm
 include Makefile.$(BUILD_TYPE)
 include ../parsec_common.mk
 
-all: $(BUILD_PATH)/$(NAME)
+all: $(BUILD_DIR)/$(NAME)
 
