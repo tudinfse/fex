@@ -56,7 +56,7 @@ make -j8
 make -j8 install
 
 # make the LLVM installation directory discoverable
-ln -sf ${BUILD_DIR}/bin/llvm-config /usr/bin/${NAME}-${VERSION}-config-5.0
+ln -sf ${BUILD_DIR}/bin/llvm-config /usr/bin/${NAME}-${VERSION}-config
 
 install_dependency "Gold Linker" "${PROJ_ROOT}/install/dependencies/gold-linker.sh"
 
