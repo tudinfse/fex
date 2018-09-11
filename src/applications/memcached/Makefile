@@ -4,7 +4,7 @@ NAME := memcached
 MEMCACHED_SRC := ${BIN_PATH}/memcached/src/
 LIBEVENT_BUILD := $(BUILD_ROOT)/libs/libevent/$(BUILD_TYPE)
 
-CONFIG_OPT := --prefix=$(BUILD_DIR) \
+CONFIG_OPT := --prefix=$(BUILD_PATH) \
 				--with-libevent=$(LIBEVENT_BUILD) \
 				--mandir=/tmp --disable-coverage
 

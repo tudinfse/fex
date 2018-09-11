@@ -9,4 +9,4 @@ include Makefile.$(BUILD_TYPE)
 include ../parsec_common.mk
 
 
-all: $(BUILD_DIR)/$(NAME)
+all: $(BUILD_PATH)/$(NAME)

@@ -21,13 +21,18 @@ CXXFLAGS += -fexceptions
 include Makefile.$(BUILD_TYPE)
 include ../parsec_common.mk
 
-export  # make sure that makefiles in the subdirectories have the same environment
-
 # enforce build order
 all:
 	@${MAKE} prebuild
-	@${MAKE} $(BUILD_DIR)/$(NAME)
+	@${MAKE} $(BUILD_PATH)/$(NAME)
 
 .PHONY: prebuild
+prebuild: export CC:=$(CC)
+prebuild: export CXX:=$(CXX)
+prebuild: export INC_DIR:=$(INC_DIR)
+prebuild: export CFLAGS:=$(CFLAGS) $(CCFLAGS)
+prebuild: export CXXFLAGS:=$(CXXFLAGS) $(CCFLAGS)
+prebuild: export LIB_DIRS:=$(LIB_DIRS)
+prebuild: export LIBS:=$(LIBS)
 prebuild:
 	$(foreach dir,$(SUB_DIRS),$(MAKE) -C src/$(dir) &&) printf ""

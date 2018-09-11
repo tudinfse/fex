@@ -17,10 +17,9 @@ include ../parsec_common.mk
 
 all:
 	@${MAKE} buildlibs
-	@${MAKE} $(BUILD_DIR)/$(NAME)
+	@${MAKE} $(BUILD_PATH)/$(NAME)
 
 buildlibs: export BENCH_SUITE=libs
-
 buildlibs:
 	$(MAKE) BUILD_TYPE=$(BUILD_TYPE) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/zlib
 	$(MAKE) BUILD_TYPE=$(BUILD_TYPE) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/ssl

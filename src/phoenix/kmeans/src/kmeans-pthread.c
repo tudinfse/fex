@@ -55,6 +55,7 @@ int num_means; // number of clusters
 int grid_size; // size of each dimension of vector space
 int modified;
 int num_pts = 0;
+char *arg_threads;
 
 int **points;
 int **means;
@@ -96,8 +97,9 @@ void parse_args(int argc, char **argv)
    num_means = DEF_NUM_MEANS;
    dim = DEF_DIM;
    grid_size = DEF_GRID_SIZE;
+   arg_threads = "1";
 
-   while ((c = getopt(argc, argv, "d:c:p:s:")) != EOF)
+   while ((c = getopt(argc, argv, "d:c:p:s:t:")) != EOF)
    {
       switch (c) {
          case 'd':
@@ -111,6 +113,9 @@ void parse_args(int argc, char **argv)
             break;
          case 's':
             grid_size = atoi(optarg);
+            break;
+         case 't':
+            arg_threads = optarg;
             break;
          case '?':
             printf("Usage: %s -d <vector dimension> -c <num clusters> -p <num points> -s <grid size>\n", argv[0]);
@@ -283,7 +288,7 @@ int main(int argc, char **argv)
 
    pthread_attr_init(&attr);
    pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
-   CHECK_ERROR((num_procs = sysconf(_SC_NPROCESSORS_ONLN)) <= 0);
+   CHECK_ERROR((num_procs = atoi(arg_threads)) <= 0);
 
    CHECK_ERROR( (pid = (pthread_t *)malloc(sizeof(pthread_t) * num_procs)) == NULL);
 

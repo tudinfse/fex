@@ -7,7 +7,7 @@ APR_BUILD := $(BUILD_ROOT)/libs/apr/$(BUILD_TYPE)/bin
 APRUTIL_BUILD := $(BUILD_ROOT)/libs/apr-util/$(BUILD_TYPE)/bin
 PCRE_BUILD := $(BUILD_ROOT)/libs/pcre/$(BUILD_TYPE)/bin/pcre-config
 
-CONFIG_OPT := --prefix=$(BUILD_DIR) \
+CONFIG_OPT := --prefix=$(BUILD_PATH) \
 				--with-apr=$(APR_BUILD) \
 				--with-apr-util=$(APRUTIL_BUILD) \
 				--with-pcre=$(PCRE_BUILD) \

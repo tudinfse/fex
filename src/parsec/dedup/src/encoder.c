@@ -26,7 +26,7 @@
 #define INT64(x) ((unsigned long long)(x))
 #define MSB64 INT64(0x8000000000000000ULL)
 
-#define INITIAL_SIZE 4096
+#define INITIAL_SIZE 1096
 
 extern config * conf;
 
@@ -697,8 +697,8 @@ DataProcess(void * targs){
 
   u_char * src = (u_char *)malloc(MAXBUF*2);
   u_char * left = (u_char *)malloc(MAXBUF);
-  u_char * new = (u_char *) malloc(MAXBUF);
-  if(src == NULL || left == NULL || new == NULL) {
+  u_char * new_ = (u_char *) malloc(MAXBUF);
+  if(src == NULL || left == NULL || new_ == NULL) {
     EXIT_TRACE("Memory allocation failed.\n");
   }
   int srclen, left_bytes = 0;
@@ -721,7 +721,7 @@ DataProcess(void * targs){
 
 
   //read from the file
-  while ((srclen = read(fd, new, MAXBUF)) >= 0) {
+  while ((srclen = read(fd, new_, MAXBUF)) >= 0) {
     if (srclen) more = 1;
     else {
       if (!more) break;
@@ -732,11 +732,11 @@ DataProcess(void * targs){
 
     if (left_bytes > 0){
       memcpy(src, left, left_bytes* sizeof(u_char));
-      memcpy(src+left_bytes, new, srclen *sizeof(u_char));
+      memcpy(src+left_bytes, new_, srclen *sizeof(u_char));
       srclen+= left_bytes;
       left_bytes = 0;
     } else {
-      memcpy(src, new, srclen * sizeof(u_char));
+      memcpy(src, new_, srclen * sizeof(u_char));
     }
     tmp = 0;
     p = src;
@@ -776,12 +776,12 @@ DataProcess(void * targs){
       tmpbuf[tmp_count]->start[p-anchor] = 0;
       tmp_count ++;
 
-	  fprintf(stderr, "%d : try to enqueue\n", getpid());
+	  //fprintf(stderr, "%d : try to enqueue\n", getpid());
 
       //send a group of items into the next queue in round-robin fashion
       if (tmp_count >= ANCHOR_DATA_PER_INSERT) {
         enqueue(&anchor_que[qid], &tmp_count, (void **)tmpbuf);
-	  	fprintf(stderr, "%d : after enqueue 1\n", getpid());
+	  	//fprintf(stderr, "%d : after enqueue 1\n", getpid());
         qid = (qid+1) % args->nqueues;
       }
 

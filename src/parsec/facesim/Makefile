@@ -24,15 +24,20 @@ ifeq ($(CC),icc)
     CFLAGS += -D__thread=___thread -Kc++
 endif
 
-export
-
 .PHONY: prebuild
 
 # enforce build order
 all:
 	@${MAKE} prebuild
-	@${MAKE} $(BUILD_DIR)/$(NAME)
+	@${MAKE} $(BUILD_PATH)/$(NAME)
 
+prebuild: export CC:=$(CC)
+prebuild: export CXX:=$(CXX)
+prebuild: export INC_DIR:=$(INC_DIR)
+prebuild: export CFLAGS:=$(CFLAGS) $(CCFLAGS)
+prebuild: export CXXFLAGS:=$(CXXFLAGS) $(CCFLAGS)
+prebuild: export LIB_DIRS:=$(LIB_DIRS)
+prebuild: export LIBS:=$(LIBS)
 prebuild:
 	$(MAKE) -C src/TaskQ/lib
-	$(MAKE) -C src/Public_Library
+	$(MAKE) -C src/Public_Library CONFIG_SCRIPT_LOG:=$(CONFIG_SCRIPT_LOG)

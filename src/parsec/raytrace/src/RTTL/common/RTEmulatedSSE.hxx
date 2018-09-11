@@ -185,7 +185,7 @@ _INLINE static sse_f _mm_add_ss(sse_f a, sse_f b) {
 	result.f[0] = a.f[0] + b.f[0];
     //#pragma unroll(3)
     for (int i = 1; i < VECTOR_SIZE; i++)
-        result.f[i] = a.f[i]; 
+        result.f[i] = a.f[i];
 
 	return result;
 }
@@ -434,7 +434,7 @@ _INLINE static sse_i _mm_load_si128(sse_i *p) {
 _INLINE static void _mm_maskmoveu_si128(sse_i d, sse_i n, char *p) {
 	int i;
 	for(i=0;i<16;i++) {
-		if(n.__sse_i.b[i] & 0x80) 
+		if(n.__sse_i.b[i] & 0x80)
 			p[i] = d.__sse_i.b[i];
 	}
 
@@ -528,7 +528,7 @@ _INLINE static float _mminternal_approx(float x) {
 
 _INLINE static sse_f _mm_or_ps(sse_f a, sse_f b) {
     sse_f result;
-  
+
     //#pragma unroll(4)
     for (int i = 0; i < VECTOR_SIZE; i++)
         _MM_INT(result,i) = _MM_INT(a,i) | _MM_INT(b,i);
@@ -538,11 +538,11 @@ _INLINE static sse_f _mm_or_ps(sse_f a, sse_f b) {
 
 _INLINE static sse_i _mm_or_si128(sse_i a, sse_i b) {
     sse_i result;
-  
+
     //#pragma unroll(4)
     for (int i = 0; i < VECTOR_SIZE; i++)
         result.__sse_i.i[i] = a.__sse_i.i[i] | b.__sse_i.i[i];
-  
+
     return result;
 }
 
@@ -551,7 +551,7 @@ _INLINE static sse_i _mm_or_si128(sse_i a, sse_i b) {
 
 _INLINE static sse_f _mm_rcp_ps(sse_f a) {
     sse_f result;
-  
+
     //#pragma unroll(4)
     for (int i = 0; i < VECTOR_SIZE; i++)
         _MM_FP(result,i) = _mminternal_approx(_MM_ONE / _MM_FP(a,i));
@@ -709,7 +709,7 @@ _INLINE static sse_f _mm_shuffle_ps(sse_f a, sse_f b, unsigned int imm8) {
     //#pragma unroll(4)
     for (int i = 0; i < VECTOR_SIZE; i++)
         result.f[i] = b.f[ ((imm8 >> 2*i) & 0x3) ];
-	
+
     return result;
 }
 
@@ -824,11 +824,11 @@ _INLINE static sse_i64 _mm_packs_pi32(sse_i64 a, sse_i64 b) {
     //FIXME signed ? how to deal with that????
     result.__sse_i64.wd[0] = a.__sse_i64.dw[0];
     result.__sse_i64.wd[1] = a.__sse_i64.dw[1];
-  
+
     result.__sse_i64.wd[2] = b.__sse_i64.dw[0];
     result.__sse_i64.wd[3] = b.__sse_i64.dw[1];
 
-    return result;  
+    return result;
 }
 
 _INLINE static sse_i64 _mm_setzero_si64() {
@@ -899,6 +899,7 @@ _INLINE static sse_i _mm_setr_epi64(sse_i64 a, sse_i64 b) {
     return result;
 }
 
+#ifndef NO_BUILDIN_CSR
 _INLINE static unsigned int _mm_getcsr() {
     //FIXME
     return 0;
@@ -908,6 +909,7 @@ _INLINE static void _mm_setcsr(unsigned int v) {
     //FIXME
     return;
 }
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 

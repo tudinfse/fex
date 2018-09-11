@@ -10,4 +10,4 @@ VPATH := src
 
 include Makefile.$(BUILD_TYPE)
 
-all: $(BUILD_DIR)/$(NAME)
+all: $(BUILD_PATH)/$(NAME)

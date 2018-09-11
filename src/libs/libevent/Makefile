@@ -1,7 +1,7 @@
 NAME := libevent
 
 # undefine variables from recursive calls
-undefine BUILD_DIR
+undefine BUILD_PATH
 
 # import type-specific configuration
 include Makefile.$(BUILD_TYPE)
@@ -12,7 +12,7 @@ all: pre_clean
 endif
 all:
 	cd src && ./autogen.sh > $(CONFIG_SCRIPT_LOG) || true
-	cd src && ./configure --disable-shared --prefix=$(BUILD_DIR) > $(CONFIG_SCRIPT_LOG)
+	cd src && ./configure --disable-shared --prefix=$(BUILD_PATH) > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src install > $(CONFIG_SCRIPT_LOG)
 

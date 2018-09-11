@@ -107,7 +107,7 @@ typedef int64_t  int64;
 #define O_LARGEFILE  0100000
 #endif
 
-#define EXT       ".ddp"           /* extension */ 
+#define EXT       ".ddp"           /* extension */
 #define EXT_LEN   (sizeof(EXT)-1)  /* extention length */
 #define MAX_BSIZE (64*1024)        /* maximum block size */
 
@@ -182,8 +182,10 @@ struct write_list {
 #define PORT 12340
 
 
-#define MAXBUF (16*1024*1024)     /* 128 MB for buffers */
+#define MAXBUF (4*1024*1024)     /* 128 MB for buffers */
 //LTP: what? 600MB, too large. Now we change to 16M
+// ALEX: 16M fails on SCONE (for whatever reason); replaced w/ 4M
+
 #define ANCHOR_JUMP (2*1024*1024) //best for all 2*1024*1024
 
 #define MAX_PER_FETCH 10000
@@ -213,7 +215,7 @@ typedef struct {
 
 #define TAG_OCCUPY 0
 #define TAG_DATAREADY 1
-#define TAG_WRITTEN 2 
+#define TAG_WRITTEN 2
 
 struct pContent{
   u_long len;
