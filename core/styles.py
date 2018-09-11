@@ -160,7 +160,8 @@ class BasicStyle:
 
 class BarplotStyle(BasicStyle):
     bar_edge_color = "black"
-    colors = ['#a6cee3', '#1f78b4', '#33a02c', '#b2df8a',  '#E8F7DA', '#e31a1c', '#fdbf6f']
+    colors = ['#1f78b4', '#a6cee3', '#33a02c', '#b2df8a',  '#E8F7DA', '#e31a1c', '#fdbf6f']
+    color_single = '#1f78b4'
     hatches = ("//////", "", "", r"\\\\\\", "//////",)
 
     def __init__(self, legend_ncol=5, legend_loc=None, **kwargs):
@@ -172,7 +173,7 @@ class BarplotStyle(BasicStyle):
 
     def ticks(self, ax):
         super(BarplotStyle, self).ticks(ax)
-        ax.set_xticklabels(ax.xaxis.get_majorticklabels(), rotation=0)
+        ax.set_xticklabels(ax.xaxis.get_majorticklabels(), rotation=30)
 
     def legend(self, ax):
         l = ax.legend(
@@ -185,9 +186,10 @@ class BarplotStyle(BasicStyle):
             borderpad=0.2,
             handlelength=0.7,
             fontsize=10,
-
         )
         l.get_frame().set_facecolor('#ffffff')
+        if self.legend_ncol == 1:
+            l.set_visible(False)
 
 
 class BarplotMultithreadedStyle(BarplotStyle):
@@ -247,17 +249,18 @@ class LinePlotStyle(BasicStyle):
     colors = ['#969696', '#a6cee3', '#1f78b4', '#33a02c', '#b2df8a',  '#E8F7DA', '#e31a1c', '#fdbf6f']
 
     def legend(self, ax, lines=(), labels=(), legend_loc="best"):
-        ax.legend(
+        l = ax.legend(
             lines,
             labels,
             title=None,
             loc=legend_loc,
-            frameon=False,
+            frameon=True,
             ncol=1,
             labelspacing=0.5,
             columnspacing=1,
-            borderpad=1,
+            borderpad=0.5,
             handlelength=2,
             fontsize=12,
         )
+        l.get_frame().set_facecolor('#ffffff')
         return ax

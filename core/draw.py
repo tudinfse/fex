@@ -162,13 +162,15 @@ class BarplotOverhead(FexPlot):
 
         logging.info("Building plot")
 
-        style = self.StyleClass(legend_ncol=ncol, legend_loc=legend_loc)
+        style = self.StyleClass(legend_ncol=ncol, legend_loc=legend_loc, need_hatching=False)
+        color = style.colors if ncol != 1 else style.color_single
+
         plot = self.df.plot(
             kind="bar",
             figsize=figsize,
             linewidth=0.5,
-            edgecolor=style.bar_edge_color,
-            color=style.colors,
+            edgecolor=[style.bar_edge_color]*100,
+            color=color,
             title=title,
             **kwargs
         )
@@ -177,6 +179,8 @@ class BarplotOverhead(FexPlot):
         if kwargs.get("logy", False):
             plot.set_yscale('log', basey=2, nonposy='clip')
             plot.yaxis.set_major_formatter(plticker.ScalarFormatter())
+            if kwargs.get('yticks'):
+                plot.set_yticks(kwargs.get('yticks'))
 
         # parametrize labels
         plot.set_ylabel(ylabel, fontsize=10)

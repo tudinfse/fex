@@ -42,11 +42,7 @@ ENV LD_LIBRARY_PATH=/lib:/usr/lib64:/usr/lib/:/usr/local/lib64/:/usr/local/lib/:
 
 RUN mkdir -p /root/bin/benchmarks
 
-# sources
-COPY ./ ${PROJ_ROOT}
-RUN chmod -R 755 ${PROJ_ROOT}/install
-
 # == Interface ==
-VOLUME /data
+VOLUME /root/code/fex/
 WORKDIR ${PROJ_ROOT}
 ENTRYPOINT ["/bin/bash"]

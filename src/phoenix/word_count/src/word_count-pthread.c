@@ -81,7 +81,7 @@ typedef struct
 wc_count_t** words;
 int* use_len;
 int* length;
-
+char* arg_threads = "";
 
 void *wordcount_map(void *args_in);
 void wordcount_reduce(char* word, int len) ;
@@ -121,7 +121,7 @@ void wordcount_splitter(void *data_in)
    pthread_t * tid;
    int i,num_procs;
 
-   CHECK_ERROR((num_procs = sysconf(_SC_NPROCESSORS_ONLN)) <= 0);
+   CHECK_ERROR((num_procs = atoi(arg_threads)) <= 0);
    dprintf("THe number of processors is %d\n\n", num_procs);
 
    wc_data_t * data = (wc_data_t *)data_in;
@@ -409,6 +409,10 @@ int main(int argc, char *argv[]) {
       printf("USAGE: %s <filename> [Top # of results to display]\n", argv[0]);
       exit(1);
    }
+   if (argv[3] == NULL) {
+      exit(1);
+   }
+   arg_threads = argv[3];
 
    fname = argv[1];
    disp_num_str = argv[2];

@@ -81,7 +81,7 @@ def process_results(t="perf"):
     fields_to_keep = columns[t][1]
 #    df = df.groupby(fields_to_keep).apply(winsorize_df, fields_to_aggregate=fields_to_aggregate)
 
-    df.groupby(fields_to_keep).agg([np.mean, np.std, cvpct, np.count_nonzero]).to_csv(file_name + ".stats.csv")
+    # df.groupby(fields_to_keep).agg([np.mean, np.std, cvpct, np.count_nonzero]).to_csv(file_name + ".stats.csv")
 
     df = DataFrame(
         # it's dictionary comprehension, in case you're wondering

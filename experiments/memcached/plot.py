@@ -24,7 +24,7 @@ def main(t="perf"):
             yticks=np.arange(0.5, 3.0, 0.5),
             legend_loc='upper right'
         )
-        plot.save_plot("memcached_%s.pdf" % t)
+        plot.save_plot("%s_%s.pdf" % (BENCH_NAME, t))
 
     else:
         logging.error("Unknown plot type")

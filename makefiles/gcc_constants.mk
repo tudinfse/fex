@@ -1,5 +1,11 @@
+# GCC constants
+
+# object file extension
+OBJ_EXT := o
+
+# make constants
 CC := gcc
 CXX := g++
 LD := ld
-
-OBJ_EXT := o
+LDRELOC := -r
+RANLIB := ranlib

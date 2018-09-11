@@ -13,13 +13,13 @@ class PhoenixPerf(Runner):
     bench_suite = True
 
     benchmarks = {
-        "histogram": "{input_dir}/input/large.bmp {thread}",
-        "kmeans": " -t {thread}",
-        "linear_regression": "{input_dir}/input/key_file_500MB.txt {thread}",
+        "histogram": "{input_dir}/input/small.bmp {thread}",
+        "kmeans": "-d 5 -c 100 -p 30000 -s 30000 -t {thread}",
+        "linear_regression": "{input_dir}/input/key_file_100MB.txt {thread}",
         "matrix_multiply": "1500 1 {thread}",
-        "pca": " -r 3000 -c 3000 -t {thread}",
-        "string_match": "{input_dir}/input/key_file_500MB.txt {thread}",
-        "word_count": "{input_dir}/input/word_100MB.txt 10 {thread}",
+        "pca": " -r 3000 -c 2500 -t {thread}",
+        "string_match": "{input_dir}/input/key_file_50MB.txt {thread}",
+        "word_count": "{input_dir}/input/word_50MB.txt 10 {thread}",
     }
 
     test_benchmarks = {

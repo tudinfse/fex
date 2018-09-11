@@ -4,8 +4,6 @@ import re
 import os
 import config
 
-data = os.environ['DATA_PATH'] + '/results'
-
 
 def parse_time(s):
     """
@@ -58,10 +56,9 @@ def collect(exp_name, result_file="", full_output_file="", user_parameters={}):
     Main collection function
     """
     # set default directories, if not given
-    if not result_file and not full_output_file:
-        data = os.environ['DATA_PATH'] + '/results'
-        full_output_file = "%s/%s/%s.log" % (data, exp_name, exp_name)
-        result_file = "%s/%s/raw.csv" % (data, exp_name)
+    data = os.environ['DATA_PATH'] + '/results'
+    full_output_file = "%s/%s/%s.log" % (data, exp_name, exp_name) if not full_output_file else full_output_file
+    result_file = "%s/%s/raw.csv" % (data, exp_name) if not result_file else result_file
 
     # get current measurement parameters
     conf = config.Config()
@@ -81,6 +78,7 @@ def collect(exp_name, result_file="", full_output_file="", user_parameters={}):
                     # write previous results (but skip the first run)
                     if values['name']:  # on the first run this variable is not initialized, we use this as indicator
                         writer.writerow(values)
+                        values = {i: '' for i in field_names}  # clear the dictionary
 
                     # parse results of the next run (custom params are nullified)
                     values['name'] = get_run_argument('name', l)
@@ -95,7 +93,7 @@ def collect(exp_name, result_file="", full_output_file="", user_parameters={}):
                 for parameter, parser in parameters.items():
                     key = parser[0]
                     parse_function = parser[1]
-                    if key in l:
+                    if key in l and values[parameter] == '':
                         values[parameter] = parse_function(l)
                         break
 

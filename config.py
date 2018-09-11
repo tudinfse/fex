@@ -31,28 +31,7 @@ class Config(AbstractConfig):
 
     # measurement tools
     stats_action = {
-        "perf": "perf stat " +
-                "-e cycles,instructions " +
-                "-e branch-instructions,branch-misses " +
-                "-e major-faults,minor-faults " +
-                "-e dTLB-loads,dTLB-load-misses,dTLB-stores,dTLB-store-misses ",
-        "perf_cache": "perf stat " +
-                      "-e instructions " +
-                      "-e L1-dcache-loads,L1-dcache-load-misses " +
-                      "-e L1-dcache-stores,L1-dcache-store-misses " +
-                      "-e LLC-loads,LLC-load-misses " +
-                      "-e LLC-store-misses,LLC-stores ",
-        "perf_instr": "perf stat " +
-                      "-e instructions " +
-                      "-e instructions:u " +
-                      "-e instructions:k " +
-                      "-e mpx:mpx_new_bounds_table",
-        "perf_ports": "perf stat " +  # ports for Intel Skylake!
-                      "-e r02B1 " +  # UOPS_EXECUTED.CORE
-                      "-e r01A1,r02A1 " +  # ports 0 and 1 (UOPS_DISPATCHED_PORT.PORT_X)
-                      "-e r04A1,r08A1 " +  # ports 2 and 3
-                      "-e r10A1,r20A1 " +  # ports 4 and 5
-                      "-e r40A1,r80A1 ",  # ports 6 and 7
+        "perf": "perf stat -e cycles -e instructions",
         "time": "/usr/bin/time --verbose",
         "none": "",
     }
@@ -67,54 +46,10 @@ class Config(AbstractConfig):
     # name of field in csv file: [ keyword to identify a necessary line in logs, function to process the line]
     parsed_data = {
         "perf": {
+            "exit": ["[Exit code]", lambda l: get_int_from_string(l)],
             "cycles": ["cycles", lambda l: get_int_from_string(l)],
-            "instructions": [" instructions ", lambda l: get_int_from_string(l)],  # spaces are added not to confuse with branch-instructions
-
-            "branch_instructions": ["branch-instructions", lambda l: get_int_from_string(l)],
-            "branch_misses": ["branch-misses", lambda l: get_int_from_string(l)],
-
-            "major_faults": ["major-faults", lambda l: get_int_from_string(l)],
-            "minor_faults": ["minor-faults", lambda l: get_int_from_string(l)],
-
-            "dtlb_loads": ["dTLB-loads", lambda l: get_int_from_string(l)],
-            "dtlb_load_misses": ["dTLB-load-misses", lambda l: get_int_from_string(l)],
-            "dtlb_stores": ["dTLB-stores", lambda l: get_int_from_string(l)],
-            "dtlb_store_misses": ["dTLB-store-misses", lambda l: get_int_from_string(l)],
-
-            "time": ["seconds time elapsed", lambda l: get_float_from_string(l)],
-        },
-        "perf_cache": {
-            "l1_dcache_loads": ["L1-dcache-loads", lambda l: get_int_from_string(l)],
-            "l1_dcache_load_misses": ["L1-dcache-load-misses", lambda l: get_int_from_string(l)],
-            "l1_dcache_stores": ["L1-dcache-stores", lambda l: get_int_from_string(l)],
-            "l1_dcache_store_misses": ["L1-dcache-store-misses", lambda l: get_int_from_string(l)],
-
-            "llc_loads": ["LLC-loads", lambda l: get_int_from_string(l)],
-            "llc_load_misses": ["LLC-load-misses", lambda l: get_int_from_string(l)],
-            "llc_store_misses": ["LLC-store-misses", lambda l: get_int_from_string(l)],
-            "llc_stores": ["LLC-stores", lambda l: get_int_from_string(l)],
-
-            "time": ["seconds time elapsed", lambda l: get_float_from_string(l)],
             "instructions": [" instructions ", lambda l: get_int_from_string(l)],
-        },
-        "perf_instr": {
-            "instructions": [" instructions ", lambda l: get_int_from_string(l)],
-            "instructions:u": [" instructions:u ", lambda l: get_int_from_string(l)],
-            "instructions:k": [" instructions:k ", lambda l: get_int_from_string(l)],
-
-            "mpx_new_bounds_table ": ["mpx:mpx_new_bounds_table ", lambda l: get_int_from_string(l)],
             "time": ["seconds time elapsed", lambda l: get_float_from_string(l)],
-        },
-        "perf_ports": {
-            "UOPS_EXECUTED.CORE": ["r02B1", lambda l: get_int_from_string(l)],
-            "PORT_0": ["r01A1", lambda l: get_int_from_string(l)],
-            "PORT_1": ["r02A1", lambda l: get_int_from_string(l)],
-            "PORT_2": ["r04A1", lambda l: get_int_from_string(l)],
-            "PORT_3": ["r08A1", lambda l: get_int_from_string(l)],
-            "PORT_4": ["r10A1", lambda l: get_int_from_string(l)],
-            "PORT_5": ["r20A1", lambda l: get_int_from_string(l)],
-            "PORT_6": ["r40A1", lambda l: get_int_from_string(l)],
-            "PORT_7": ["r80A1", lambda l: get_int_from_string(l)],
         },
         "time": {
             "time": ["Elapsed (wall clock) time", lambda l: parse_time(l)],
