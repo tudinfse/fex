@@ -9,4 +9,3 @@ CXX := g++
 LD := ld
 LDRELOC := -r
 RANLIB := ranlib
-

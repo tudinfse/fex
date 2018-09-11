@@ -1,20 +1,12 @@
 #!/usr/bin/env bash
 
-echo "Downloading inputs..."
-cd ${DATA_PATH}/
+echo "Installing Parsec inputs..."
+if [ -z ${PROJ_ROOT} ] ; then echo "Env. variable PROJ_ROOT must be set!" ; exit 1; fi
+source ${PROJ_ROOT}/install/common.sh
 
-if [ -d "inputs" ]; then
-    rm -rf inputs/parsec/
-fi
-mkdir -p inputs/
+WORK_DIR="${DATA_PATH}/inputs"
+mkdir -p ${WORK_DIR}
 
-set +e
-wget -nc https://wwwpub.zih.tu-dresden.de/~s7030030/parsec-inputs.tar.gz
-set -e
+download_and_untar https://wwwpub.zih.tu-dresden.de/~s7030030/parsec-inputs.tar.gz ${WORK_DIR} 1
 
-tar xf parsec-inputs.tar.gz -C inputs/
-rm parsec-inputs.tar.gz
-
-echo "Inputs installed"
-
-cd -
+echo "Parsec inputs installed"

@@ -59,6 +59,8 @@ typedef struct {
 
 void *matrixmult_map(void *args_in);
 
+char *arg_threads = "";
+
 /** matrixmul_splitter()
  *  Assign a set of rows of the output matrix to each thread
  */
@@ -192,6 +194,11 @@ int main(int argc, char *argv[]) {
 	    create_files = 1;
     else
 	    create_files = 0;
+
+    if (argv[3] == NULL) {
+      exit(1);
+    }
+    arg_threads = argv[3];
 
     printf("MatrixMult_pthreads: Side of the matrix is %d\n", matrix_len);
     printf("MatrixMult_pthreads: Running...\n");

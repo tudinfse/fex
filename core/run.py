@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import logging
 from os import environ as env
 from abc import ABCMeta, abstractmethod, abstractproperty
@@ -78,21 +76,18 @@ class Runner:
             for benchmark, args in self.benchmarks.items():
                 self.per_benchmark_action(type_, benchmark, args)
 
-                for i in range(0, self.num_runs):
-                    self.per_run_action(i)
+                for thread_num in self.threads:
+                    self.per_thread_action(type_, benchmark, args, thread_num)
 
-                    for thread_num in self.threads:
-                        if not env.get("EXP_NO_RUN"):
-                            self.per_thread_action(type_, benchmark, args, thread_num)
+                    if not env.get("EXP_NO_RUN"):
+                        for i in range(0, self.num_runs):
+                            self.per_run_action(type_, benchmark, args, thread_num, i)
 
         self.clean()
 
     # =============================
     # Hooks for the experiment loop
     # =============================
-    def per_run_action(self, i):
-        pass
-
     def per_type_action(self, type_):
         pass
 
@@ -101,13 +96,14 @@ class Runner:
 
     def per_thread_action(self, type_, benchmark, args, thread_num):
         self.current_args = args.format(thread=thread_num, input_dir=self.dirs["input"] + '/' + benchmark)
+
+    def per_run_action(self, type_, benchmark, args, thread_num, i):
         msg = self.run_message.format(input=self.config.input_type, **locals())
-        real_threads = str(int(thread_num) - 1)
 
         with open(self.dirs["log_file"], "a") as f:
             self.log_run(msg)
             f.write("[run] " + msg + "\n")
-            out = self.run(real_threads)
+            out = self.run()
             f.write(out)
             f.write("[done]\n")
 
@@ -172,27 +168,15 @@ class Runner:
     def log_build(self, type_, benchmark):
         logging.log(22, "%s: %s" % (benchmark, type_))
 
-    def run(self, real_threads):
-        taskset = "taskset -c 0-{real_threads}".format(real_threads=real_threads)
+    def run(self):
         use_check_call = False
 
-        if env.get('STATS_COLLECT') == 'mpxcount':
-            # work-around issue of Intel Pin not working correctly with taskset and python inside Docker
-            taskset    = ""
-            use_check_call = True
-
-        out = my_check_output("{action} {taskset} {exe} {args}".format(
+        out = my_check_output("{action} /bin/bash -c \"{exe} {args}; echo [Exit code]: \$?\"".format(
             action=self.action,
-            taskset=taskset,
             exe=self.current_exe,
             args=self.current_args,
             ),
             use_check_call)
-
-
-        if env.get('STATS_COLLECT') == 'mpxcount':
-            # collect statistics saved in mpxcount.tmp
-            with open('mpxcount.tmp', 'r') as f:  out += "\n" + f.read()
 
         return out
 

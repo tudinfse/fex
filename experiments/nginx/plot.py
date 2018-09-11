@@ -17,12 +17,14 @@ def main(t="perf"):
         plot = draw.LinePlotTput()
         plot.get_data(df, [])
         plot.build_plot(
-            # xlim=(0, 55),
+            xlim=(0, 65),
             xticks=range(0, 100, 10),
-            # ylim=(0.15, 0.72),
-            yticks=np.arange(0.1, 1, 0.1),
+            ylim=(0.1, 0.8),
+            yticks=np.arange(0.2, 0.79, 0.1),
+            legend_loc=(0.01, 0.45),
+            figsize=(5, 2.5),
         )
-        plot.save_plot("nginx_%s.pdf" % t)
+        plot.save_plot("%s_%s.pdf" % (BENCH_NAME, t))
 
     else:
         logging.error("Unknown plot type")

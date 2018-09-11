@@ -73,6 +73,7 @@ typedef struct {
  char *key3_final;
  char *key4_final;
 
+char *arg_threads = "";
 
 void string_match_splitter(void *data_in);
 int getnextline(char* output, int max_len, char* file);
@@ -140,7 +141,7 @@ void string_match_splitter(void *data_in)
     pthread_t * tid;
     int i, num_procs;
 
-    CHECK_ERROR((num_procs = sysconf(_SC_NPROCESSORS_ONLN)) <= 0);
+   CHECK_ERROR((num_procs = atoi(arg_threads)) <= 0);
 
     printf("THe number of processors is %d\n", num_procs);
 
@@ -271,6 +272,11 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
     fname_keys = argv[1];
+
+    if (argv[2] == NULL) {
+      exit(1);
+    }
+    arg_threads = argv[2];
 
     struct timeval starttime,endtime;
     srand( (unsigned)time( NULL ) );

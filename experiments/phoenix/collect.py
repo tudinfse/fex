@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-from __future__ import absolute_import
-
 from core import collect
+import os
 
 
 def main():
-    collect.collect("phoenix")
+    res_path = os.environ['PROJ_ROOT'] + '/results/phoenix/raw.csv'
+    collect.collect("phoenix", result_file=res_path)

@@ -1,8 +1,9 @@
 IMG_NAME = fex
 CONTAINER_NAME = cb_${ID}
+PROJ_ROOT=/root/code/fex/
 
 DOCKER = sudo docker
-DOCKER_RUN = $(DOCKER) run --log-driver none -it -v `pwd`/data_${ID}:/data
+DOCKER_RUN = $(DOCKER) run --log-driver none -it -v `pwd`/data/:${PROJ_ROOT}
 
 .PHONY: all build run start stop clean clean_all
 

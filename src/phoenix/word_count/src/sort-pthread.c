@@ -39,6 +39,7 @@
       perror("Error at line\n\t" #a "\nSystem Msg");         \
       exit(1);                                               \
    }
+extern char* arg_threads;
 
 void *sort_section(void *args_in) ;
 
@@ -71,7 +72,7 @@ void sort_pthreads(void *base, size_t num_elems, size_t width,
    pthread_attr_t attr;
    pthread_t * tid;
 
-   CHECK_ERROR((num_procs = sysconf(_SC_NPROCESSORS_ONLN)) <= 0);
+   CHECK_ERROR((num_procs = atoi(arg_threads)) <= 0);
    printf("THe number of processors is %d\n\n", num_procs);
 
    tid = (pthread_t *)malloc(num_procs * sizeof(pthread_t));

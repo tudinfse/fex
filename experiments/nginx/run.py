@@ -1,5 +1,9 @@
-#!/usr/bin/env python
-from __future__ import print_function
+#!/usr/bin/env python3
+"""
+Setting up a remote experiment:
+* add an SSH key to allowed keys
+* open port: sudo iptables -I INPUT -p tcp --dport 8080 -j ACCEPT
+"""
 
 import logging
 import os
@@ -53,11 +57,7 @@ class NginxPerf(Runner):
             f.write(random_text)
             f.write("</body></html>")
 
-        # config Nginx
-        replace_in_file(build_path + "/conf/nginx.conf", "listen       80;", "listen       8080;", ignoreifcontains=True)
-        replace_in_file(build_path + "/conf/nginx.conf", "worker_processes  1;", "worker_processes  auto;", ignoreifcontains=True)
-
-    def per_thread_action(self, type_, benchmark, args, thread_num):
+    def per_run_action(self, type_, benchmark, args, thread_num, i):
         servercmd = "{action} {exe} -g \"daemon off;\"".format(
             action=self.action,
             exe=self.current_exe,
@@ -100,9 +100,10 @@ class NginxPerf(Runner):
                 # log and stop server
                 f.write("===== return code is %s =====\n" % str(server.poll()))
                 try:
-                    os.killpg(server.pid, signal.SIGINT)
+                    os.killpg(server.pid, signal.SIGQUIT)
                 except:
                     pass
+                sleep(5)
                 f.write("===== stdout =====\n")
                 for line in server.stdout:
                     f.write(line.decode('utf-8'))

@@ -58,6 +58,9 @@ typedef struct {
    int last_row;
 } mean_arg_t;
 
+char *arg_threads;
+
+
 /** parse_args()
  *  Parse the user arguments to determine the number of rows and colums
  */
@@ -71,7 +74,7 @@ void parse_args(int argc, char **argv)
    num_cols = DEF_NUM_COLS;
    grid_size = DEF_GRID_SIZE;
 
-   while ((c = getopt(argc, argv, "r:c:s:")) != EOF)
+   while ((c = getopt(argc, argv, "r:c:s:t:")) != EOF)
    {
       switch (c) {
          case 'r':
@@ -82,6 +85,9 @@ void parse_args(int argc, char **argv)
             break;
          case 's':
             grid_size = atoi(optarg);
+            break;
+         case 't':
+            arg_threads = optarg;
             break;
          case '?':
             printf("Usage: %s -r <num_rows> -c <num_cols> -s <max value>\n", argv[0]);
@@ -191,7 +197,7 @@ void pthread_mean() {
    int i;
    mean_arg_t *mean_args;
 
-   CHECK_ERROR((num_procs = sysconf(_SC_NPROCESSORS_ONLN)) <= 0);
+   CHECK_ERROR((num_procs = atoi(arg_threads)) <= 0);
    printf("The number of processors is %d\n", num_procs);
 
    tid = (pthread_t *)MALLOC(num_procs * sizeof(pthread_t));

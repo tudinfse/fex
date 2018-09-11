@@ -24,7 +24,7 @@ include ../parsec_common.mk
 
 all:
 	@${MAKE} buildlibs
-	@${MAKE} $(BUILD_PATH)/$(NAME)
+	@${MAKE} $(BUILD_DIR)/$(NAME)
 
 buildlibs: export BENCH_SUITE=libs
 

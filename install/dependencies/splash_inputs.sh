@@ -1,21 +1,12 @@
 #!/usr/bin/env bash
 
-echo "Downloading inputs..."
+echo "Installing Splash inputs..."
+if [ -z ${PROJ_ROOT} ] ; then echo "Env. variable PROJ_ROOT must be set!" ; exit 1; fi
+source ${PROJ_ROOT}/install/common.sh
 
-cd ${DATA_PATH}/
+WORK_DIR="${DATA_PATH}/inputs/splash"
+mkdir -p ${WORK_DIR}
 
-if [ -d "inputs" ]; then
-    rm -rf inputs/splash/
-fi
-mkdir -p inputs/
+download_and_untar https://wwwpub.zih.tu-dresden.de/~s7030030/splash-inputs.tar.gz ${WORK_DIR} 1
 
-set +e
-wget -nc https://wwwpub.zih.tu-dresden.de/~s7030030/splash-inputs.tar.gz
-set -e
-
-tar xf splash-inputs.tar.gz -C inputs/
-rm splash-inputs.tar.gz
-
-cd -
-
-echo "Inputs installed"
+echo "Splash inputs installed"

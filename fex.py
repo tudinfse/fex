@@ -15,7 +15,6 @@ import platform
 import config
 from core.environment import Environment, set_all_environments
 
-
 # config is needed everywhere
 conf = config.Config()
 
@@ -37,10 +36,9 @@ def get_arguments():
     Parse command line arguments
     :return Namespace: parsed arguments
     """
-    parser = ArgumentParser(description='')
-    subparsers = parser.add_subparsers(help='sub-command help', dest='subparser_name')
-
-    parser.add_argument(
+    # common arguments
+    parent_parser = ArgumentParser(description='', add_help=False)
+    parent_parser.add_argument(
         '-v', '--verbose',
         choices=['1', '2', '3'],
         required=False,
@@ -50,15 +48,21 @@ def get_arguments():
              '-v 3 - full experiment description, including HW parameters, compilers and flags, etc.)'
     )
 
-    parser.add_argument(
+    parent_parser.add_argument(
         '-d', '--debug',
         action='store_true',
         required=False,
-        help='Debug mode: compile with debug info (but still with all optimizations enabled) and set helpful environmental variables.'
+        help='Debug mode: compile with debug info (but still with all optimizations enabled) '
+             'and set helpful environmental variables.'
     )
 
+    # subparsers
+    parser = ArgumentParser(description='', add_help=False)
+    subparsers = parser.add_subparsers(help='sub-command help', dest='subparser_name')
+
     # parser for installing benchmarks
-    parser_install = subparsers.add_parser('install', help='download and install all benchmarks')
+    parser_install = subparsers.add_parser('install', parents=[parent_parser],
+                                           help='download and install all benchmarks')
     parser_install.add_argument(
         '-n', '--names',
         nargs='*',
@@ -66,7 +70,8 @@ def get_arguments():
     )
 
     # parser for processing logs
-    parser_collect = subparsers.add_parser('collect', help='collect statistics based on received results')
+    parser_collect = subparsers.add_parser('collect', parents=[parent_parser],
+                                           help='collect statistics based on received results')
     parser_collect.add_argument(
         '-n', '--names',
         nargs='*',
@@ -81,7 +86,7 @@ def get_arguments():
     )
 
     # parser for building plots
-    parser_plot = subparsers.add_parser('plot', help='build plot based on received results')
+    parser_plot = subparsers.add_parser('plot', parents=[parent_parser], help='build plot based on received results')
     parser_plot.add_argument(
         '-n', '--names',
         nargs='*',
@@ -99,7 +104,7 @@ def get_arguments():
     )
 
     # parser for running performance tests
-    parser_perf = subparsers.add_parser('run', help='Run an experiment')
+    parser_perf = subparsers.add_parser('run', parents=[parent_parser], help='Run an experiment')
     parser_perf.add_argument(
         '-n', '--names',
         nargs='+',
@@ -194,7 +199,7 @@ class CLIEnvironment(Environment):
 
         if cli_args.subparser_name == 'plot':
             if cli_args.file == "" and len(cli_args.names) == 1:
-                    cli_args.file = os.environ["DATA_PATH"] + '/results/' + cli_args.names[0] + '/raw.csv'
+                cli_args.file = os.environ["DATA_PATH"] + '/results/' + cli_args.names[0] + '/raw.csv'
             self.forced_variables.update({
                 'PLOT_TYPE': cli_args.plot_type,
                 'PLOT_FILE': cli_args.file,
@@ -318,10 +323,10 @@ class Manager:
 
         info = cpuinfo.get_cpu_info()
         msg += "CPU: {0} ({1} cores)\n".format(info['brand'], info['count']) + \
-               "Architecture: {0}\n".format(platform.machine()) +\
-               "L2 size: {0}\n".format(info['l2_cache_size']) +\
-               "Platform: {0}\n\n".format(platform.platform()) +\
-               "Environment variables:\n{0}\n\n".format(os.environ) +\
+               "Architecture: {0}\n".format(platform.machine()) + \
+               "L2 size: {0}\n".format(info['l2_cache_size']) + \
+               "Platform: {0}\n\n".format(platform.platform()) + \
+               "Environment variables:\n{0}\n\n".format(os.environ) + \
                "Command line arguments:\n{0}\n\n".format(args.__dict__)
 
         logging.info(msg)

@@ -6,6 +6,6 @@ MACROS += $(PROJ_ROOT)/src/splash/pthread_macros/pthread.m4.stougie
 
 M4FLAGS += -Ulen -Uindex
 
-$(BUILD_PATH)/%.$(OBJ_EXT): %.C
-	$(M4) $(M4FLAGS) $(MACROS) $< > $(BUILD_PATH)/$*.c
-	$(CC) $(CCFLAGS) $(CFLAGS) -c $(BUILD_PATH)/$*.c -o $@ $(INCLUDE_HEADER_DIRS)
+$(BUILD_DIR)/%.$(OBJ_EXT): %.C
+	$(M4) $(M4FLAGS) $(MACROS) $< > $(BUILD_DIR)/$*.c
+	$(CC) $(CCFLAGS) $(CFLAGS) -c $(BUILD_DIR)/$*.c -o $@ $(INCLUDE_HEADER_DIRS)
