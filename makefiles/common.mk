@@ -21,22 +21,20 @@ endif
 # ======== Main variables ========
 # directories
 ifndef BUILD_ROOT
-BUILD_ROOT = $(PROJ_ROOT)/build
+    BUILD_ROOT = $(PROJ_ROOT)/build
 endif
 
-ifndef BUILD_DIR
-BUILD_DIR = $(BUILD_ROOT)/$(BENCH_SUITE)/$(NAME)/$(BUILD_TYPE)
+ifndef BUILD_PATH
+    BUILD_PATH = $(BUILD_ROOT)/$(BENCH_SUITE)/$(NAME)/$(BUILD_TYPE)
 endif
 
 TYPE_MAKEFILE = Makefile.$(BUILD_TYPE)
 
 # build flags
-CCFLAGS += -O3
-
 ifdef DEBUG
-    CCFLAGS += -ggdb
+    CCFLAGS += -ggdb -O1
 else
-    CCFLAGS += -DNODPRINTF -DNDEBUG
+    CCFLAGS += -DNODPRINTF -DNDEBUG -O3 -ggdb
 endif
 
 ifdef VERBOSE
@@ -47,11 +45,15 @@ else
 endif
 
 # programs
+ifndef FINAL_CC
+    FINAL_CC = $(CXX)
+endif
+
 M4 := m4
 
 # ======== LIBS ========
-# sources to be linked together and processed by custom passes (makes sense only for Clang/LLVM)
-LLS = $(addprefix $(BUILD_DIR)/, $(addsuffix .$(OBJ_EXT), $(SRC)))
+# list of sources
+LLS = $(addprefix $(BUILD_PATH)/, $(addsuffix .$(OBJ_EXT), $(SRC)))
 
 # included directories
 INCLUDE_HEADER_DIRS = $(addprefix -I,$(INC_DIR))
@@ -74,36 +76,36 @@ CCFLAGS += $(OS) $(ARCH)
 all: make_dirs
 
 make_dirs:
-	-mkdir -p $(BUILD_DIR)
-	@echo "" > $(BUILD_DIR)/.need_cxx
+	-mkdir -p $(BUILD_PATH)
+	@echo "" > $(BUILD_PATH)/.need_cxx
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_PATH)
 
 # ======== File-type-specific build targets ========
 # headers
 %.h: %.H
-	$(M4) $(M4FLAGS) $(MACROS) $^ > $(BUILD_DIR)/$@
+	$(M4) $(M4FLAGS) $(MACROS) $^ > $(BUILD_PATH)/$@
 
 # object files
-$(BUILD_DIR)/%.$(OBJ_EXT): %.c
+$(BUILD_PATH)/%.$(OBJ_EXT): %.c
 	$(CC) $(CCFLAGS) $(CFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
-$(BUILD_DIR)/%.$(OBJ_EXT): %.C
+$(BUILD_PATH)/%.$(OBJ_EXT): %.C
 	$(CC) $(CCFLAGS) $(CFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
-$(BUILD_DIR)/%.$(OBJ_EXT): %.cpp
+$(BUILD_PATH)/%.$(OBJ_EXT): %.cpp
 	$(CXX) $(CCFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
-$(BUILD_DIR)/%.$(OBJ_EXT): %.cxx
+$(BUILD_PATH)/%.$(OBJ_EXT): %.cxx
 	$(CXX) $(CCFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
-$(BUILD_DIR)/%.$(OBJ_EXT): %.cc
+$(BUILD_PATH)/%.$(OBJ_EXT): %.cc
 	$(CXX) $(CCFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
 # executable
-$(BUILD_DIR)/$(NAME): $(LLS)
-	$(CXX) $(CCFLAGS) $(CXXFLAGS) -o $@ $^ $(INCLUDE_HEADER_DIRS) $(INCLUDE_LIB_DIRS) $(LIBS)
+$(BUILD_PATH)/$(NAME): $(LLS)
+	$(FINAL_CC) $(FINAL_CCFLAGS) $(CCFLAGS) $(CXXFLAGS) -o $@ $^ $(INCLUDE_HEADER_DIRS) $(INCLUDE_LIB_DIRS) $(LIBS)
 
 
 # ======== Helper functions ========
