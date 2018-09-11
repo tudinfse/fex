@@ -1,20 +1,18 @@
 #!/usr/bin/env bash
+set -e
 
 echo "Installing Memcached..."
-if [ -z ${PROJ_ROOT} ] ; then echo "Env. variable PROJ_ROOT must be set!" ; exit 1; fi
-source ${PROJ_ROOT}/install/common.sh
 
 apt-get install -y automake autogen autoconf libtool
 
-NAME="memcached"
-VERSION="1.4.15"
-STORED_SRC_DIR="${DATA_PATH}/${NAME}-${VERSION}"
-WORK_DIR="${BIN_PATH}/${NAME}-${VERSION}"
-SRC_DIR="${WORK_DIR}/src"
+source ${PROJ_ROOT}/install/common.sh
 
-mkdir -p ${WORK_DIR}
-clone_git_repo https://github.com/memcached/memcached.git ${STORED_SRC_DIR} ${VERSION} ${PROJ_ROOT}/install/benchmarks/memcached/memcached.1.4.15.patch
-ln -sf ${STORED_SRC_DIR} ${SRC_DIR}
+SRC_PATH="${BIN_PATH}/memcached/src"
+VERSION="1.4.15"
+
+# download
+mkdir -p ${BIN_PATH}/memcached
+clone_github_and_link memcached-${VERSION} https://github.com/memcached/memcached.git ${SRC_PATH} ${VERSION} ${PROJ_ROOT}/install/benchmarks/memcached/memcached.1.4.15.patch
 
 install_dependency "Memslap" "${PROJ_ROOT}/install/dependencies/memslap.sh"
 

@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 
-echo "Installing Phoenix inputs..."
-if [ -z ${PROJ_ROOT} ] ; then echo "Env. variable PROJ_ROOT must be set!" ; exit 1; fi
-source ${PROJ_ROOT}/install/common.sh
+echo "Downloading inputs..."
 
-WORK_DIR="${DATA_PATH}/inputs/phoenix/"
-
-mkdir -p ${WORK_DIR}
-cd ${WORK_DIR}
+set -x #echo on
 
 declare -a benchmarks=("histogram" "linear_regression" "string_match" "word_count")
+
+mkdir -p $DATA_PATH/inputs/phoenix/
+cd $DATA_PATH/inputs/phoenix/
+
 for bmidx in "${!benchmarks[@]}"; do
   bm="${benchmarks[$bmidx]}"
 
@@ -20,4 +19,6 @@ for bmidx in "${!benchmarks[@]}"; do
   rm -rf ${bm}_datafiles/
 done
 
-echo "Phoenix inputs installed"
+cd -
+
+echo "Inputs installed"

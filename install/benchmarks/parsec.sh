@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
 
 echo "Installing Parsec..."
-if [ -z ${PROJ_ROOT} ] ; then echo "Env. variable PROJ_ROOT must be set!" ; exit 1; fi
 source ${PROJ_ROOT}/install/common.sh
 
 apt-get install -y pkg-config gettext automake \

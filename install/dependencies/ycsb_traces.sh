@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
 
-echo "Installing YCSB traces..."
-if [ -z ${PROJ_ROOT} ] ; then echo "Env. variable PROJ_ROOT must be set!" ; exit 1; fi
-source ${PROJ_ROOT}/install/common.sh
+echo "Downloading traces..."
+cd ${DATA_PATH}/
 
-WORK_DIR="${DATA_PATH}/inputs/ycsb-traces"
-mkdir -p ${WORK_DIR}
+if [ -d "inputs" ]; then
+    rm -rf inputs/ycsb-traces/
+fi
+mkdir -p inputs/
 
-download_and_untar https://wwwpub.zih.tu-dresden.de/~s7030030/ycsb-traces.tar.gz ${WORK_DIR} 1
+set +e
+wget -nc https://wwwpub.zih.tu-dresden.de/~s7030030/ycsb-traces.tar.gz
+set -e
 
-echo "YCSB traces installed"
+tar xf ycsb-traces.tar.gz -C inputs/
+rm ycsb-traces.tar.gz
+
+echo "Traces installed"
+
+cd -
