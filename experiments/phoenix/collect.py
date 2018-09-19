@@ -1,8 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from core import collect
-import os
 
 
 def main():
-    res_path = os.environ['PROJ_ROOT'] + '/results/phoenix/raw.csv'
-    collect.collect("phoenix", result_file=res_path)
+    collect.collect("phoenix")
