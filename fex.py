@@ -270,15 +270,15 @@ class Manager:
             self.print_hw_parameters(args)
 
     def set_environment(self, args):
-        cli_env = CLIEnvironment(args, self.debug, self.verbose)
-        cli_env.setup()
-
         if getattr(args, "no_run", False):
             set_all_environments(self.debug, self.verbose, 'build')
         elif getattr(args, "no_build", False):
             set_all_environments(self.debug, self.verbose, 'run')
         else:
             set_all_environments(self.debug, self.verbose, 'both')
+
+        cli_env = CLIEnvironment(args, self.debug, self.verbose)
+        cli_env.setup()
 
     def start(self, action):
         """
