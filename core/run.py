@@ -34,23 +34,28 @@ class Runner:
     # ===================
     # Abstract Properties
     # ===================
-    @abstractproperty
+    @property
+    @abstractmethod
     def name(self):
         pass
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def exp_name(self):
         pass
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def bench_suite(self):
         pass
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def benchmarks(self):
         pass
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def test_benchmarks(self):
         pass
 
@@ -175,7 +180,7 @@ class Runner:
             action=self.action,
             exe=self.current_exe,
             args=self.current_args,
-            ),
+        ),
             use_check_call)
 
         return out
@@ -205,4 +210,38 @@ class VarInputRunner(Runner):
         self.num_benchmarks = len(self.benchmarks) * len(self.types)
         if not env.get("EXP_NO_RUN"):
             self.num_benchmarks = self.num_benchmarks * self.num_runs * num_inputs
+        logging.info("Total runs: %d" % self.num_benchmarks)
+
+
+class ThroughputRunner(Runner):
+    run_message = "name: {benchmark}; type: {type_}; threads: {thread_num}; input: {input}; rate: {rate};"
+
+    @property
+    @abstractmethod
+    def rates(self):
+        pass
+
+    def experiment_loop(self):
+        for type_ in self.types:
+            self.per_type_action(type_)
+
+            for benchmark, args in self.benchmarks.items():
+                self.per_benchmark_action(type_, benchmark, args)
+
+                for thread_num in self.threads:
+                    self.per_thread_action(type_, benchmark, args, thread_num)
+
+                    if not env.get("EXP_NO_RUN"):
+                        for rate in self.rates:
+                            self.per_rate_action(type_, benchmark, args, thread_num, rate)
+
+        self.clean()
+
+    def per_rate_action(self, type_, benchmark, args, thread_num, rate):
+        pass
+
+    def set_logging(self):
+        self.num_benchmarks = len(self.benchmarks) * len(self.types)
+        if not env.get("EXP_NO_RUN"):
+            self.num_benchmarks = self.num_benchmarks * len(self.rates) * len(self.threads)
         logging.info("Total runs: %d" % self.num_benchmarks)
