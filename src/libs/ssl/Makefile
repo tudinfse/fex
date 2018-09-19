@@ -7,6 +7,7 @@ undefine BUILD_DIR
 
 # import type-specific configuration
 include Makefile.$(BUILD_TYPE)
+LIBS :=  # remove junk libs - not necessary for the glib
 $(eval $(call expand-ccflags))
 CFLAGS += -DPEDANTIC -pedantic
 CC := $(CC) $(CFLAGS)

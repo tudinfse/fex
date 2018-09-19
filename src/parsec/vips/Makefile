@@ -35,6 +35,8 @@ buildlibs:
 	$(MAKE) BUILD_TYPE=$(BUILD_TYPE) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/glib
 	$(MAKE) BUILD_TYPE=$(BUILD_TYPE) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/libxml2
 
+prebuild: export CC:=$(CC)
+prebuild: export CXX:=$(CXX)
 prebuild: export INC_DIR:=$(INC_DIR)
 prebuild: export CFLAGS:=$(CFLAGS) $(CCFLAGS)
 prebuild: export CXXFLAGS:=$(CXXFLAGS) $(CCFLAGS)

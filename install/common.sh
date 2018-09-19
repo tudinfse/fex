@@ -15,6 +15,14 @@ if [ ! -d ${DATA_PATH} ]; then
     exit 1
 fi
 
+if [ -f /.dockerenv ]; then
+    INSIDE_CONTAINER=1
+    APT=('apt-get')
+else
+    INSIDE_CONTAINER=0
+    APT=('sudo' 'apt-get')
+fi
+
 # == Define common functions ==
 
 function required_str {

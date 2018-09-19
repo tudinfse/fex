@@ -5,7 +5,9 @@ undefine BUILD_DIR
 
 # import type-specific configuration
 include Makefile.$(BUILD_TYPE)
+LIBS :=  # remove junk libs - not necessary for the glib
 $(eval $(call expand-ccflags))
+CFLAGS += -Derrno="(*__errno_location())"
 
 ifdef REBUILD
 all: pre_clean

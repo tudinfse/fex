@@ -68,7 +68,7 @@ void parse_args(int argc, char **argv)
     dim = DEF_DIM;
     grid_size = DEF_GRID_SIZE;
 
-    while ((c = getopt(argc, argv, "d:c:p:s:")) != EOF)
+    while ((c = getopt(argc, argv, "d:c:p:s:t:")) != EOF)
     {
         switch (c) {
             case 'd':
@@ -82,6 +82,8 @@ void parse_args(int argc, char **argv)
                 break;
             case 's':
                 grid_size = atoi(optarg);
+                break;
+            case 't':
                 break;
             case '?':
                 printf("Usage: %s -d <vector dimension> -c <num clusters> -p <num points> -s <grid size>\n", argv[0]);

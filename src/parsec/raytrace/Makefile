@@ -11,7 +11,10 @@ CCFLAGS += -pthread -DUSE_PBOS=1
 
 MESA_BUILD_DIR:=$(PROJ_ROOT)/build/libs/mesa/$(BUILD_TYPE)
 LIB_DIRS += $(MESA_BUILD_DIR)/lib
-LIBS += -lglut -lGL -lGLU -lXmu -lXext -lXau -lX11 -ldl
+LIBS += -lglut -lGL -lGLU -lX11 -ldl
+
+# uncomment in non-SGX builds
+#LIBS += -lXmu -lXext -lXau
 
 INC_DIR += $(PROJ_ROOT)/src/parsec/raytrace/src \
 	       $(PROJ_ROOT)/src/parsec/raytrace/src/RTTL/ $(PROJ_ROOT)/src/parsec/raytrace/src/RTTL/common/ \
@@ -34,10 +37,11 @@ buildlibs: export BENCH_SUITE=libs
 buildlibs:
 	$(MAKE) BUILD_TYPE=$(BUILD_TYPE) -I $(PROJ_ROOT)/makefiles -C $(PROJ_ROOT)/src/$(BENCH_SUITE)/mesa
 
+prebuild: export CC:=$(CC)
+prebuild: export CXX:=$(CXX)
 prebuild: export INC_DIR:=$(INC_DIR)
-prebuild: export CCFLAGS:=$(CCFLAGS)
-prebuild: export CFLAGS:=$(CFLAGS)
-prebuild: export CXXFLAGS:=$(CXXFLAGS)
+prebuild: export CFLAGS:=$(CFLAGS) $(CCFLAGS)
+prebuild: export CXXFLAGS:=$(CXXFLAGS) $(CCFLAGS)
 prebuild: export LIB_DIRS:=$(LIB_DIRS)
 prebuild: export LIBS:=$(LIBS)
 prebuild:

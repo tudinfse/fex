@@ -8,6 +8,7 @@ include Makefile.$(BUILD_TYPE)
 
 # zlib is always compiled before libxml2, so we can rely on files existing
 CFLAGS  += -I$(BUILD_ROOT)/libs/zlib/$(BUILD_TYPE)/include
+CFLAGS += -DTRIO_COMPILER_SUPPORTS_C99
 LDFLAGS += -L$(BUILD_ROOT)/libs/zlib/$(BUILD_TYPE)/lib
 LIBS += -ldl
 
@@ -24,6 +25,8 @@ ifdef REBUILD
 all: pre_clean
 endif
 all:
+	cp configure src/configure
+	cp Makefile.in src/Makefile.in
 	cd src && ./configure $(CONFIGFLAGS) --prefix=$(BUILD_DIR) > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src install > $(CONFIG_SCRIPT_LOG)

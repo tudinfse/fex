@@ -19,6 +19,9 @@ ifdef REBUILD
 all: pre_clean
 endif
 all:
+	cp configure src/configure
+	cp Makefile.in src/Makefile.in
+	cp Makefile.in.gobj src/gobject/Makefile.in
 	cd src && ./configure --disable-shared --enable-threads --with-threads=posix --prefix=$(BUILD_DIR) > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src install > $(CONFIG_SCRIPT_LOG)

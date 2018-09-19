@@ -55,3 +55,8 @@ vim your_project_dir/data/results/phoenix/raw.csv
 ## Using Fex
 
 Full Fex documentation is on our [wiki page](https://github.com/tudinfse/fex/wiki).
+
+## Dependencies for building plots
+```
+pip install coloredlogs py-cpuinfo scipy pandas matplotlib
+```
