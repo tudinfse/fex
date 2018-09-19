@@ -24,12 +24,13 @@ ifeq ($(CC),icc)
     CFLAGS += -D__thread=___thread -Kc++
 endif
 
+
 .PHONY: prebuild
 
 # enforce build order
 all:
 	@${MAKE} prebuild
-	@${MAKE} $(BUILD_PATH)/$(NAME)
+	@${MAKE} $(BUILD_DIR)/$(NAME)
 
 prebuild: export CC:=$(CC)
 prebuild: export CXX:=$(CXX)

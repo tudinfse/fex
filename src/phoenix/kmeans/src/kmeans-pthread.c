@@ -97,7 +97,7 @@ void parse_args(int argc, char **argv)
    num_means = DEF_NUM_MEANS;
    dim = DEF_DIM;
    grid_size = DEF_GRID_SIZE;
-   arg_threads = "1";
+    arg_threads = "1";
 
    while ((c = getopt(argc, argv, "d:c:p:s:t:")) != EOF)
    {

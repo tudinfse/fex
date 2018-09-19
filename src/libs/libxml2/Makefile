@@ -1,11 +1,10 @@
 NAME := libxml2
 
 # undefine variables from recursive calls
-undefine BUILD_PATH
+undefine BUILD_DIR
 
 # import type-specific configuration
 include Makefile.$(BUILD_TYPE)
-#LIBS :=  # remove junk libs - not necessary for the glib
 
 # zlib is always compiled before libxml2, so we can rely on files existing
 CFLAGS  += -I$(BUILD_ROOT)/libs/zlib/$(BUILD_TYPE)/include
@@ -28,7 +27,7 @@ endif
 all:
 	cp configure src/configure
 	cp Makefile.in src/Makefile.in
-	cd src && ./configure $(CONFIGFLAGS) --prefix=$(BUILD_PATH) > $(CONFIG_SCRIPT_LOG)
+	cd src && ./configure $(CONFIGFLAGS) --prefix=$(BUILD_DIR) > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src install > $(CONFIG_SCRIPT_LOG)
 

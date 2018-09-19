@@ -83,7 +83,7 @@ void parse_args(int argc, char **argv)
             case 's':
                 grid_size = atoi(optarg);
                 break;
-             case 't':
+            case 't':
                 break;
             case '?':
                 printf("Usage: %s -d <vector dimension> -c <num clusters> -p <num points> -s <grid size>\n", argv[0]);

@@ -5,7 +5,7 @@ IFS=$'\n\t'
 echo "Installing Parsec..."
 source ${PROJ_ROOT}/install/common.sh
 
-apt-get install -y pkg-config gettext automake \
+${APT[@]} install -y pkg-config gettext automake \
                    libbsd-dev libx11-dev x11proto-xext-dev libxext-dev libxt-dev libxi-dev libxmu-dev \
                    libglib2.0-dev
 

@@ -3,7 +3,7 @@ from __future__ import print_function
 
 import logging
 import os
-import re
+import glob
 from argparse import ArgumentParser
 from importlib import import_module
 from subprocess import check_call, STDOUT, Popen, CalledProcessError
@@ -221,13 +221,18 @@ def exec_scripts(path, name_pattern):
     :param str path:
     :param str name_pattern:
     """
-    patten = re.compile(name_pattern)
-    for file in os.listdir(path):
-        if re.match(patten, file):
-            proc = Popen(path + "/" + file, stderr=STDOUT, shell=True)
-            out, err = proc.communicate()
-            return True
-    return False
+    files = glob.glob(path + "/**/" + name_pattern, recursive=True)
+    if not files:
+        logging.error("The script is not found!")
+        return False
+
+    if len(files) != 1:
+        logging.error("Duplicate script names!")
+        return False
+
+    proc = Popen(files[0], stderr=STDOUT, shell=True)
+    out, err = proc.communicate()
+    return True
 
 
 def run_python_module(exp_name, file_name, benchmark_name=None):
@@ -283,11 +288,7 @@ class Manager:
             for name in self.names:
                 logging.info('Installing %s' % name)
                 check_call("mkdir -p %s/build/" % os.environ["PROJ_ROOT"], shell=True)
-                found = exec_scripts("install/compilers/", "%s.(sh|py)" % name)
-                if not found:
-                    found = exec_scripts("install/benchmarks/", "%s.(sh|py)" % name)
-                if not found:
-                    exec_scripts("install/dependencies/", "%s.(sh|py)" % name)
+                exec_scripts("install/compilers/", "%s.(sh|py)" % name)
         elif action == 'run':
             for name in self.names:
                 logging.info('Running %s' % name)

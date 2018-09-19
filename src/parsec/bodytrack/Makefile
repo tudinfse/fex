@@ -21,10 +21,11 @@ CXXFLAGS += -fexceptions
 include Makefile.$(BUILD_TYPE)
 include ../parsec_common.mk
 
+
 # enforce build order
 all:
 	@${MAKE} prebuild
-	@${MAKE} $(BUILD_PATH)/$(NAME)
+	@${MAKE} $(BUILD_DIR)/$(NAME)
 
 .PHONY: prebuild
 prebuild: export CC:=$(CC)
