@@ -1,10 +1,8 @@
-#!/usr/bin/env python3
 """
 Setting up a remote experiment:
 * add an SSH key to allowed keys
 * open port: sudo iptables -I INPUT -p tcp --dport 8080 -j ACCEPT
 """
-
 import logging
 import os
 import signal

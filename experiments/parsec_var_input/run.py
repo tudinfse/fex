@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-from __future__ import print_function
-
 from core.common_functions import *
 from core.run import VarInputRunner
 

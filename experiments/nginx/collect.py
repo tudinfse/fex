@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from core import collect
 import os
 

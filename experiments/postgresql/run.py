@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Run PostgreSQL:
     - start postgres on server in background (under perf)
@@ -7,8 +6,6 @@ Run PostgreSQL:
     - kill postgres on server
     - save client load&run phases and server logs in separate files
 """
-from __future__ import print_function
-
 import os
 import logging
 from time import sleep

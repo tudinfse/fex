@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from core.common_functions import *
 from core.run import Runner
 

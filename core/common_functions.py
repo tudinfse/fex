@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import logging
 from os import environ as env
 from os import devnull
