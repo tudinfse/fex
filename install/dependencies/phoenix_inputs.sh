@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-echo "Downloading inputs..."
+echo "Installing Phoenix inputs..."
+if [ -z ${PROJ_ROOT} ] ; then echo "Env. variable PROJ_ROOT must be set!" ; exit 1; fi
+source ${PROJ_ROOT}/install/common.sh
 
 cd ${DATA_PATH}/
 
@@ -16,4 +18,4 @@ set -e
 tar xf phoenix-inputs.tar.gz -C inputs/
 rm phoenix-inputs.tar.gz
 
-echo "Inputs installed"
+echo "Phoenix inputs installed"

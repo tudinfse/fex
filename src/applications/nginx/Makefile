@@ -1,6 +1,6 @@
 # Nginx version 1.4.0
 NAME := nginx
-SRC_PATH := $(BIN_PATH)/nginx/src
+SRC_DIR := $(BIN_PATH)/nginx/src
 
 SSL_PATH := $(PROJ_ROOT)/src/libs/ssl/src/
 SSL_OPT := threads no-zlib no-dso no-shared no-test no-apps no-asm
@@ -20,10 +20,10 @@ CONFIG_OPTS := --with-cc="$(CC)" \
 			   --without-http_gzip_module \
 			   --with-http_ssl_module \
 			   --with-debug \
-			   --prefix=$(BUILD_PATH)
+			   --prefix=$(BUILD_DIR)
 
 all:
-	cd $(SRC_PATH) && ./configure $(CONFIG_OPTS) > $(CONFIG_SCRIPT_LOG)
-	make -C $(SRC_PATH)  > $(CONFIG_SCRIPT_LOG)
-	make install -C $(SRC_PATH)  > $(CONFIG_SCRIPT_LOG)
-	cp nginx.conf key.pem certificate.pem $(BUILD_PATH)/conf/
+	cd $(SRC_DIR) && ./configure $(CONFIG_OPTS) > $(CONFIG_SCRIPT_LOG)
+	make -C $(SRC_DIR)  > $(CONFIG_SCRIPT_LOG)
+	make install -C $(SRC_DIR)  > $(CONFIG_SCRIPT_LOG)
+	cp nginx.conf key.pem certificate.pem $(BUILD_DIR)/conf/

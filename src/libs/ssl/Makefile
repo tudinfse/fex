@@ -3,7 +3,7 @@
 NAME := ssl
 
 # undefine variables from recursive calls
-undefine BUILD_PATH
+undefine BUILD_DIR
 
 # import type-specific configuration
 include Makefile.$(BUILD_TYPE)
@@ -17,7 +17,7 @@ ifdef REBUILD
 all: pre_clean
 endif
 all:
-	cd src && ./config threads no-zlib no-dso no-shared no-test no-apps no-asm --prefix=$(BUILD_PATH) > $(CONFIG_SCRIPT_LOG) && cd ..
+	cd src && ./config threads no-zlib no-dso no-shared no-test no-apps no-asm --prefix=$(BUILD_DIR) > $(CONFIG_SCRIPT_LOG) && cd ..
 # 	$(MAKE) -C src -j1 depend  # SSL has to be build using 1 thread
 	$(MAKE) -C src -j1 > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src -j1 install_sw > $(CONFIG_SCRIPT_LOG)

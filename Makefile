@@ -1,5 +1,5 @@
 IMG_NAME = fex
-CONTAINER_NAME = cb_${ID}
+CONTAINER_NAME = fex_container${ID}
 PROJ_ROOT=/root/code/fex/
 
 DOCKER = sudo docker

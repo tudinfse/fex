@@ -1,7 +1,7 @@
 NAME := pcre
 
 # undefine variables from recursive calls
-undefine BUILD_PATH
+undefine BUILD_DIR
 
 # import type-specific configuration
 include Makefile.$(BUILD_TYPE)
@@ -14,7 +14,7 @@ ifdef REBUILD
 all: pre_clean
 endif
 all:
-	cd src && ./configure  --disable-shared --disable-cpp --prefix=$(BUILD_PATH) > $(CONFIG_SCRIPT_LOG)
+	cd src && ./configure  --disable-shared --disable-cpp --prefix=$(BUILD_DIR) > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src $(IGNORE_DOCS) > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src install $(IGNORE_DOCS) > $(CONFIG_SCRIPT_LOG)
 

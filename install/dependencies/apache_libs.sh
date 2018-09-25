@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
+echo "Downloading Apache libraries..."
+if [ -z ${PROJ_ROOT} ] ; then echo "Env. variable PROJ_ROOT must be set!" ; exit 1; fi
 source ${PROJ_ROOT}/install/common.sh
 
-echo "Downloading libraries..."
 cd ${DATA_PATH}/
 
 if [ -d "apache_libs" ]; then
@@ -33,4 +34,4 @@ cd ${PROJ_ROOT}/src/libs
 mkdir -p pcre/src/doc
 touch pcre/src/doc/perltest.txt pcre/src/doc/index.html.src
 
-echo "Libraries installed"
+echo "Apache libraries installed"

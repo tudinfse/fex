@@ -2,7 +2,7 @@
 NAME := apr
 
 # undefine variables from recursive calls
-undefine BUILD_PATH
+undefine BUILD_DIR
 
 # import type-specific configuration
 include Makefile.$(BUILD_TYPE)
@@ -13,7 +13,7 @@ ifdef REBUILD
 all: pre_clean
 endif
 all:
-	cd src && ./configure --prefix=$(BUILD_PATH) --disable-shared --disable-dso > $(CONFIG_SCRIPT_LOG)
+	cd src && ./configure --prefix=$(BUILD_DIR) --disable-shared --disable-dso > $(CONFIG_SCRIPT_LOG)
 	sed -i 's/#define APR_HAS_MMAP              1/#define APR_HAS_MMAP              0/g' src/include/apr.h
 	$(MAKE) -C src > $(CONFIG_SCRIPT_LOG)
 	$(MAKE) -C src install > $(CONFIG_SCRIPT_LOG)

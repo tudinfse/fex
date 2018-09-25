@@ -1,29 +1,19 @@
 #!/usr/bin/env bash
 
-echo "Downloading libraries..."
-cd ${DATA_PATH}/
+echo "Installing Parsec libraries..."
+if [ -z ${PROJ_ROOT} ] ; then echo "Env. variable PROJ_ROOT must be set!" ; exit 1; fi
+source ${PROJ_ROOT}/install/common.sh
 
-if [ -d "parsec_libs" ]; then
-    rm -rf parsec_libs/
-fi
-mkdir parsec_libs/
+WORK_DIR="${DATA_PATH}/parsec_libs"
+mkdir -p ${WORK_DIR}
 
-set +e
-wget -nc https://wwwpub.zih.tu-dresden.de/~s7030030/parsec_libs.tar.gz
-set -e
+download_and_untar https://wwwpub.zih.tu-dresden.de/~s7030030/parsec_libs.tar.gz ${WORK_DIR} 0
 
-tar xf parsec_libs.tar.gz -C parsec_libs/
-rm parsec_libs.tar.gz
-
-cd -
-
-echo "Preparing libraries..."
-cd ${DATA_PATH}/parsec_libs/
-
+cd ${WORK_DIR}
 for lib in *; do
     if [ -d "${lib}" ]; then
-        cp -r ${lib}/src/ ${PROJ_ROOT}/src/libs/${lib}/src/
+        cp -r ${lib}/src/ ${PROJ_ROOT}/src/libs/${lib}/
     fi
 done
 
-echo "Libraries installed"
+echo "Parsec libraries installed"

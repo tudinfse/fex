@@ -24,8 +24,8 @@ ifndef BUILD_ROOT
     BUILD_ROOT = $(PROJ_ROOT)/build
 endif
 
-ifndef BUILD_PATH
-    BUILD_PATH = $(BUILD_ROOT)/$(BENCH_SUITE)/$(NAME)/$(BUILD_TYPE)
+ifndef BUILD_DIR
+    BUILD_DIR = $(BUILD_ROOT)/$(BENCH_SUITE)/$(NAME)/$(BUILD_TYPE)
 endif
 
 TYPE_MAKEFILE = Makefile.$(BUILD_TYPE)
@@ -53,7 +53,7 @@ M4 := m4
 
 # ======== LIBS ========
 # list of sources
-LLS = $(addprefix $(BUILD_PATH)/, $(addsuffix .$(OBJ_EXT), $(SRC)))
+LLS = $(addprefix $(BUILD_DIR)/, $(addsuffix .$(OBJ_EXT), $(SRC)))
 
 # included directories
 INCLUDE_HEADER_DIRS = $(addprefix -I,$(INC_DIR))
@@ -76,35 +76,35 @@ CCFLAGS += $(OS) $(ARCH)
 all: make_dirs
 
 make_dirs:
-	-mkdir -p $(BUILD_PATH)
-	@echo "" > $(BUILD_PATH)/.need_cxx
+	-mkdir -p $(BUILD_DIR)
+	@echo "" > $(BUILD_DIR)/.need_cxx
 
 clean:
-	rm -rf $(BUILD_PATH)
+	rm -rf $(BUILD_DIR)
 
 # ======== File-type-specific build targets ========
 # headers
 %.h: %.H
-	$(M4) $(M4FLAGS) $(MACROS) $^ > $(BUILD_PATH)/$@
+	$(M4) $(M4FLAGS) $(MACROS) $^ > $(BUILD_DIR)/$@
 
 # object files
-$(BUILD_PATH)/%.$(OBJ_EXT): %.c
+$(BUILD_DIR)/%.$(OBJ_EXT): %.c
 	$(CC) $(CCFLAGS) $(CFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
-$(BUILD_PATH)/%.$(OBJ_EXT): %.C
+$(BUILD_DIR)/%.$(OBJ_EXT): %.C
 	$(CC) $(CCFLAGS) $(CFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
-$(BUILD_PATH)/%.$(OBJ_EXT): %.cpp
+$(BUILD_DIR)/%.$(OBJ_EXT): %.cpp
 	$(CXX) $(CCFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
-$(BUILD_PATH)/%.$(OBJ_EXT): %.cxx
+$(BUILD_DIR)/%.$(OBJ_EXT): %.cxx
 	$(CXX) $(CCFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
-$(BUILD_PATH)/%.$(OBJ_EXT): %.cc
+$(BUILD_DIR)/%.$(OBJ_EXT): %.cc
 	$(CXX) $(CCFLAGS) $(CXXFLAGS) -c $< -o $@ $(INCLUDE_HEADER_DIRS)
 
 # executable
-$(BUILD_PATH)/$(NAME): $(LLS)
+$(BUILD_DIR)/$(NAME): $(LLS)
 	$(FINAL_CC) $(FINAL_CCFLAGS) $(CCFLAGS) $(CXXFLAGS) -o $@ $^ $(INCLUDE_HEADER_DIRS) $(INCLUDE_LIB_DIRS) $(LIBS)
 
 
