@@ -286,7 +286,7 @@ class Manager:
             for name in self.names:
                 logging.info('Installing %s' % name)
                 check_call("mkdir -p %s/build/" % os.environ["PROJ_ROOT"], shell=True)
-                exec_scripts("install/compilers/", "%s.(sh|py)" % name)
+                exec_scripts("install", "%s.sh" % name)
         elif action == 'run':
             for name in self.names:
                 logging.info('Running %s' % name)

@@ -49,6 +49,8 @@ nops.c
 
 # == Project ==
 
+tmp.sh
+
 # working directories
 build/
 bin/

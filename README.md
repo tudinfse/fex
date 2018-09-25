@@ -20,22 +20,30 @@ Fex does not require installation and only has to be downloaded:
 git clone https://github.com/tudinfse/fex.git
 ```
 
-Fex has been mainly tested in combination with Docker and it is recommended to do all experiments in it.
-For that, build the corresponding Docker image:
+To build Docker image for experiments:
 
 ```
 make
 ```
 
+Alternatively, if you want to run the experiments without Docker:
+
+```bash
+sudo apt install python3-pip
+pip3 install --user coloredlogs nose2 py-cpuinfo pandas matplotlib scipy
+
+export PROJ_ROOT=`pwd`
+```
+
 ## Trying it out
 
-First, run the container:
+If you're using Docker, run the container:
 
 ```sh
 make run
 ```
 
-Inside the container, run one of the experiments:
+Run one of the experiments:
 
 ```sh
 ./fex.py install -n phoenix

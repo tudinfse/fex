@@ -40,7 +40,7 @@ ENV LD_LIBRARY_PATH=/lib:/usr/lib64:/usr/lib/:/usr/local/lib64/:/usr/local/lib/:
     PROJ_ROOT=/root/code/fex/ \
     BIN_PATH=/root/bin/
 
-RUN mkdir -p /root/bin/benchmarks
+RUN mkdir -p /root/bin/benchmarks && mkdir -p ${DATA_PATH} && mkdir -p ${BIN_PATH}
 
 # == Interface ==
 VOLUME /root/code/fex/

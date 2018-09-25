@@ -6,7 +6,7 @@ It is going to be largely extended in future
 """
 from core.abstract_config import AbstractConfig
 from core.collect import get_float_from_string, get_int_from_string, parse_time
-from environment import GenericEnvironment, ASanEnvironment
+from environment import GenericEnvironment
 
 
 class Config(AbstractConfig):
@@ -26,7 +26,6 @@ class Config(AbstractConfig):
     # list of used environments
     environments = (
         GenericEnvironment,
-        ASanEnvironment
     )
 
     # measurement tools
