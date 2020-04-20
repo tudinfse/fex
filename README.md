@@ -50,15 +50,15 @@ The initialization will also create a configuration file `config.py` which is th
 ```shell script
 $ fex2 template splash
 $ fex2 install splash
-$ cat <<EOT >> gcc_optimized.mk
+$ cat <<EOF >> build_types/gcc_optimized.mk
 include gcc_native.mk
 include common.mk
 
 CFLAGS += -O3
 EOF
-$ fex2 run splash -b gcc_native gcc_optimized -t perf -r 10 -o splash-raw.txt
+$ fex2 run splash -b gcc_native gcc_optimized -t perf -m 1 4 -r 10 -o splash-raw.txt
 $ fex2 collect splash -t perf -i splash-raw.txt -o splash-collected.csv
-$ fex2 plot splash -t speedup -i splash-collected.csv -o splash.pdf
+$ fex2 plot splash -p speedup -i splash-collected.csv -o splash.pdf
 ```
 
 This will produce a plot (`splash.pdf`) showing the performance improvement of GCC -O3 optimization on SPLASH benchmarks, averaged over 10 runs.
@@ -89,7 +89,7 @@ It also copies all the necessary makefiles to build the benchmarks (e.g., `bench
 Again, if you want to use your own benchmarks, you need to write the installation script yourself (optional) and create the corresponding makefiles (required).
 
 ```shell script
-$ cat <<EOT >> gcc_optimized.mk
+$ cat <<EOF >> gcc_optimized.mk
 include gcc_native.mk
 include common.mk
 
@@ -101,14 +101,18 @@ The only thing that you have to actually write in this experiment is the build d
 We want to test the optimizations of GCC - accordingly, we add `-O3` to `CFLAGS`.
 
 ```shell script
-$ fex2 run splash -b gcc_native gcc_optimized -t perf -r 10 -o splash-raw.txt
+$ fex2 run splash -b gcc_native gcc_optimized -t perf -r 10 -m 1 4 -o splash-raw.txt
 ```
 
 This will build all the benchmarks in SPLASH in two build configurations (using `build_types/gcc_native.mk` and `build_types/gcc_optimized.mk`),
-run them 10 times (`-r 10`), and measure their runtime (`-t perf`). The experiment itself is described in `experiments/splash/run.sh`.
+run them 10 times (`-r 10`), and measure their runtime (`-t perf`). The benchmarks are running in two configurations, with one and four execution threads (`-m 1 4`).
+
+The experiment itself is described in `experiments/splash/run.sh`.
 
 The output of the experiment is stored in `splash-raw.txt`.
 If you do not provide the `-o` option, the output will be printed into `stdout`.
+
+If you do not want to see the build logs, you can redirect them into a file with a flag ` --build-output build.txt`.
 
 By default, the builds are stored into `evaluation/build/splash`.
 You can change it in `config.py` (see [configuration](#configpy)).
