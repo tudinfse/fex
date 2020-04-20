@@ -1,70 +1,156 @@
-# Fex
+# Fex2
 
-Fex is a software evaluation framework.
-It is:
-* _extensible_: can be easily extended with custom experiment types,
-* _practical_: supports composition of different benchmark suites and real-world applications,
-* _reproducible_: it is built on container technology to guarantee the same software stack across platforms.
+Fex2 is a software evaluation framework.
+Its main focus is on evaluation of academic systems projects, though you could probably use it for non-academic projects as well.
 
-Fex provides an interface for unified building, running, and processing results of evaluation experiments.
-Out of the box, it supports the following workloads:
+Our goal was to create a flexible yet simple tool that you could start using when you need a quick and dirty experiment that verifies your idea, and you can keep extending it until you have a complete, publishable evaluation.
+Our secondary goal was to help you avoid committing [Benchmarking crimes](https://www.cse.unsw.edu.au/~gernot/benchmarking-crimes.html), though this is still work in progress.
 
-* Benchmark suites: Parsec 3.0, Phoenix, Splash 3
-* Applications: SQLite, PostgreSQL, Memcached, Nginx, Apache
+**NOTE**: This is a revised version of Fex, with a similar functionality, but a considerably different interface. If you're looking for Fex v1, you can find it in the branch `fex-1`.
 
-## Installing Fex
+# Install
 
-Fex does not require installation and only has to be downloaded:
-
-```
-git clone https://github.com/tudinfse/fex.git
-```
-
-To build Docker image for experiments:
-
-```
-make
+```shell script
+$ git clone https://github.com/tudinfse/fex.git
+$ cd fex
+$ sudo python ./setup.py bdist_egg && sudo pip install .
+$ fex2
+No action specified
+usage: fex2 [-h] {...
 ```
 
-Alternatively, if you want to run the experiments without Docker:
+# Preparing evaluation
 
-```bash
-sudo apt install python3-pip
-pip3 install --user coloredlogs nose2 py-cpuinfo pandas matplotlib scipy
+Initialize the working directory
 
-export PROJ_ROOT=`pwd`
+```shell script
+$ cd your_project
+$ mkdir evaluation
+$ cd evaluation
+$ fex2 init
 ```
 
-## Trying it out
+This command will initialize the standard directory structure:
+* `install` contains bash scripts for installing benchmarks and supporting tools.
+* `benchmarks` contains the source code of the benchmarks (if applicable).
+ Each benchmark directory also contains at least one makefile describing how to build the benchmark in a generic way (i.e., without specifying the compiler, build flags, etc.).
+* `build_types` contains makefiles, each describing a single build configuration (this is where we specify the compiler, build flags, and similar).
+These configurations are later used to build the benchmarks.
+By default, this directory contains two sample build types: `gcc_native` and `gcc_optimized`.
+You can use them as a reference.
+* `experiments` contains bash and/or python scripts that describe how to run experiments.
+Normally, every subdirectory within `experiments` describes how to measure a single parameter of a single benchmark or a benchmark suite.
 
-If you're using Docker, run the container:
+The initialization will also create a configuration file `config.py` which is the central configuration point for all experiment.
 
-```sh
-make run
+# Example: Benchmarking GCC optimizations on SPLASH 3.0
+
+## TL;DR
+
+```shell script
+$ fex2 template splash
+$ fex2 install splash
+$ cat <<EOT >> gcc_optimized.mk
+include gcc_native.mk
+include common.mk
+
+CFLAGS += -O3
+EOF
+$ fex2 run splash -b gcc_native gcc_optimized -t perf -r 10 -o splash-raw.txt
+$ fex2 collect splash -t perf -i splash-raw.txt -o splash-collected.csv
+$ fex2 plot splash -t speedup -i splash-collected.csv -o splash.pdf
 ```
 
-Run one of the experiments:
+This will produce a plot (`splash.pdf`) showing the performance improvement of GCC -O3 optimization on SPLASH benchmarks, averaged over 10 runs.
 
-```sh
-./fex.py install -n phoenix
-./fex.py run -n phoenix -t gcc_native -m 2 --num_runs 1
+## Explanation
+
+```shell script
+$ fex2 template splash
 ```
 
-This will install all dependencies of Phoenix benchmark suite, compile the benchmarks with GCC, and run them on 2 threads.
+Fex2 comes with several benchmarks and benchmarks suites ready to use ([list](#list-of-pre-configured-workloads)).
+Accordingly, this command (`template`) copies all the necessary scripts and creates directories for later experiments on SPLASH.
+If you want to run a benchmark not shipped with Fex2, you have to write the scripts yourself ([instructions](#manual-experiment-configuration)).
 
-The results of benchmark runs are aggregated in a log file, saved under `/data/results/phoenix/`.
-This directory is also mounted into your host machine, under `your_project_dir/data/results/phoenix`:
+Specifically, the `template` command will:
+* create an installation script in the `install` directory
+* create a `splash` subdirectory in `experiments` and, within it, create scripts for running performance measurements over SPLASH benchmarks, collecting results, and building plots.
+* create makefiles in `bencharms` that will be used to build the SPLASH benchmarks
+Your are later free to modify these scripts as you wish.
 
-```sh
-vim your_project_dir/data/results/phoenix/raw.csv
+```shell script
+$ fex2 install splash
 ```
 
+This command invokes `install/splash.sh` (created by the previous command), which in turn downloads the source code of the benchmarks into `benchmarks/splash`.
+It also copies all the necessary makefiles to build the benchmarks (e.g., `benchmarks/splash/fft/Makefile`).
 
-## Using Fex
+Again, if you want to use your own benchmarks, you need to write the installation script yourself (optional) and create the corresponding makefiles (required).
 
-Full Fex documentation is on our [wiki page](https://github.com/tudinfse/fex/wiki).
+```shell script
+$ cat <<EOT >> gcc_optimized.mk
+include gcc_native.mk
+include common.mk
 
-## Dependencies for building plots
+CFLAGS += -O3
+EOF
 ```
-pip install coloredlogs py-cpuinfo scipy pandas matplotlib
+
+The only thing that you have to actually write in this experiment is the build description.
+We want to test the optimizations of GCC - accordingly, we add `-O3` to `CFLAGS`.
+
+```shell script
+$ fex2 run splash -b gcc_native gcc_optimized -t perf -r 10 -o splash-raw.txt
 ```
+
+This will build all the benchmarks in SPLASH in two build configurations (using `build_types/gcc_native.mk` and `build_types/gcc_optimized.mk`),
+run them 10 times (`-r 10`), and measure their runtime (`-t perf`). The experiment itself is described in `experiments/splash/run.sh`.
+
+The output of the experiment is stored in `splash-raw.txt`.
+If you do not provide the `-o` option, the output will be printed into `stdout`.
+
+By default, the builds are stored into `evaluation/build/splash`.
+You can change it in `config.py` (see [configuration](#configpy)).
+
+```shell script
+$ fex2 collect splash -t perf -i splash-raw.txt -o splash-collected.csv
+```
+
+Usually, we need to parse the raw output of the experiments before further processing it.
+For this purpose, we have `collect.py` scripts (e.g., `experiments/splash/collect.py`).
+This command invokes the script for SPLASH.
+
+```shell script
+$ fex2 plot splash -p speedup -i splash-collected.csv -o splash.pdf
+```
+
+This command calculates the speedup of `gcc_optimized` over `gcc_native` (`*_native` is always used as a baseline) and
+build a bar plot of the results.
+The procedure is described in `experiments/splash/plot.py`.
+
+Internally, we use matplotlib, but you're free to use anything else in your experiments - just re-write `plot.py`.
+
+# Creating your own experiment
+
+TBD
+
+# Config.py
+
+TBD
+
+# List of pre-configured workloads
+
+Benchmark suites:
+* Splash
+* SPEC [Under reconstruction]
+* Parsec [Under reconstruction]
+* Phoenix [Under reconstruction]
+
+Applications:
+* Apache [Under reconstruction]
+* Memcached [Under reconstruction]
+* Nginx [Under reconstruction]
+* PostgreSQL [Under reconstruction]
+* SQLite [Under reconstruction]
+

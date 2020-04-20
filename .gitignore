@@ -63,8 +63,8 @@ results/
 tests/
 
 # shared directory for Docker
-data*/
-data/
+pkg_data/
+pkg_data/
 
 scripts/mng
 
