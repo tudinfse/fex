@@ -1,0 +1,13 @@
+# name,default,test
+barnes,< ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/n16384-p$thread_count,< ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/n8k-p$thread_count
+cholesky,-p$thread_count < ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/tk15.O,-p$thread_count < ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/tk14.O
+fft,-p$thread_count -m16,-p$thread_count -m2
+fmm,< ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/input.$thread_count.16384,< ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/input.$thread_count.256
+lu,-p$thread_count -n512,-p$thread_count -n16
+ocean,-p$thread_count -n258,-p$thread_count -n18
+radiosity,-p $thread_count -ae 5000 -bf 0.1 -en 0.05 -room -batch,-p $thread_count -ae 5 -bf 0.1 -en 0.05 -room -batch
+radix,-p$thread_count -n1048576,-p$thread_count -n256
+raytrace,-p$thread_count -m64 ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/car.env,-p$thread_count -m64 ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/car.env
+volrend,$thread_count ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/head 8,$thread_count ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/head 1
+water-nsquared,< ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/n512-p$thread_count,< ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/n512-p$thread_count
+water-spatial,< ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/n512-p$thread_count,< ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/n512-p$thread_count
