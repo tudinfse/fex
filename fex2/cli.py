@@ -102,6 +102,12 @@ def parse_arguments() -> Namespace:
         help='File for build logs (by default, printed to stdout)'
     )
     parser_run.add_argument(
+        '-f', '--force',
+        action='store_true',
+        required=False,
+        help='If the output files already exist, overwrite them.'
+    )
+    parser_run.add_argument(
         '-n', '--benchmark-name',
         required=False,
         type=str,
@@ -210,10 +216,6 @@ class Manager:
         shutil.copy2(data_dir + "experiments/common.sh", "experiments")
 
         shutil.copy2(data_dir + "install/common.sh", "install")
-        shutil.copy2(data_dir + "install/gcc.sh", "install")
-        shutil.copy2(data_dir + "install/llvm.sh", "install")
-        os.chmod("install/gcc.sh", stat.S_IXUSR | stat.S_IRUSR)
-        os.chmod("install/llvm.sh", stat.S_IXUSR | stat.S_IRUSR)
 
     def template(self):
         data_dir = os.path.dirname(helpers.__file__) + "/preconfigured/"
@@ -223,10 +225,12 @@ class Manager:
         benchmark_dirs = template_files[1]
         experiment_dirs = template_files[2]
 
+        default_permission = stat.S_IRWXU | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH | stat.S_IWOTH
+
         for f in install_files:
             if not os.path.isfile("install/" + f):
                 shutil.copy2(data_dir + "install/" + f, "install")
-                os.chmod("install/" + f, stat.S_IXUSR | stat.S_IRUSR)
+                os.chmod("install/" + f, default_permission)
 
         for d in benchmark_dirs:
             if not os.path.isdir("benchmarks/" + d):
@@ -235,7 +239,7 @@ class Manager:
         for d in experiment_dirs:
             if not os.path.isdir("experiments/" + d):
                 shutil.copytree(data_dir + "experiments/" + d, "experiments/" + d)
-                os.chmod("experiments/" + d + "/run.sh", stat.S_IXUSR | stat.S_IRUSR)
+                os.chmod("experiments/" + d + "/run.sh", default_permission)
 
     def install(self):
         name = self.args.name
@@ -269,6 +273,8 @@ class Manager:
             os.putenv("DRY_RUN", "1")
         if self.args.incremental_build:
             os.putenv("INCREMENTAL_BUILD", "1")
+        if self.args.force:
+            os.putenv("FORCE_OUTPUT_OVERWRITE", "1")
 
         if getattr(self.args, "output", False):
             os.putenv("EXPERIMENT_OUTPUT", self.args.output)

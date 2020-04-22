@@ -32,6 +32,7 @@ check_argument "$ITERATIONS" "ITERATIONS" "common.sh"
 # Read experiment parameters or set their defaults
 BUILD_LOG=${BUILD_LOG:-/dev/stdout}
 EXPERIMENT_OUTPUT=${EXPERIMENT_OUTPUT:-/dev/stdout}
+FORCE_OUTPUT_OVERWRITE=${FORCE_OUTPUT_OVERWRITE:-0}
 DRY_RUN=${DRY_RUN:-0}
 NO_BUILD=${NO_BUILD:-0}
 NO_RUN=${NO_RUN:-0}
@@ -221,10 +222,10 @@ function execute_experiment() {
     fi
 
 
-    if [ -f $BUILD_LOG ]; then
+    if [ -f $BUILD_LOG ] && [ "$FORCE_OUTPUT_OVERWRITE" -ne 1 ]; then
         error_exit "$BUILD_LOG already exists. Exiting to avoid corruption of old experiment results" 1
     fi
-    if [ -f $EXPERIMENT_OUTPUT  ]; then
+    if [ -f $EXPERIMENT_OUTPUT ] && [ "$FORCE_OUTPUT_OVERWRITE" -ne 1 ]; then
         error_exit "$EXPERIMENT_OUTPUT already exists. Exiting to avoid corruption of old experiment results" 1
     fi
     touch $BUILD_LOG $EXPERIMENT_OUTPUT

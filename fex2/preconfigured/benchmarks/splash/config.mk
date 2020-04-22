@@ -1,3 +1,9 @@
+# check that m4 is installed
+a := $(shell which m4)
+ifneq ($(.SHELLSTATUS), 0)
+$(error m4 is not installed)
+endif
+
 CFLAGS += -std=c11 -pthread -D_XOPEN_SOURCE=500 -D_POSIX_C_SOURCE=200112 -fno-strict-aliasing
 CXXFLAGS += -pthread -D_XOPEN_SOURCE=500 -D_POSIX_C_SOURCE=200112 -fno-strict-aliasing
 LDFLAGS += -lm -lpthread

@@ -81,9 +81,8 @@ def parse_logs(experiment_output, parsed_csv, parsers):
                     values['benchmark'] = get_run_argument('benchmark', line)
                     values['thread_count'] = get_run_argument('thread_count', line)
                     build_type = get_run_argument('type', line).split('_')
-                    assert(len(build_type) == 2)
                     values['type'] = build_type[0]
-                    values['subtype'] = build_type[1]
+                    values['subtype'] = "_".join(build_type[1:])
 
                     continue
 

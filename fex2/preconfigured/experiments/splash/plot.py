@@ -28,6 +28,8 @@ def build_plot(infile: str, outfile: str, plot_type: str = 'speedup'):
     # load the results into a DataFrame
     helpers.debug("Loading data")
     df = read_csv(infile, usecols=all_columns)
+    if df.empty:
+        helpers.error_exit(1, "The input file is empty or not readable")
 
     # aggregate the results of repeated experiments (i.e., average across all runs of the same experiment)
     helpers.debug("Processing results")
