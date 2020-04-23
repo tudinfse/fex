@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+###############################################################################
+# !!!! WARNING !!!!
+# This file is used across all experiments.
+# Modify it only if you *know* what you are doing!
+###############################################################################
+
 # Prepare a safe scripting environment
 set -euo pipefail
 IFS=$'\n\t'

@@ -1,9 +1,14 @@
-###############################
-# Common functionality:
-# - variables and default values
-# - targets
-# - helper functions
-###############################
+###############################################################################
+#
+# The file implements common build functionality:
+# - common variables and default values
+# - universal targets
+###############################################################################
+#
+# !!!! WARNING !!!!
+# This file is used across all experiments.
+# Modify it only if you *know* what you are doing!
+###############################################################################
 
 # check that required variables are specified
 ifndef PROJ_ROOT
