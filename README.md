@@ -43,7 +43,7 @@ Normally, every subdirectory within `experiments` describes how to measure a sin
 
 The initialization will also create a configuration file `config.py` which is the central configuration point for all experiment.
 
-# Example: Benchmarking GCC optimizations on SPLASH 3.0
+# Example 1: Benchmarking GCC optimizations on SPLASH 3.0
 
 ## TL;DR
 
@@ -135,7 +135,11 @@ The procedure is described in `experiments/splash/plot.py`.
 
 Internally, we use matplotlib, but you're free to use anything else in your experiments - just re-write `plot.py`.
 
-# Creating your own experiment
+# Example 2: Modifying an existing experiment
+
+TBD
+
+# Example 3: Creating an experiment from scratch
 
 TBD
 

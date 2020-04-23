@@ -7,22 +7,6 @@ makefiles/local.mk
 .idea/
 *.sublime*
 
-
-# GTAGS
-.tags
-
-# LaTeX and related
-*.bbl
-*.blg
-*.synctex.gz
-*.aux
-*.fls
-*.fdb_latexmk
-*.jpeg
-*.jpg
-*.pdf
-*.txt
-
 # C/C++
 *.bc
 *.ll
@@ -45,28 +29,11 @@ makefiles/local.mk
 *.err
 *.fuse*
 
-nops.c
-
-# == Project ==
-
-tmp.sh
+# package
+dist/
+fex2.egg-info/
+tmp/
+files.txt
 
 # working directories
 build/
-bin/
-*/results/*
-tmp/
-results/
-*/input/*
-
-# tests are temporary disabled
-tests/
-
-# shared directory for Docker
-pkg_data/
-pkg_data/
-
-scripts/mng
-
-# ignore statistics - it is changed each time a plot is generated
-*.stats.csv
