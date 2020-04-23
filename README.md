@@ -36,7 +36,7 @@ This command will initialize the standard directory structure:
  Each benchmark directory also contains at least one makefile describing how to build the benchmark in a generic way (i.e., without specifying the compiler, build flags, etc.).
 * `build_types` contains makefiles, each describing a single build configuration (this is where we specify the compiler, build flags, and similar).
 These configurations are later used to build the benchmarks.
-By default, this directory contains two sample build types: `gcc_native` and `gcc_optimized`.
+By default, this directory contains a sample build type: `gcc_native`.
 You can use them as a reference.
 * `experiments` contains bash and/or python scripts that describe how to run experiments.
 Normally, every subdirectory within `experiments` describes how to measure a single parameter of a single benchmark or a benchmark suite.

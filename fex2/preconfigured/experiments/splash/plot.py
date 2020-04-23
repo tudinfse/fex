@@ -11,7 +11,7 @@ RENAMINGS = {
 }
 
 
-class SplashBarplotStyle(plot.BarplotStyle):
+class SplashBarPlotStyle(plot.BarPlotStyle):
     colors = plot.ColorPallets.PRINTER_FRIENDLY
     hatches = ("", "//////", "", "", r"\\\\\\", "//////",)
 
@@ -64,7 +64,7 @@ def build_plot(infile: str, outfile: str, plot_type: str = 'speedup'):
 
     # build the plot
     helpers.debug("Building a plot")
-    plt = plot.BarplotOverhead(style=SplashBarplotStyle)
+    plt = plot.BarPlot(style=SplashBarPlotStyle)
     plt.build(df,
               title="Speedup of GCC -O3 optimizations",
               ylabel="Normalized runtime\n(w.r.t. native GCC)",

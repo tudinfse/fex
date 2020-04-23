@@ -2,13 +2,21 @@ import csv
 import re
 
 
-def parse_time(s):
+def locale_neutral_number(s: str, ignore_period, ignore_comma):
+    if ignore_period:
+        s = s.replace('.', '')
+    if ignore_comma:
+        s = s.replace(',', '')
+    return s
+
+
+def parse_time(s: str, ignore_period=False, ignore_comma=True):
     """
     Parse time as reported by /usr/bin/time, i.e., [hours:]minutes:seconds"
     and return it as number of seconds (float )
     Return 0.0 if does not match
     """
-    s = s.replace(',', '.')  # due to different locales
+    s = locale_neutral_number(s, ignore_period, ignore_comma)
 
     pattern = r"((\d{0,2}):)?(\d{1,2}):(\d{1,2}\.\d{1,5})"
     match = re.search(pattern, s)
@@ -22,8 +30,8 @@ def parse_time(s):
     return hours * 3600 + minutes * 60 + seconds
 
 
-def get_float_from_string(s):
-    s = s.replace(',', '.')         # due to different locales
+def get_float_from_string(s: str, ignore_period=False, ignore_comma=True):
+    s = locale_neutral_number(s, ignore_period, ignore_comma)
     pattern = r'\d{1,10}\.\d{1,10}'
     match = re.search(pattern, s)
     if match:
@@ -33,11 +41,8 @@ def get_float_from_string(s):
     return 0.0
 
 
-def get_int_from_string(s, ignore_period=True, ignore_comma=True):
-    if ignore_period:
-        s = s.replace('.', '')
-    if ignore_comma:
-        s = s.replace(',', '')
+def get_int_from_string(s: str, ignore_period=True, ignore_comma=True):
+    s = locale_neutral_number(s, ignore_period, ignore_comma)
     pattern = r'\d{1,20}'
     match = re.search(pattern, s)
     if match:

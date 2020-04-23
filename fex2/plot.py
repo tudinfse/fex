@@ -18,11 +18,6 @@ class ColorPallets:
     QUALITATIVE_7 = ['#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69']
 
 
-HATCH_TYPES = ['\\', '', '/', 'x', '+', '-', '*']
-LINE_STYLES = ['-', '--', ':', '-', '--', ':', '-', '--', ':']
-MARK_STYLES = ['o', 'v', 'p', 's', '^', '3', '4', 'D', 'H']
-
-
 class AbstractStyle:
     __metaclass__ = ABCMeta
     ax: axes.Axes
@@ -107,7 +102,7 @@ class BasicStyle(AbstractStyle):
             linestyle="-",  # solid line
         )
         self.ax.xaxis.grid(False)  # disable vertical lines
-        self.ax.set_axisbelow(True)  # Lines behind the bars
+        self.ax.set_axisbelow(True)  # lines in the background
 
     def ticks(self):
         self.ax.tick_params(
@@ -132,16 +127,16 @@ class BasicStyle(AbstractStyle):
         )
 
     def hatching(self):
-        if self.need_hatching:
-            bars = self.ax.patches
-            #            num_groups = int(len(bars) / len(self.hatches))
-            num_groups = len(self.ax.get_xticks())
-            hatches = [h for h in self.hatches for n in range(num_groups)]
+        if not self.need_hatching:
+            return
 
-            for bar, hatch in zip(bars, hatches):
-                if hatch:
-                    bar.set_hatch(hatch)
-                    # bar.set_ec("black")
+        bars = self.ax.patches
+        num_groups = len(self.ax.get_xticks())
+        hatches = [h for h in self.hatches for n in range(num_groups)]
+
+        for bar, hatch in zip(bars, hatches):
+            if hatch:
+                bar.set_hatch(hatch)
 
     def legend(self):
         pass
@@ -160,21 +155,19 @@ class BasicStyle(AbstractStyle):
         pass
 
 
-class BarplotStyle(BasicStyle):
+class BarPlotStyle(BasicStyle):
     bar_edge_color = "black"
     colors = ColorPallets.PAIRED
     color_single = ColorPallets.PAIRED[0]
     hatches = ("//////", "", "", r"\\\\\\", "//////",)
 
-    def __init__(self, legend_ncol=5, legend_loc=None, **kwargs):
-        super(BarplotStyle, self).__init__(**kwargs)
+    def __init__(self, legend_ncol=5, legend_loc=(0.005, 0.879), **kwargs):
+        super(BarPlotStyle, self).__init__(**kwargs)
         self.legend_ncol = legend_ncol
-
-        # I din't set it as default attribute value to support situation when caller also had a default value
-        self.legend_loc = legend_loc if legend_loc else (0.005, 0.879)
+        self.legend_loc = legend_loc
 
     def ticks(self):
-        super(BarplotStyle, self).ticks()
+        super(BarPlotStyle, self).ticks()
         self.ax.set_xticklabels(self.ax.xaxis.get_majorticklabels(), rotation=30)
 
     def legend(self):
@@ -197,21 +190,20 @@ class BarplotStyle(BasicStyle):
 class LinePlotStyle(BasicStyle):
     colors = ['#969696', '#a6cee3', '#1f78b4', '#33a02c', '#b2df8a', '#E8F7DA', '#e31a1c', '#fdbf6f']
 
-    # def legend(self, lines=(), labels=(), legend_loc="best"):
-    #     l = self.ax.legend(
-    #         lines,
-    #         labels,
-    #         title=None,
-    #         loc=legend_loc,
-    #         frameon=True,
-    #         ncol=1,
-    #         labelspacing=0.5,
-    #         columnspacing=1,
-    #         borderpad=0.5,
-    #         handlelength=2,
-    #         fontsize=12,
-    #     )
-    #     l.get_frame().set_facecolor('#ffffff')
+    def legend(self):
+        self.ax.legend(
+            (),
+            (),
+            title=None,
+            loc="best",
+            frameon=True,
+            ncol=1,
+            labelspacing=0.5,
+            columnspacing=1,
+            borderpad=0.5,
+            handlelength=2,
+            fontsize=12,
+        ).get_frame().set_facecolor('#ffffff')
 
 
 # =============================================================================
@@ -239,9 +231,9 @@ class FexPlot:
         fig.savefig(file, **kwargs)
 
 
-class BarplotOverhead(FexPlot):
-    def __init__(self, style=BarplotStyle):
-        super(BarplotOverhead, self).__init__(style)
+class BarPlot(FexPlot):
+    def __init__(self, style=BarPlotStyle):
+        super(BarPlot, self).__init__(style)
 
     def build(self, df,
               xlabel="",
@@ -319,8 +311,7 @@ class LinePlotThroughput(FexPlot):
     #                 x="tput",
     #                 y="lat",
     #                 kind="line",
-    #                 #            linestyle=LINE_STYLES[idx],
-    #                 marker=MARK_STYLES[idx],
+    #                 marker='o',
     #                 markersize=8,
     #                 color=style.colors[idx],
     #                 title="",
