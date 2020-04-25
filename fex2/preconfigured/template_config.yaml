@@ -1,0 +1,5 @@
+# Uncomment a line to customize the property
+
+# baseline_subtype: native
+# build_path: ./build
+# colored_logs: on

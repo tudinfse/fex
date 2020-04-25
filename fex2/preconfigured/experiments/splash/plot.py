@@ -20,6 +20,8 @@ def build_plot(infile: str, outfile: str, plot_type: str = 'speedup'):
     if plot_type != 'speedup':
         helpers.error_exit(1, 'splash/plot.py: Not supported plot type')
 
+    conf = config.Config()
+
     # print(df)
     metadata_columns = ["benchmark", "type", "subtype", "thread_count"]
     data_column = "cycles"
@@ -37,12 +39,12 @@ def build_plot(infile: str, outfile: str, plot_type: str = 'speedup'):
     df = df.reset_index()
 
     # normalize
-    df = helpers.calculate_overheads(df, metadata_columns, data_column, baseline_subtype="native")
+    df = helpers.calculate_overheads(df, metadata_columns, data_column, baseline_subtype=conf.baseline_subtype)
     df["overhead"] = 1 / df["overhead"]  # in this experiment, we're interested in speedup
 
     # cleanup
     df.dropna(inplace=True)
-    df = df[df["subtype"] != 'native']  # native overhead is meaningless; it's always 1.0
+    df = df[df["subtype"] != conf.baseline_subtype]  # baseline overhead is meaningless; it's always 1.0
 
     # restructure the table for easier plotting and calculate the overall mean values across all benchmarks
     pivoted = df.pivot_table(

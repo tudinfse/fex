@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-
 from argparse import ArgumentParser, Namespace
-from fex2 import helpers
+from fex2 import helpers, config
 import os
 import shutil
 import sys
 import stat
 import subprocess
+import yaml
 
 
 def parse_arguments() -> Namespace:
@@ -195,6 +195,28 @@ class Manager:
         getattr(self, self.action)()
 
     @staticmethod
+    def load_config():
+        c = config.Config()
+        try:
+            with open('config.yaml', 'r') as f:
+                loaded_configuration = yaml.safe_load(f)
+                for key, value in loaded_configuration.items():
+                    if not hasattr(c, key):
+                        helpers.error_exit(1, f"config.yaml contains an unknown property '{key}'")
+                    setattr(c, key, value)
+        except FileNotFoundError:
+            pass  # if the config file not found, keep the default config
+        except AttributeError:
+            pass  # same for empty configs
+
+        # if necessary, reconfigure colors
+        if not c.colored_logs:
+            helpers.Colors.DEBUG = ''
+            helpers.Colors.WARNING = ''
+            helpers.Colors.ERROR = ''
+            helpers.Colors.ENDC = ''
+
+    @staticmethod
     def init():
         data_dir = os.path.dirname(helpers.__file__) + "/preconfigured/"
 
@@ -209,7 +231,7 @@ class Manager:
         os.mkdir("benchmarks")
 
         # copy example files and templates
-        shutil.copy2(data_dir + "template_config.py", "config.py")
+        shutil.copy2(data_dir + "template_config.yaml", "config.yaml")
 
         shutil.copy2(data_dir + "build_types/gcc_native.mk", "build_types")
         shutil.copy2(data_dir + "build_types/common.mk", "build_types")
@@ -255,6 +277,7 @@ class Manager:
 
     def run(self):
         name = self.args.name
+        c = config.Config()
         helpers.debug("Starting experiment " + name)
 
         # pass the arguments down to bash
@@ -282,6 +305,9 @@ class Manager:
             os.putenv("BUILD_LOG", self.args.build_output)
         if getattr(self.args, "benchmark_name", False):
             os.putenv("BENCHMARK_NAME", self.args.benchmark_name)
+
+        # pass down the global configuration
+        os.putenv("COLORED_LOGS", "1" if c.colored_logs else "0")
 
         # run the experiment
         try:
@@ -317,6 +343,7 @@ class Manager:
 
 def main():
     manager = Manager(parse_arguments())
+    manager.load_config()
     manager.execute_action()
 
 

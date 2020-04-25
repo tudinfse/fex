@@ -9,7 +9,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
- # at exit, kill all descendants
+# at exit, kill all descendants
 trap "trap - SIGTERM && set +e; kill -- -$$ 2>/dev/null" SIGINT SIGTERM
 trap "exit_code=\$?; set +e; kill -- -$$ 2>/dev/null ; exit \$exit_code" EXIT
 
@@ -44,13 +44,14 @@ NO_BUILD=${NO_BUILD:-0}
 NO_RUN=${NO_RUN:-0}
 INCREMENTAL_BUILD=${INCREMENTAL_BUILD:-0}
 BENCHMARK_NAME=${BENCHMARK_NAME:-""}
+COLORED_LOGS=${COLORED_LOGS:-0}
 
-BUILD_ROOT=${BUILD_ROOT:-${PROJ_ROOT}/build}   # TODO: these two lines are duplicated in common.mk. Fix it
+BUILD_ROOT=${BUILD_ROOT:-${PROJ_ROOT}/build} # TODO: these two lines are duplicated in common.mk. Fix it
 BUILD_DIR=${BUILD_DIR:-${BUILD_ROOT}/${NAME}}
 
 # Initialize local variables
-IFS=' ' read -r -a types <<< "$BUILD_TYPES"
-IFS=' ' read -r -a thread_counts <<< "$NUM_THREADS"
+IFS=' ' read -r -a types <<<"$BUILD_TYPES"
+IFS=' ' read -r -a thread_counts <<<"$NUM_THREADS"
 
 is_benchmark_suite=0
 command=""
@@ -61,10 +62,17 @@ bin=""
 declare -a execution_header
 
 # shell output colors
-DEBUG='\033[94m\033[1m'
-WARNING='\033[93m\033[1m'
-ERROR='\033[91m\033[1m'
-ENDC='\033[0m'
+if [ $COLORED_LOGS -eq 1 ]; then
+    DEBUG='\033[94m\033[1m'
+    WARNING='\033[93m\033[1m'
+    ERROR='\033[91m\033[1m'
+    ENDC='\033[0m'
+else
+    DEBUG=''
+    WARNING=''
+    ERROR=''
+    ENDC=''
+fi
 
 ##############################
 # Shortcuts and helpers
@@ -105,6 +113,7 @@ function read_benchmark_arguments() {
 
     # find the benchmark (row)
     while IFS=, read -r -a line; do
+        [ -z "$line" ] && continue
         if [ ${line[0]} == $benchmark ]; then
             input=${line[$input_index]}
             return
@@ -180,8 +189,8 @@ function build() {
         cmd+=" clean all"
     fi
 
-    echo "[FEX2]" "${execution_header[@]}" >> $BUILD_LOG
-    switchable_eval "$cmd" >> $BUILD_LOG 2>&1
+    echo "[FEX2]" "${execution_header[@]}" >>$BUILD_LOG
+    switchable_eval "$cmd" >>$BUILD_LOG 2>&1
 }
 
 function single_execution() {
@@ -199,8 +208,8 @@ function single_execution() {
     # expand the command parameters
     cmd=${command/??bin/$bin}
     cmd=${cmd/??input/$input}
-    echo "[FEX2]" "${execution_header[@]}" >> $EXPERIMENT_OUTPUT
-    switchable_eval "$cmd" >> $EXPERIMENT_OUTPUT 2>&1
+    echo "[FEX2]" "${execution_header[@]}" >>$EXPERIMENT_OUTPUT
+    switchable_eval "$cmd" >>$EXPERIMENT_OUTPUT 2>&1
 }
 
 function cleanup() {
@@ -227,12 +236,19 @@ function execute_experiment() {
         benchmarks=("$BENCHMARK_NAME")
     fi
 
-
-    if [ -f $BUILD_LOG ] && [ "$FORCE_OUTPUT_OVERWRITE" -ne 1 ]; then
-        error_exit "$BUILD_LOG already exists. Exiting to avoid corruption of old experiment results" 1
+    if [ -f $BUILD_LOG ]; then
+        if [ "$FORCE_OUTPUT_OVERWRITE" -eq 1 ]; then
+            echo "" >$BUILD_LOG
+        else
+            error_exit "$BUILD_LOG already exists. Exiting to avoid corruption. Add '-f' to ignore this error." 1
+        fi
     fi
-    if [ -f $EXPERIMENT_OUTPUT ] && [ "$FORCE_OUTPUT_OVERWRITE" -ne 1 ]; then
-        error_exit "$EXPERIMENT_OUTPUT already exists. Exiting to avoid corruption of old experiment results" 1
+    if [ -f $EXPERIMENT_OUTPUT ]; then
+        if [ "$FORCE_OUTPUT_OVERWRITE" -eq 1 ]; then
+            echo "" >$EXPERIMENT_OUTPUT
+        else
+            error_exit "$EXPERIMENT_OUTPUT already exists. Exiting to avoid corruption. Add '-f' to ignore this error." 1
+        fi
     fi
     touch $BUILD_LOG $EXPERIMENT_OUTPUT
 

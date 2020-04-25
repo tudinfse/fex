@@ -38,7 +38,7 @@ This command will initialize a directory structure for later experiments:
 * `experiments` contains scripts for running experiments, collecting experiment results, and building plots.
 Every subdirectory within `experiments` describes how to run a single experiment on a single benchmark (or a benchmark suite).
 
-It will also create a configuration file `config.py` which you can use to set the framework's preferences (see [configuration](#configpy)).
+It will also create a configuration file `config.yaml` which you can use to set the framework's preferences (see [configuration](#config)).
 
 # Running an experiment, in a nutshell
 
@@ -88,7 +88,7 @@ The `<subtype>` part is a variation of the build type.
 For example, `<subtype>` might be a name of a build configuration (e.g., `optimized`, `alternative_build`, etc.)
 
 The `native` subtypes are used as a baseline when aggregating data and building plots.
-If necessary, the baseline subtype can be changed in `config.py`.
+If necessary, the baseline subtype can be changed in `config.yaml`.
 
 # Example 1: Benchmarking GCC optimizations on SPLASH 3.0
 
@@ -165,7 +165,7 @@ If you do not provide the `-o` option, the output will be printed into `stdout`.
 If you do not want to see the build logs, you can redirect them into a file with a flag ` --build-output build.txt`.
 
 By default, the builds are stored into `evaluation/build/splash`.
-You can change it in `config.py` (see [configuration](#configpy)).
+You can change it in `config.yaml` (see [configuration](#config)).
 
 ### Collect
 ```shell script
@@ -195,7 +195,7 @@ TBD
 
 TBD
 
-# Config.py
+# Config
 
 TBD
 

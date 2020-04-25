@@ -42,6 +42,7 @@ setup(name='fex2',
           'pandas>=1.0.2',
           'numpy>=1.18.1',
           'scipy>=1.4.1',
-          'matplotlib>=3.2.1'
+          'matplotlib>=3.2.1',
+          'pyyaml>=5.1'
       ],
       )

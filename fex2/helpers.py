@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 
+
 class Colors:
     DEBUG = '\033[94m\033[1m'
     WARNING = '\033[93m\033[1m'
