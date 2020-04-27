@@ -183,7 +183,9 @@ class Manager:
     args: Namespace
 
     template_files = {
-        "splash": (("splash.sh",), ("splash",), ("splash",))
+        # experiment name: ((install scripts), (benchmark dirs), (experiment dirs))
+        "splash": (("splash.sh",), ("splash",), ("splash",)),
+        "speccpu": (("speccpu.sh",), ("speccpu",), ("speccpu",)),
     }
 
     def __init__(self, args: Namespace):

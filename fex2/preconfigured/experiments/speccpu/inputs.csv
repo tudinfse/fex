@@ -1,0 +1,20 @@
+# name,default,test
+400.perlbench,-I${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/all/input/lib ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/all/input/splitmail.pl 1600 12 26 16 4500,-I${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/all/input/lib ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/all/input/splitmail.pl 1600 12 26 16 1
+401.bzip2,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/chicken.jpg 30,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/text.html 30
+403.gcc,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/166.i -O0,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/cccp.i
+429.mcf,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/inp.in,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/all/test/inp.in
+433.milc,< ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/su3imp.in,< ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/su3imp.in
+444.namd,--input ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/all/input/namd.input --iterations 38 --output namd.out,--input ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/all/input/namd.input --iterations 1
+445.gobmk,--quiet --gtp-input ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/13x13.tst,--quiet --gtp-input ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/cutstone.tst
+447.dealII,8,2
+450.soplex,-m10000 ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/pds-50.mps,-m10000 ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/test.mps
+453.povray,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/SPEC-benchmark-ref.ini +L${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/all/input,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/SPEC-benchmark-test.ini +L${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/all/input
+456.hmmer,--fixed 0 --mean 500 --num 500000 --sd 350 --seed 0 ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/retro.hmm,--fixed 0 --mean 325 --num 45000 --sd 200 --seed 0 ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/bombesin.hmm
+458.sjeng,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/ref.txt,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/test.txt
+462.libquantum,1397 8,33 5
+464.h264ref,-d ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/foreman_ref_encoder_main.cfg -p InputFile=${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/all/input/foreman_qcif.yuv,-d ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/foreman_ref_encoder_main.cfg -p InputFile=${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/all/input/foreman_qcif.yuv -p SourceWidth=16 -p SourceHeight=16 -p FramesToBeEncoded=4
+470.lbm,3000 reference.dat 0 0 ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/100_100_130_ldc.of,20 reference.dat 0 1 ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/100_100_130_cf_a.of,
+471.omnetpp,-f ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/omnetpp.ini,-f ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/omnetpp.ini
+473.astar,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/rivers.cfg,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/lake.cfg
+482.sphinx3,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/ctlfile ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/ ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/args.an4,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/ctlfile ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/ ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/args.an4
+483.xalancbmk,-o output.xml ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/t5.xml ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/ref/input/xalanc.xsl,-o output.xml ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/test.xml ${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/test/input/xalanc.xsl

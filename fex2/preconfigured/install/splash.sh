@@ -7,12 +7,11 @@ source "${PROJ_ROOT}"/install/common.sh
 # get the benchmark sources
 clone_git_repo https://github.com/SakalisC/Splash-3.git /tmp/splash/ ''
 
-
 # copy the sources into correct paths
 tmp_dir=/tmp/splash
 
 apps_dir=${tmp_dir}/codes/apps
-for i in $(ls ${apps_dir}) ; do
+for i in $(ls ${apps_dir}); do
     install_dir=./benchmarks/splash/$i/src
     cp -r ${apps_dir}/$i/ ${install_dir}
     if [ -d ${install_dir}/inputs/ ]; then
@@ -21,7 +20,7 @@ for i in $(ls ${apps_dir}) ; do
 done
 
 kernels_dir=${tmp_dir}/codes/kernels
-for i in $(ls ${kernels_dir}) ; do
+for i in $(ls ${kernels_dir}); do
     install_dir=./benchmarks/splash/$i/src
     cp -r ${kernels_dir}/$i/ ${install_dir}
     if [ -d ${install_dir}/inputs/ ]; then

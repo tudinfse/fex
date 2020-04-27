@@ -3,11 +3,7 @@ from pandas import read_csv, DataFrame
 from scipy import stats
 
 RENAMINGS = {
-    "('gcc', 'optimized', 1)": "1 thread",
-    "('gcc', 'optimized', 2)": "2 threads",
-    "('gcc', 'optimized', 4)": "4 threads",
-    "('gcc', 'optimized', 8)": "8 threads",
-    "('gcc', 'optimized', 16)": "16 threads"
+    "('gcc', 'optimized', 1)": "GCC -O3",
 }
 
 
@@ -18,7 +14,7 @@ class SplashBarPlotStyle(plot.BarPlotStyle):
 
 def build_plot(infile: str, outfile: str, plot_type: str = 'speedup'):
     if plot_type != 'speedup':
-        helpers.error_exit(1, 'splash/plot.py: Not supported plot type')
+        helpers.error_exit(1, 'speccpu/plot.py: Not supported plot type')
 
     conf = config.Config()
 
@@ -70,7 +66,7 @@ def build_plot(infile: str, outfile: str, plot_type: str = 'speedup'):
     plt.build(df,
               title="Speedup of GCC -O3 optimizations",
               ylabel="Normalized runtime\n(w.r.t. native GCC)",
-              vline_position=11.5
+              vline_position=18.5
               )
 
     plt.savefig(
