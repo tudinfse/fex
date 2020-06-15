@@ -180,6 +180,7 @@ class Manager:
         # experiment name: ((install scripts), (benchmark dirs), (experiment dirs))
         "splash": (("splash.sh",), ("splash",), ("splash",)),
         "speccpu": (("speccpu.sh",), ("speccpu",), ("speccpu",)),
+        "phoenix": (("phoenix.sh",), ("phoenix",), ("phoenix",)),
     }
 
     def __init__(self, args: Namespace):

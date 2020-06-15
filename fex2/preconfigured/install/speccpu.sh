@@ -39,23 +39,23 @@ supported_benchmarks=(
 )
 
 # copy benchmarks into the project
-src_dir=${SPECCPU_PATH}/benchspec/CPU2006
-install_dir=./benchmarks/speccpu
+src_dir="$SPECCPU_PATH/benchspec/CPU2006"
+install_dir="$PROJ_ROOT/benchmarks/speccpu"
 for i in ${supported_benchmarks[*]}; do
-    cp -r $src_dir/$i/src $install_dir/$i/src
-    cp -r $src_dir/$i/data $install_dir/$i/inputs
+    cp -r "$src_dir/$i/src" "$install_dir/$i/src"
+    cp -r "$src_dir/$i/data" "$install_dir/$i/inputs"
 done
 
 
 # patch some file names to simplify builds
-if [ -f $install_dir/445.gobmk/src/engine/influence.c ]; then
-    mv $install_dir/445.gobmk/src/engine/influence.c $install_dir/445.gobmk/src/engine/engine_influence.c
+if [ -f "$install_dir/445.gobmk/src/engine/influence.c" ]; then
+    mv "$install_dir/445.gobmk/src/engine/influence.c" "$install_dir/445.gobmk/src/engine/engine_influence.c"
 fi
 
 # patch file paths
-sed -i "s:\"cpu2006_mhonarc:\"${install_dir}/400.perlbench/inputs/all/input/cpu2006_mhonarc:g" ${install_dir}/400.perlbench/inputs/all/input/splitmail.pl
-sed -i "s:SPEC-benchmark-ref.pov:${install_dir}/453.povray/inputs/ref/input/SPEC-benchmark-ref.pov:g" ${install_dir}/453.povray/inputs/ref/input/SPEC-benchmark-ref.ini
-sed -i "s:\"beams.dat:\"${install_dir}/482.sphinx3/inputs/ref/input/beams.dat:g" ${install_dir}/482.sphinx3/src/spec_main_live_pretend.c  # yes, the file path is hardcoded in a source file. *facepalm*
-sed -i "s:model/:${install_dir}/482.sphinx3/inputs/ref/input/model/:g" ${install_dir}/482.sphinx3/inputs/ref/input/args.an4 # and relative paths are hardcoded too
-cp -r ${install_dir}/482.sphinx3/inputs/all/input/model/ ${install_dir}/482.sphinx3/inputs/ref/input/
-touch ${install_dir}/482.sphinx3/inputs/ref/input/ctlfile
+sed -i "s:\"cpu2006_mhonarc:\"$install_dir/400.perlbench/inputs/all/input/cpu2006_mhonarc:g" "$install_dir/400.perlbench/inputs/all/input/splitmail.pl"
+sed -i "s:SPEC-benchmark-ref.pov:$install_dir/453.povray/inputs/ref/input/SPEC-benchmark-ref.pov:g" "$install_dir/453.povray/inputs/ref/input/SPEC-benchmark-ref.ini"
+sed -i "s:\"beams.dat:\"$install_dir/482.sphinx3/inputs/ref/input/beams.dat:g" "$install_dir/482.sphinx3/src/spec_main_live_pretend.c"  # yes, the file path is hardcoded in a source file. *facepalm*
+sed -i "s:model/:$install_dir/482.sphinx3/inputs/ref/input/model/:g" "$install_dir/482.sphinx3/inputs/ref/input/args.an4" # and relative paths are hardcoded too
+cp -r "$install_dir/482.sphinx3/inputs/all/input/model/" "$install_dir/482.sphinx3/inputs/ref/input/"
+touch "$install_dir/482.sphinx3/inputs/ref/input/ctlfile"
