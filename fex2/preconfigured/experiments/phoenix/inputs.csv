@@ -1,0 +1,8 @@
+# name,default,test
+histogram,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/small.bmp $thread_count,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/small.bmp $thread_count
+kmeans,-d 5 -c 100 -p 30000 -s 30000,-d 2 -c 10 -p 100 -s 100
+linear_regression,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/key_file_100MB.txt $thread_count,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/key_file_50MB.txt $thread_count
+matrix_multiply,1500 1 $thread_count,15 1 $thread_count
+pca, -r 3000 -c 2500, -r 30 -c 30
+string_match,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/key_file_50MB.txt $thread_count,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/key_file_50MB.txt $thread_count
+word_count,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/word_50MB.txt 10 $thread_count,${PROJ_ROOT}/benchmarks/${NAME}/${benchmark}/inputs/word_10MB.txt 10 $thread_count

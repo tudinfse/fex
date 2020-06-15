@@ -3,7 +3,11 @@ from pandas import read_csv, DataFrame
 from scipy import stats
 
 RENAMINGS_SPEEDUP = {
-    "('gcc', 'optimized', 1)": "GCC -O3",
+    "('gcc', 'optimized', 1)": "1 thread",
+    "('gcc', 'optimized', 2)": "2 threads",
+    "('gcc', 'optimized', 4)": "4 threads",
+    "('gcc', 'optimized', 8)": "8 threads",
+    "('gcc', 'optimized', 16)": "16 threads"
 }
 
 
@@ -16,7 +20,7 @@ def build_plot(infile: str, outfile: str, plot_type: str = 'speedup'):
     if plot_type == 'speedup':
         build_plot_speedup(infile, outfile)
     else:
-        helpers.error_exit(1, f'speccpu/plot.py: Not supported plot type "{plot_type}"')
+        helpers.error_exit(1, f'phoenix/plot.py: Not supported plot type "{plot_type}"')
 
 
 def build_plot_speedup(infile: str, outfile: str):

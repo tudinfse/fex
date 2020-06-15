@@ -29,7 +29,7 @@ function error_exit() {
     exit "$2"
 }
 
-function unexpected_error_exit() {
+function error_exit_with_backtrace() {
     echo -e "${ERROR}[UNEXPECTED ERROR] $1 $ENDC"
     backtrace
     exit "$2"
@@ -37,7 +37,7 @@ function unexpected_error_exit() {
 
 function check_argument() {
     if [[ -z "$1" ]]; then
-        unexpected_error_exit "Variable is not defined" 1
+        error_exit_with_backtrace "Variable is not defined" 1
     fi
 }
 
@@ -94,6 +94,21 @@ fi
 ##############################
 # Shortcuts and helpers
 ##############################
+execution_header=()
+function header_push() {
+    execution_header+=("$1")
+}
+
+function header_pop() {
+    local top=("${!execution_header[@]}")
+    local top_index=${#execution_header[@]}
+    if [ "$top_index" -le 0 ]; then
+        echo "Current Header: " "${execution_header[@]}"
+        error_exit "header_pop: unbalanced pop from the header" 1
+    fi
+    unset 'execution_header[${top[@]: -1}]'
+}
+
 function is() {
     local value=$1
     if [[ "$value" == true ]]; then
@@ -101,7 +116,7 @@ function is() {
     elif [[ "$value" == false ]]; then
         return 1;
     else
-        unexpected_error_exit "Invalid boolean value $value" 1
+        error_exit_with_backtrace "Invalid boolean value $value" 1
     fi;
 }
 
@@ -153,7 +168,9 @@ function for_types() {
     check_argument "$types"
     local type
     for type in ${types[*]}; do
+        header_push "type: $type;"
         "$@"
+        header_pop
     done
 }
 
@@ -161,7 +178,9 @@ function for_benchmarks() {
     check_argument "$benchmarks"
     local benchmark
     for benchmark in ${benchmarks[*]}; do
+        header_push "benchmark: $benchmark;"
         "$@"
+        header_pop
     done
 }
 
@@ -169,7 +188,9 @@ function for_thread_counts() {
     check_argument "$thread_counts"
     local thread_count
     for thread_count in ${thread_counts[*]}; do
+        header_push "thread_count: $thread_count;"
         "$@"
+        header_pop
     done
 }
 
@@ -177,7 +198,9 @@ function for_iterations() {
     check_argument "$ITERATIONS"
     local iteration
     for iteration in $(seq 1 $ITERATIONS); do
+        header_push "iteration: $iteration;"
         "$@"
+        header_pop
     done
 }
 
@@ -191,8 +214,7 @@ function setup() {
 function build() {
     check_argument "$type"
     check_argument "$benchmark"
-    local execution_header="type: $type; benchmark: $benchmark;"
-    debug "Building $execution_header"
+    debug "Building" "${execution_header[@]}"
 
     local cmd="make BUILD_TYPE=$type -I${PROJ_ROOT}/build_types -C ${PROJ_ROOT}/benchmarks/$NAME/$benchmark"
     if is "$experiment_is_benchmark_suite"; then
@@ -202,7 +224,7 @@ function build() {
         cmd+=" clean all"
     fi
 
-    echo "[FEX2_EXPERIMENT] $execution_header" >>$BUILD_LOG
+    echo "[FEX2_EXPERIMENT]" "${execution_header[@]}" >>$BUILD_LOG
     switchable_eval "$cmd" >>$BUILD_LOG 2>&1
 }
 
@@ -210,8 +232,7 @@ function single_execution() {
     check_argument "$type"
     check_argument "$benchmark"
     check_argument "$thread_count"
-    local execution_header="type: $type; benchmark: $benchmark; thread_count: $thread_count;"
-    debug "Running $execution_header"
+    debug "Running" "${execution_header[@]}"
 
     local bin=${BUILD_DIR}/${benchmark}/${type}/${benchmark}
     if ! [[ -f "$bin" ]]; then
@@ -226,7 +247,7 @@ function single_execution() {
     cmd=${cmd/\?\?bin/$bin}
     cmd=${cmd/\?\?input/$input}
 
-    echo "[FEX2_EXPERIMENT] $execution_header" >>$EXPERIMENT_OUTPUT
+    echo "[FEX2_EXPERIMENT]" "${execution_header[@]}" >>$EXPERIMENT_OUTPUT
     switchable_eval "$cmd" >>$EXPERIMENT_OUTPUT 2>&1
 }
 
@@ -276,12 +297,12 @@ function execute_experiment() {
     echo "[FEX2_HEADER] name: $NAME; experiment_type: $EXPERIMENT_TYPE;" >>"$EXPERIMENT_OUTPUT"
     setup
     if is "$NO_BUILD"; then
-        debug No build
+        debug "No build"
     else
         for_types for_benchmarks build
     fi
     if is "$NO_RUN"; then
-        debug No run
+        debug "No run"
     else
         for_types for_benchmarks for_thread_counts for_iterations single_execution
     fi

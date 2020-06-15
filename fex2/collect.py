@@ -22,12 +22,17 @@ class Experiments:
         # main header
         self.type: str
         self.name: str
+        self.__parse_main_header()
+
+    def __parse_main_header(self):
         with open(self.__experiments_output, 'r') as infile:
             for line in infile:
                 if line.startswith(CONST_HEADER_KEYWORD):
                     self.type = get_run_argument('experiment_type', line)
                     self.name = get_run_argument('name', line)
-                    break
+                    return
+        raise ValueError('Could not parse experiment output. Please make sure your output contains something like:'
+                         '[FEX2_HEADER] name: <SOME_NAME>; experiment_type: <SOME_TYPE>;')
 
     def __iter__(self) -> Generator[Experiment]:
         with open(self.__experiments_output, 'r') as infile:

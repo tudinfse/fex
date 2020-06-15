@@ -2,7 +2,7 @@ from fex2 import helpers, plot, config
 from pandas import read_csv, DataFrame
 from scipy import stats
 
-RENAMINGS = {
+RENAMINGS_SPEEDUP = {
     "('gcc', 'optimized', 1)": "1 thread",
     "('gcc', 'optimized', 2)": "2 threads",
     "('gcc', 'optimized', 4)": "4 threads",
@@ -17,9 +17,13 @@ class SplashBarPlotStyle(plot.BarPlotStyle):
 
 
 def build_plot(infile: str, outfile: str, plot_type: str = 'speedup'):
-    if plot_type != 'speedup':
-        helpers.error_exit(1, 'splash/plot.py: Not supported plot type')
+    if plot_type == 'speedup':
+        build_plot_speedup(infile, outfile)
+    else:
+        helpers.error_exit(1, f'splash/plot.py: Not supported plot type "{plot_type}"')
 
+
+def build_plot_speedup(infile: str, outfile: str):
     conf = config.Config()
 
     # print(df)
@@ -59,7 +63,7 @@ def build_plot(infile: str, outfile: str, plot_type: str = 'speedup'):
     df = DataFrame(pivoted.to_records()).set_index("benchmark", drop=True)
 
     # rename builds
-    df.rename(columns=RENAMINGS, inplace=True)
+    df.rename(columns=RENAMINGS_SPEEDUP, inplace=True)
 
     # the resulting table
     helpers.debug("Plot data\n" + str(df))
@@ -67,11 +71,12 @@ def build_plot(infile: str, outfile: str, plot_type: str = 'speedup'):
     # build the plot
     helpers.debug("Building a plot")
     plt = plot.BarPlot(style=SplashBarPlotStyle)
-    plt.build(df,
-              title="Speedup of GCC -O3 optimizations",
-              ylabel="Normalized runtime\n(w.r.t. native GCC)",
-              vline_position=11.5
-              )
+    plt.build(
+        df,
+        title="Speedup of GCC -O3 optimizations",
+        ylabel="Normalized runtime\n(w.r.t. native GCC)",
+        vline_position=11.5
+    )
 
     plt.savefig(
         outfile,
