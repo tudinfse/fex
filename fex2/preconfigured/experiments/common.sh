@@ -80,6 +80,7 @@ IFS=' ' read -r -a thread_counts <<<"$NUM_THREADS"
 
 # These values are set in the run script of each experiment
 experiment_is_benchmark_suite=false
+experiment_has_binary=true
 experiment_benchmarks=""
 experiment_command=""
 
@@ -160,6 +161,29 @@ function switchable_eval() {
     fi
 }
 
+function get_source_path() {
+    check_argument "$benchmark"
+    declare -n out_source_path=$1
+
+    if is "$experiment_is_benchmark_suite"; then
+        out_source_path="${PROJ_ROOT}/benchmarks/$NAME/$benchmark"
+    else
+        out_source_path="${PROJ_ROOT}/benchmarks/$NAME"
+    fi
+}
+
+function get_build_path() {
+    check_argument "$benchmark"
+    check_argument "$type"
+    declare -n out_build_path=$1
+
+    if is "$experiment_is_benchmark_suite"; then
+        out_build_path=${BUILD_DIR}/${benchmark}/${type}
+    else
+        out_build_path=${BUILD_DIR}/${type}
+    fi
+}
+
 ##############################
 # Iterators
 ##############################
@@ -216,7 +240,10 @@ function build() {
     check_argument "$benchmark"
     debug "Building" "${execution_header[@]}"
 
-    local cmd="make BUILD_TYPE=$type -I${PROJ_ROOT}/build_types -C ${PROJ_ROOT}/benchmarks/$NAME/$benchmark"
+    local source_path
+    get_source_path source_path
+
+    local cmd="make BUILD_TYPE=$type -I${PROJ_ROOT}/build_types -C ${source_path}"
     if is "$experiment_is_benchmark_suite"; then
         cmd+=" BENCH_SUITE=${NAME}"
     fi
@@ -234,8 +261,11 @@ function single_execution() {
     check_argument "$thread_count"
     debug "Running" "${execution_header[@]}"
 
-    local bin=${BUILD_DIR}/${benchmark}/${type}/${benchmark}
-    if ! [[ -f "$bin" ]]; then
+    local build_path
+    get_build_path build_path
+
+    local bin=${build_path}/${benchmark}
+    if is "$experiment_has_binary" && ! [[ -f "$bin" ]]; then
         error_exit "Binary $bin does not exits" 1
     fi
 
@@ -255,6 +285,14 @@ function cleanup() {
     debug "No cleanup required"
 }
 
+function build_loop() {
+    for_types for_benchmarks build
+}
+
+function run_loop() {
+    for_types for_benchmarks for_thread_counts for_iterations single_execution
+}
+
 # Main function
 function execute_experiment() {
     check_argument "$experiment_is_benchmark_suite"
@@ -264,7 +302,7 @@ function execute_experiment() {
     local benchmarks
     if is "$experiment_is_benchmark_suite"; then
         check_argument "$experiment_benchmarks"
-        benchmarks="${experiment_benchmarks[*]}"
+        benchmarks=("${experiment_benchmarks[@]}")
     else
         benchmarks=("$NAME")
     fi
@@ -299,12 +337,12 @@ function execute_experiment() {
     if is "$NO_BUILD"; then
         debug "No build"
     else
-        for_types for_benchmarks build
+        build_loop
     fi
     if is "$NO_RUN"; then
         debug "No run"
     else
-        for_types for_benchmarks for_thread_counts for_iterations single_execution
+        run_loop
     fi
     cleanup
 }

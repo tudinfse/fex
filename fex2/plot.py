@@ -189,11 +189,10 @@ class BarPlotStyle(BasicStyle):
 
 class LinePlotStyle(BasicStyle):
     colors = ['#969696', '#a6cee3', '#1f78b4', '#33a02c', '#b2df8a', '#E8F7DA', '#e31a1c', '#fdbf6f']
+    markers = ['o', 'v', 'p', 's', '^', '3', '4', 'D', 'H']
 
     def legend(self):
         self.ax.legend(
-            (),
-            (),
             title=None,
             loc="best",
             frameon=True,
@@ -282,62 +281,57 @@ class BarPlot(FexPlot):
 
 
 class LinePlotThroughput(FexPlot):
-    style_class = LinePlotStyle
+    def __init__(self, style=LinePlotStyle):
+        super(LinePlotThroughput, self).__init__(style)
 
-    # def __init__(self):
-    #     self.current_subplot = None
-    #
-    # def build_plot(self,
-    #                xlabel=r"Throughput ($\times 10^3$ msg/s)", ylabel="Latency (ms)",
-    #                legend_loc='upper left',
-    #                figsize=(4, 3),
-    #                subplot=None,
-    #                build_names="short",
-    #                **kwargs):
-    #     style = self.style_class()
-    #
-    #     # create a canvas
-    #     plot = subplot
-    #     if not plot:
-    #         _, plot = plt.subplots()
-    #
-    #     # draw lines, one build type at a time
-    #     labels = []
-    #     idx = 0
-    #     for key, grp in self.df.groupby(['compilertype']):
-    #         if not grp.empty:
-    #             plot = grp.plot(
-    #                 ax=plot,
-    #                 x="tput",
-    #                 y="lat",
-    #                 kind="line",
-    #                 marker='o',
-    #                 markersize=8,
-    #                 color=style.colors[idx],
-    #                 title="",
-    #                 figsize=figsize,
-    #                 linewidth=3,
-    #                 **kwargs
-    #             )
-    #             labels.append(self.conf.build_names[build_names][key])
-    #             idx += 1
-    #
-    #     # get line styles for legend
-    #     lines, _ = plot.get_legend_handles_labels()
-    #
-    #     # apply other styles
-    #     plot = style.apply(plot)
-    #     plot = style.legend(plot, lines, labels, legend_loc)
-    #     plot.xaxis.grid(True)
-    #
-    #     plot.tick_params(axis='both', which='major', labelsize=12)
-    #
-    #     plot.set_xlabel(xlabel, fontsize=14)
-    #     plot.set_ylabel(ylabel, fontsize=14)
-    #
-    #     # save the resulting plot as an object property
-    #     self.plot = plot
-    #     self.current_subplot = subplot
-    #
-    # def get_current_subplot(self):
-    #     return self.current_subplot
+    def build(self, df, metadata_columns,
+                xlabel=r"Throughput ($\times 10^3$ msg/s)", ylabel="Latency (ms)",
+                legend_loc='upper left',
+                figsize=(4, 3),
+                subplot=None,
+                build_names="short",
+                title="",
+                labels=lambda key: '/'.join(map(str, key)),
+                **kwargs):
+        style = self.style_class()
+
+        # create a canvas
+        plot = subplot
+
+        kwargs.pop('metadata_columns', None)
+        kwargs.pop('data_column', None)
+
+        # draw lines, one build type at a time
+        idx = 0
+        for key, grp in df.groupby(metadata_columns):
+            if not grp.empty:
+                plot = grp.plot(
+                    ax=plot,
+                    x="tps",
+                    y="latency",
+                    kind="line",
+                    marker=style.markers[idx % len(style.markers)],
+                    markeredgecolor='black',
+                    markeredgewidth=0.5,
+                    markersize=8,
+                    color=style.colors[idx % len(style.colors)],
+                    title=title,
+                    figsize=figsize,
+                    linewidth=3,
+                    label=labels(key),
+                    **kwargs
+                )
+                idx += 1
+
+        # apply other styles
+        plot = style.apply(plot)
+        style.legend()
+        plot.xaxis.grid(True)
+
+        plot.tick_params(axis='both', which='major', labelsize=12)
+
+        plot.set_xlabel(xlabel, fontsize=14)
+        plot.set_ylabel(ylabel, fontsize=14)
+
+        # save the resulting plot as an object property
+        self.plot = plot
