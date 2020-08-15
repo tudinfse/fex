@@ -15,7 +15,7 @@ mkdir -p "$src_dir"
 download_and_untar "https://ftp.postgresql.org/pub/source/v$version/postgresql-$version.tar.gz" "$src_dir" 1
 
 # create a postgres user (non-root user is needed for interaction with postgres)
-sudo useradd --no-create-home fex2_postgres || true
+id -u fex2_postgres || sudo useradd --no-create-home fex2_postgres
 
 # Install ycsb-traces inputs
 inputs_dir="$install_dir/inputs/ycsb-traces"

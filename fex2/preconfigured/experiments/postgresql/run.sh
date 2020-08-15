@@ -23,7 +23,7 @@ function for_client_numbers() {
 
     # initialize a DB
     echo "-- Initializing a DB --" >>"$RUN_INIT_LOG"
-    sudo -u fex2_postgres rm -r "$build_path/data" || true
+    sudo [ -e "$build_path/data" ] && sudo -u fex2_postgres rm -r "$build_path/data"
     sudo -u fex2_postgres "$build_path/bin/initdb" -D "$build_path/data" >>"$RUN_INIT_LOG"
 
     debug "Starting the DB server at $build_path"
