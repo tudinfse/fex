@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import os
 import re
 from typing import Generator, Callable, Dict, List
 
@@ -11,6 +12,7 @@ CONST_EXPERIMENT_KEYWORD = '[FEX2_EXPERIMENT] '
 class Experiments:
 
     def __init__(self, experiments_output: str, default_parsers=True):
+        assert os.path.isfile(experiments_output), f"No experiment file at {experiments_output}"
         self.__experiments_output = experiments_output
         self.parsers: Dict[str, Callable[[Experiment], None]] = {}
         if default_parsers:
@@ -45,9 +47,10 @@ class Experiments:
                         experiment.parse(self.parsers)
                         yield experiment
                     experiment = Experiment(line)
-                else:
+                elif experiment is not None:
                     experiment.lines += [line]
             # We should not forget the last experiment
+            assert experiment is not None, "There were no experiments to collect"
             experiment.parse(self.parsers)
             yield experiment
 

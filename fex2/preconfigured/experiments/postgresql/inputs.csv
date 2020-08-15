@@ -1,0 +1,2 @@
+# name,default,test,client_numbers,client_numbers_test
+postgresql,-s 200 -T 10 -S,-s 200 -T 60 -S,1 2 4 8 16 32 64 128,32 64 128 192 256 320 384 448 512
