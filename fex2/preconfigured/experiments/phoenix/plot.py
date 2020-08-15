@@ -19,16 +19,17 @@ class SplashBarPlotStyle(plot.BarPlotStyle):
 def build_plot(infile: str, outfile: str, plot_type: str = 'speedup'):
     if plot_type == 'speedup':
         build_plot_speedup(infile, outfile)
+    elif plot_type == 'speedup_time':
+        build_plot_speedup(infile, outfile, data_column="time")
     else:
         helpers.error_exit(1, f'phoenix/plot.py: Not supported plot type "{plot_type}"')
 
 
-def build_plot_speedup(infile: str, outfile: str):
+def build_plot_speedup(infile: str, outfile: str, data_column="cycles"):
     conf = config.Config()
 
     # print(df)
     metadata_columns = ["benchmark", "type", "subtype", "thread_count"]
-    data_column = "cycles"
     all_columns = metadata_columns + [data_column]
 
     # load the results into a DataFrame

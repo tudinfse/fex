@@ -14,6 +14,12 @@ IFS=$'\n\t'
 
 BIN_PATH=${BIN_PATH:-"./bin/"}
 
+interactive_installation=true
+if ! tty -s ; then
+    echo "-- NON INTERACTIVE INSTALLATION--"
+    interactive_installation=false
+fi
+
 # == Define common functions ==
 
 function required_str {
@@ -34,7 +40,10 @@ function download_and_untar {
     if [ -d ${unpack_path} ] && [ ! -z "$(ls -A ${unpack_path})" ]; then
         echo "The directory ${unpack_path} already exist."
         while true; do
-            read -p "Do you wish to reinstall ${unpack_path} [Yn]?" yn
+            local yn="Y"
+            if [ "$interactive_installation" = true ]; then
+                read -p "Do you wish to reinstall ${unpack_path} [Yn]?" yn
+            fi
             case $yn in
                 [Yy]* ) rm -rf ${unpack_path}; break;;
                 [Nn]* ) echo "Skip"; return;;
@@ -43,7 +52,7 @@ function download_and_untar {
         done
     fi
 
-    wget -N -O tmp.tar ${url}
+    wget --progress=bar:force:noscroll -N -O tmp.tar ${url}
     mkdir -p ${unpack_path}
     tar xf tmp.tar -C ${unpack_path} --strip-components=${strip}
     rm tmp.tar
@@ -61,7 +70,10 @@ function clone_git_repo {
     if [ -d ${path} ] && [ ! -z "$(ls -A ${path})" ]; then
         echo "The directory ${path} already exist."
         while true; do
-            read -p "Do you wish to reinstall ${path} [Yn]?" yn
+            local yn="Y"
+            if [ "$interactive_installation" = true ]; then
+                read -p "Do you wish to reinstall ${path} [Yn]?" yn
+            fi
             case $yn in
                 [Yy]* ) rm -rf ${path}; break;;
                 [Nn]* ) echo "Skip"; return;;
@@ -89,8 +101,12 @@ function install_dependency {
     local name=$1 ; required_str $name
     local path=$2 ; required_str $path
 
+
     while true; do
-        read -p "Do you wish to install $1 [Yn]?" yn
+        local yn="Y"
+        if [ "$interactive_installation" = true ]; then
+            read -p "Do you wish to install $1 [Yn]?" yn
+        fi
         case $yn in
             [Yy]* ) eval "$2"; break;;
             [Nn]* ) echo "Skip"; break;;

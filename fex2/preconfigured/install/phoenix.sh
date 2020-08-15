@@ -18,7 +18,7 @@ all_benchmarks=(
 
 # get the benchmark sources
 tmp_dir="/tmp/phoenix"
-clone_git_repo https://github.com/kozyraki/phoenix.git $tmp_dir ''
+clone_git_repo https://github.com/kozyraki/phoenix.git "$tmp_dir" ''
 
 # copy the sources into correct paths
 install_dir="$PROJ_ROOT/benchmarks/phoenix"
@@ -30,14 +30,16 @@ for benchmark in ${all_benchmarks[*]}; do
 done
 
 # Install inputs
-read -p "Do you wish to install Phoenix inputs [Yn]?" do_install
+if [ "$interactive_installation" = true ]; then
+    read -p "Do you wish to install Phoenix inputs [Yn]?" do_install
+else do_install="Y" ; fi
 if [[ "$do_install" == [Yy] ]]; then
     cd "${PROJ_ROOT}/benchmarks/phoenix/" || exit 1
     for bm in "histogram" "linear_regression" "string_match" "word_count"; do
-      wget -nc http://csl.stanford.edu/~christos/data/$bm.tar.gz
+      wget --progress=bar:force:noscroll -nc http://csl.stanford.edu/~christos/data/$bm.tar.gz
       tar -xzf $bm.tar.gz
       mkdir -p $bm/inputs/
-      mv -uf ${bm}_datafiles/* $bm/input/
+      mv -uf ${bm}_datafiles/* $bm/inputs/
       rm -rf ${bm}_datafiles/
     done
 else

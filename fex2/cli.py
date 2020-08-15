@@ -181,6 +181,7 @@ class Manager:
         "splash": (("splash.sh",), ("splash",), ("splash",)),
         "speccpu": (("speccpu.sh",), ("speccpu",), ("speccpu",)),
         "phoenix": (("phoenix.sh",), ("phoenix",), ("phoenix",)),
+        "postgresql": (("postgresql.sh",), ("postgresql",), ("postgresql",)),
     }
 
     def __init__(self, args: Namespace):
@@ -231,6 +232,7 @@ class Manager:
         shutil.copy2(data_dir + "template_config.yaml", "config.yaml")
 
         shutil.copy2(data_dir + "build_types/gcc_native.mk", "build_types")
+        shutil.copy2(data_dir + "build_types/gcc_optimized.mk", "build_types")
         shutil.copy2(data_dir + "build_types/common.mk", "build_types")
         shutil.copy2(data_dir + "experiments/common.sh", "experiments")
 
@@ -260,7 +262,7 @@ class Manager:
                 shutil.copytree(data_dir + "experiments/" + d, "experiments/" + d)
                 os.chmod("experiments/" + d + "/run.sh", default_permission)
 
-    def install(self):
+    def install(self) -> bool:
         name = self.args.name
         helpers.debug("Installing " + name)
 
@@ -269,8 +271,10 @@ class Manager:
             subprocess.run("install/%s.sh" % name, capture_output=False, shell=True, check=True)
         except subprocess.CalledProcessError as e:
             helpers.error("Installation failed with code %d" % e.returncode)
+            return False
         else:
             helpers.debug("Installation finished")
+        return True
 
     def run(self):
         name = self.args.name
@@ -285,34 +289,39 @@ class Manager:
         os.putenv("ITERATIONS", self.args.runs)
         os.putenv("NUM_THREADS", " ".join(self.args.num_threads))
 
-        if self.args.no_build:
-            os.putenv("NO_BUILD", "true")
-        if self.args.no_run:
-            os.putenv("NO_RUN", "true")
-        if self.args.dry_run:
-            os.putenv("DRY_RUN", "true")
-        if self.args.incremental_build:
-            os.putenv("INCREMENTAL_BUILD", "true")
-        if self.args.force:
-            os.putenv("FORCE_OUTPUT_OVERWRITE", "true")
+        os.putenv("NO_BUILD", f"{self.args.no_build}".lower())
+        os.putenv("NO_RUN", f"{self.args.no_run}".lower())
+        os.putenv("DRY_RUN", f"{self.args.dry_run}".lower())
+        os.putenv("INCREMENTAL_BUILD", f"{self.args.incremental_build}".lower())
+        os.putenv("FORCE_OUTPUT_OVERWRITE", f"{self.args.force}".lower())
 
         if getattr(self.args, "output", False):
             os.putenv("EXPERIMENT_OUTPUT", self.args.output)
+        else:
+            os.unsetenv("EXPERIMENT_OUTPUT")
+
         if getattr(self.args, "build_output", False):
             os.putenv("BUILD_LOG", self.args.build_output)
+        else:
+            os.unsetenv("BUILD_LOG")
+
         if getattr(self.args, "benchmark_name", False):
             os.putenv("BENCHMARK_NAME", self.args.benchmark_name)
+        else:
+            os.unsetenv("BENCHMARK_NAME")
 
         # pass down the global configuration
-        os.putenv("COLORED_LOGS", "true" if c.colored_logs else "false")
+        os.putenv("COLORED_LOGS", f"{c.colored_logs}".lower())
 
         # run the experiment
         try:
             subprocess.run(f"experiments/{name}/run.sh", capture_output=False, shell=True, check=True)
         except subprocess.CalledProcessError as e:
             helpers.error("Experiment failed with code %d" % e.returncode)
+            return False
         else:
             helpers.debug("Experiment finished")
+        return True
 
     def collect(self):
         name = self.args.name

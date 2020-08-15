@@ -11,6 +11,5 @@ all:
 	cd $(BUILD_DIR) && $(POSTGRESQL_PATH)/configure --without-readline --without-zlib --prefix=$(BUILD_DIR)
 	make -C $(BUILD_DIR) MAKELEVEL=0
 	make install -C $(BUILD_DIR) MAKELEVEL=0
-	mkdir -p $(BUILD_DIR)/data
 
-	sudo chown -R fex2_postgres $(BUILD_DIR)
+	sudo chown -R fex2_postgres:$(USER) $(BUILD_DIR)

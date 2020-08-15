@@ -1,4 +1,16 @@
-# Fex2
+<p align="center">
+  <a href="https://github.com/kairaedsch/fex">
+    <img src="https://img.shields.io/github/workflow/status/kairaedsch/fex/Test/master?label=master%20-%20build&style=flat-square"/>
+  </a>
+  <a href="https://github.com/kairaedsch/fex/tree/fex-2">
+    <img src="https://img.shields.io/github/workflow/status/kairaedsch/fex/Test/fex-2?label=develop%20-%20build&style=flat-square"/>
+  </a>
+  <a href="https://github.com/kairaedsch/fex/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/kairaedsch/fex?style=flat-square"/>
+  </a>
+</p>
+
+<h1 align="center">Fex2</h1>
 
 Fex2 is a software evaluation framework.
 Its main focus is on performance evaluation and on academic systems projects, but can be re-purposed for other types of evaluation as well.
