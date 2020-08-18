@@ -19,7 +19,7 @@ BUILD_DIR="${WORK_DIR}/build"
 mkdir -p ${WORK_DIR}
 
 # download
-download_and_untar http://llvm.org/releases/${VERSION}/llvm-${VERSION}.src.tar.xz ${SRC_DIR} 1
+fex2::install::download_and_untar http://llvm.org/releases/${VERSION}/llvm-${VERSION}.src.tar.xz ${SRC_DIR} 1
 
 # configure
 mkdir -p ${BUILD_DIR}
@@ -37,12 +37,12 @@ CLANG_DIR="${SRC_DIR}/tools/cfe-${VERSION}.src"
 RT_DIR="${SRC_DIR}/tools/compiler-rt-${VERSION}.src"
 
 # download
-download_and_untar http://llvm.org/releases/${VERSION}/cfe-${VERSION}.src.tar.xz ${CLANG_DIR} 1
-download_and_untar http://llvm.org/releases/${VERSION}/compiler-rt-${VERSION}.src.tar.xz ${RT_DIR} 1
+fex2::install::download_and_untar http://llvm.org/releases/${VERSION}/cfe-${VERSION}.src.tar.xz ${CLANG_DIR} 1
+fex2::install::download_and_untar http://llvm.org/releases/${VERSION}/compiler-rt-${VERSION}.src.tar.xz ${RT_DIR} 1
 
 # configure
-mkdir -p ${BUILD_DIR}
-cd ${BUILD_DIR}
+mkdir -p "${BUILD_DIR}"
+cd "${BUILD_DIR}"
 cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE="Release" -DLLVM_TARGETS_TO_BUILD="X86" -DCMAKE_INSTALL_PREFIX=${BUILD_DIR} ../src
 
 # install
@@ -50,8 +50,8 @@ make -j8
 make -j8 install
 
 # make the LLVM installation directory discoverable
-ln -sf ${BUILD_DIR}/bin/llvm-config /usr/bin/${NAME}-${VERSION}-config
+ln -sf "${BUILD_DIR}/bin/llvm-config" "/usr/bin/${NAME}-${VERSION}-config"
 
-install_dependency "Gold Linker" "${PROJ_ROOT}/install/dependencies/gold-linker.sh"
+fex2::install::install_dependency "Gold Linker" "${PROJ_ROOT}/install/dependencies/gold-linker.sh"
 
 echo "LLVM installed"

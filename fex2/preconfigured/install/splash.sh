@@ -6,7 +6,7 @@ source "${PROJ_ROOT}"/install/common.sh
 
 # get the benchmark sources
 tmp_dir="/tmp/splash"
-clone_git_repo https://github.com/SakalisC/Splash-3.git $tmp_dir ''
+fex2::install::clone_git_repo https://github.com/SakalisC/Splash-3.git $tmp_dir ''
 
 # copy the sources into correct paths
 apps_dir="$tmp_dir/codes/apps"

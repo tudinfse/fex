@@ -223,6 +223,7 @@ class Manager:
             helpers.error_exit(2, "The project directory must be empty")
 
         # create standard directories
+        os.mkdir("bash")
         os.mkdir("experiments")
         os.mkdir("install")
         os.mkdir("build_types")
@@ -230,6 +231,10 @@ class Manager:
 
         # copy example files and templates
         shutil.copy2(data_dir + "template_config.yaml", "config.yaml")
+
+        shutil.copy2(data_dir + "bash/install.sh", "bash")
+        shutil.copy2(data_dir + "bash/run.sh", "bash")
+        shutil.copy2(data_dir + "bash/util.sh", "bash")
 
         shutil.copy2(data_dir + "build_types/gcc_native.mk", "build_types")
         shutil.copy2(data_dir + "build_types/gcc_optimized.mk", "build_types")

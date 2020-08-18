@@ -18,7 +18,7 @@ all_benchmarks=(
 
 # get the benchmark sources
 tmp_dir="/tmp/phoenix"
-clone_git_repo https://github.com/kozyraki/phoenix.git "$tmp_dir" ''
+fex2::install::clone_git_repo https://github.com/kozyraki/phoenix.git "$tmp_dir" ''
 
 # copy the sources into correct paths
 install_dir="$PROJ_ROOT/benchmarks/phoenix"
@@ -30,10 +30,7 @@ for benchmark in ${all_benchmarks[*]}; do
 done
 
 # Install inputs
-if [ "$interactive_installation" = true ]; then
-    read -p "Do you wish to install Phoenix inputs [Yn]?" do_install
-else do_install="Y" ; fi
-if [[ "$do_install" == [Yy] ]]; then
+if fex2::install::ask "Do you wish to install Phoenix inputs"; then
     cd "${PROJ_ROOT}/benchmarks/phoenix/" || exit 1
     for bm in "histogram" "linear_regression" "string_match" "word_count"; do
       wget --progress=bar:force:noscroll -nc http://csl.stanford.edu/~christos/data/$bm.tar.gz

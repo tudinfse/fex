@@ -19,14 +19,14 @@ function run_loop() {
 
 function for_client_numbers() {
     local build_path
-    get_build_path build_path
+    fex2::run::get_build_path build_path
 
     # initialize a DB
     echo "-- Initializing a DB --" >>"$RUN_INIT_LOG"
     sudo [ -e "$build_path/data" ] && sudo -u fex2_postgres rm -r "$build_path/data"
     sudo -u fex2_postgres "$build_path/bin/initdb" -D "$build_path/data" >>"$RUN_INIT_LOG"
 
-    debug "Starting the DB server at $build_path"
+    fex2::util::debug "Starting the DB server at $build_path"
     sudo -u fex2_postgres "$build_path/bin/postgres" -D "$build_path/data" -p "$DB_PORT" &
     sleep 1s
 
@@ -36,7 +36,7 @@ function for_client_numbers() {
 
     # Iterate over client numbers
     local client_numbers_as_string
-    read_benchmark_arguments "client_numbers" client_numbers_as_string
+    fex2::run::read_benchmark_arguments "client_numbers" client_numbers_as_string
 
     local original_IFS="$IFS"; IFS=" "
     local client_numbers=($client_numbers_as_string)
@@ -44,9 +44,9 @@ function for_client_numbers() {
 
     local client_number
     for client_number in ${client_numbers[*]}; do
-        header_push "client_number: $client_number;"
+        fex2::run::header_push "client_number: $client_number;"
         "$@"
-        header_pop
+        fex2::run::header_pop
     done
 
     # clean
@@ -66,6 +66,6 @@ function pgbench_experiment_function() {
 if [ "$EXPERIMENT_TYPE" == "pgbench" ]; then
     experiment_command='pgbench_experiment_function'
 else
-    error_exit "postgresql/run.sh: Unknown experiment type" 1
+    fex2::util::error_exit "postgresql/run.sh: Unknown experiment type" 1
 fi
 execute_experiment
