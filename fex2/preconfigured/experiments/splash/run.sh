@@ -23,6 +23,6 @@ experiment_benchmarks=(
 if [ "$EXPERIMENT_TYPE" == "perf" ]; then
     experiment_command='perf stat ??bin ??input 2>&1 > /dev/null'
 else
-    error_exit "splash/run.sh: Unknown experiment type" 1
+    fex2::util::error_exit "splash/run.sh: Unknown experiment type" 1
 fi
 execute_experiment

@@ -14,9 +14,18 @@ jobs:
         python-version: [3.8]
 
     steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+
+      # Bash tests
+      - name: Bash tests
+        run: |
+          fex2/tests/run_bash_tests.sh
+
+      # Python tests
       - name: Set up perf
         run: sudo sysctl -w kernel.perf_event_paranoid=-1
-      - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
@@ -34,6 +43,8 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with unittest
         run: python -m unittest
+
+      # Finish
       - name: Set permissions for upload
         if: ${{ always() }}
         run: sudo chown -R $USER /tmp/fex2_test_*/

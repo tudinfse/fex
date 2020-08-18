@@ -19,11 +19,11 @@ BUILD_DIR="${BIN_PATH}/${NAME}/build"
 mkdir -p ${BIN_PATH}/${NAME}
 
 # download
-download_and_untar ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-${VERSION}/gcc-${VERSION}.tar.gz ${SRC_DIR} 1
+fex2::install::download_and_untar ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-${VERSION}/gcc-${VERSION}.tar.gz ${SRC_DIR} 1
 
 # isl
 SRC_DIR="${DATA_PATH}/isl"
-download_and_untar ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.15.tar.bz2 ${SRC_DIR} 1
+fex2::install::download_and_untar ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.15.tar.bz2 ${SRC_DIR} 1
 
 # configure
 mkdir -p ${BUILD_DIR}
@@ -34,4 +34,4 @@ ${SRC_DIR}/configure --enable-languages=c,c++ --enable-libmpx --enable-multilib 
 make -j8
 make install
 
-install_dependency "BinUtils" "${PROJ_ROOT}/install/dependencies/binutils.sh"
+fex2::install::install_dependency "BinUtils" "${PROJ_ROOT}/install/dependencies/binutils.sh"

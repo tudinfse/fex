@@ -28,12 +28,12 @@ experiment_benchmarks=(
 )
 
 if [ "$NUM_THREADS" != "1" ]; then
-    error_exit "speccpu/run.sh: SPEC CPU 2006 contains only single-threaded benchmarks. Multithreaded experiments are not possible."
+    fex2::util::error_exit "speccpu/run.sh: SPEC CPU 2006 contains only single-threaded benchmarks. Multithreaded experiments are not possible."
 fi
 
 if [ "$EXPERIMENT_TYPE" == "perf" ]; then
     experiment_command='perf stat ??bin ??input 2>&1 > /dev/null'
 else
-    error_exit "speccpu/run.sh: Unknown experiment type" 1
+    fex2::util::error_exit "speccpu/run.sh: Unknown experiment type" 1
 fi
 execute_experiment
