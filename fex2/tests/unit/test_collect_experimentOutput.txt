@@ -1,0 +1,7 @@
+[FEX2_HEADER] name: <name>; experiment_type: <experiment_type>;
+[FEX2_EXPERIMENT] type: <type-0>_<subtype-0>; benchmark: <benchmark-0>; thread_count: <thread_count-0>;
+<DATA-0>
+[FEX2_EXPERIMENT] type: <type-1>_<subtype-1>; benchmark: <benchmark-1>; thread_count: <thread_count-1>;
+<DATA-1>
+[FEX2_EXPERIMENT] type: <type-2>_<subtype-2>; benchmark: <benchmark-2>; thread_count: <thread_count-2>;
+<DATA-2>
