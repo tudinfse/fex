@@ -1,5 +1,77 @@
+from __future__ import annotations
+
 import csv
 import re
+from typing import Generator, Callable, Dict, List
+
+CONST_HEADER_KEYWORD = '[FEX2_HEADER] '
+CONST_EXPERIMENT_KEYWORD = '[FEX2_EXPERIMENT] '
+
+
+class Experiments:
+
+    def __init__(self, experiments_output: str, default_parsers=True):
+        self.__experiments_output = experiments_output
+        self.parsers: Dict[str, Callable[[Experiment], None]] = {}
+        if default_parsers:
+            self.parsers.update({
+                'benchmark': lambda experiment: get_run_argument('benchmark', experiment.header),
+                'thread_count': lambda experiment: get_run_argument('thread_count', experiment.header),
+                'type': lambda experiment: get_run_argument('type', experiment.header).split('_')[0],
+                'subtype': lambda experiment: "_".join(get_run_argument('type', experiment.header).split('_')[1:])})
+        # main header
+        self.type: str
+        self.name: str
+        with open(self.__experiments_output, 'r') as infile:
+            for line in infile:
+                if line.startswith(CONST_HEADER_KEYWORD):
+                    self.type = get_run_argument('experiment_type', line)
+                    self.name = get_run_argument('name', line)
+                    break
+
+    def __iter__(self) -> Generator[Experiment]:
+        with open(self.__experiments_output, 'r') as infile:
+            experiment = None
+            for line in infile:
+                if line.startswith(CONST_HEADER_KEYWORD):
+                    continue
+                elif line.startswith(CONST_EXPERIMENT_KEYWORD):
+                    if experiment:
+                        experiment.parse(self.parsers)
+                        yield experiment
+                    experiment = Experiment(line)
+                else:
+                    experiment.lines += [line]
+            # We should not forget the last experiment
+            experiment.parse(self.parsers)
+            yield experiment
+
+    def create_csv(self, parsed_csv: str):
+        with open(parsed_csv, 'w') as outfile:
+            writer = csv.DictWriter(outfile, list(self.parsers.keys()), extrasaction='ignore')
+            writer.writeheader()
+            writer.writerows([experiment.values for experiment in self])
+
+
+class Experiment:
+    def __init__(self, header: str):
+        self.header: str = header
+        self.lines: List[str] = []
+        self.values: Dict[str, any] = {}
+
+    def parse(self, parses: Dict[str, Callable[[Experiment], None]]):
+        self.values.update({key: parses[key](self) for key in parses.keys()})
+
+
+def line_parser(key: str, line_parse_function: Callable[[str], None]):
+    return lambda experiment: in_line_with(experiment, key, line_parse_function)
+
+
+def in_line_with(experiment: Experiment, key: str, line_parse_function: Callable[[str], None]):
+    for line in experiment.lines:
+        if key in line:
+            return line_parse_function(line)
+    return None
 
 
 def locale_neutral_number(s: str, ignore_period, ignore_comma):
@@ -58,45 +130,3 @@ def get_run_argument(name, line):
     except AttributeError as e:
         print("Wrong format of the log file")
         raise e
-
-
-def parse_logs(experiment_output, parsed_csv, parsers):
-    """
-    A somewhat generic benchmark output parser
-    """
-    new_experiment_keyword = '[FEX2] '
-    with open(experiment_output, 'r') as infile:
-        with open(parsed_csv, 'w') as outfile:
-            field_names = ['benchmark', 'type', 'subtype', 'thread_count'] + list(parsers.keys())
-            writer = csv.DictWriter(outfile, fieldnames=field_names)
-            writer.writeheader()
-            values = {}
-
-            for line in infile.readlines():
-                # Did we reach the next run?
-                if line.startswith(new_experiment_keyword):
-                    # Write out the results of the previous experiment
-                    if values:  # skip if it's the first experiment in the log
-                        writer.writerow(values)
-
-                    # Remove old data
-                    values = {i: '' for i in field_names}
-
-                    # parse results of the next run (custom params are nullified)
-                    values['benchmark'] = get_run_argument('benchmark', line)
-                    values['thread_count'] = get_run_argument('thread_count', line)
-                    build_type = get_run_argument('type', line).split('_')
-                    values['type'] = build_type[0]
-                    values['subtype'] = "_".join(build_type[1:])
-
-                    continue
-
-                # Otherwise, search for the desired data in the line
-                for parameter, parser in parsers.items():
-                    key = parser[0]
-                    parse_function = parser[1]
-                    if key in line:
-                        values[parameter] = parse_function(line)
-
-            # write results form the last log entry
-            writer.writerow(values)
