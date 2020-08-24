@@ -188,9 +188,198 @@ The procedure is described in `experiments/splash/plot.py`.
 Internally, we use matplotlib, but you're free to use anything else in your experiments - just re-write `plot.py`.
 
 # Example 2: Modifying an existing experiment
+In this example we will modify the splash experiment.
 
-TBD
+In the first part of this example we will:
+ - Change the evaluation from cycles to peak memory consumption.
+ - Change the plot to display absolute numbers.
 
+In the second we will make the benchmarks do a smaller run.
+
+Before starting make sure you have already executed the following:
+```shell script
+$ fex2 template splash
+$ fex2 install splash
+$ cat <<EOF >> build_types/gcc_optimized.mk
+include gcc_native.mk
+include common.mk
+
+CFLAGS += -O3
+EOF
+```
+
+## Measuring peak memory consumption
+To measure peak memory consumption instead of cycles, we have to:
+* Run the benchmarks with a different profiler, the one which can capture peak memory consumption
+* Adapt the output parser
+* Adapt the plot generation script
+
+### Measuring memory consumption of SPLASH
+
+To change the evaluation from cycles to peak memory consumption, we have to run the benchmarks with a different profiler other than `perf`. In this example we will use `/usr/bin/time`.
+
+We now have to add a new experiment type `time` to SPLASH.
+To add the new experiment type, we have to edit the `run.sh` file of SPLASH as follows:
+
+```shell script
+# experiments/splash/run.sh:
+
+...
+if [ "$EXPERIMENT_TYPE" == "perf" ]; then
+    command='perf stat ??bin ??input 2>&1 > /dev/null'
+# New experiment type - time
+elif [ "$EXPERIMENT_TYPE" == "time" ]; then
+    command='/usr/bin/time --verbose ??bin ??input 2>&1 > /dev/null'
+else
+    error_exit "splash/run.sh: Unknown experiment type" 1
+fi
+...
+```
+
+### Adapting the parser
+To collect the new profile data, we have to adapt the collect script of SPLASH at `experiments/splash/collect.py`.
+
+For that we add the experiment_type `time`:
+
+`elif experiment_type == "time":`
+
+Then we add a parser for the new output format.
+A typical output of `/usr/bin/time` looks as follows:
+```text
+...
+Average total size (kbytes): 0
+Maximum resident set size (kbytes): 5680
+Average resident set size (kbytes): 0
+...
+```
+The collected parameter is an integer which is always located in a line with the text `Maximum resident set size`.
+We therefore use the following parser and name the value `memory`:
+
+`"memory": ["Maximum resident set size", lambda l: collect.get_int_from_string(l, ignore_comma=True)]`
+
+The complete collect script:
+```python
+# experiments/splash/collect.py:
+
+from fex2 import collect, helpers
+
+def parse(infile, outfile, experiment_type):
+    if experiment_type == "perf":
+        parsers = {
+            "cycles": ["cycles", lambda l: collect.get_int_from_string(l, ignore_comma=True)],
+            "instructions": [" instructions ", lambda l: collect.get_int_from_string(l, ignore_comma=True)],
+            "time": ["seconds time elapsed", lambda l: collect.get_float_from_string(l)],
+        }
+    elif experiment_type == "time":
+        parsers = {
+            "memory": ["Maximum resident set size", lambda l: collect.get_int_from_string(l, ignore_comma=True)]
+        }
+    else:
+        return helpers.error_exit(1, "Unknown experiment type")
+
+    collect.parse_logs(infile, outfile, parsers)
+```
+
+### Adapting the plot generation
+To add a new plot type, we modify `experiments/splash/plot.py`. Specifically, we insert a new `plot_type` `absolute` and create the new plot function `build_plot_absolute`:
+```python
+def build_plot(infile: str, outfile: str, plot_type: str = 'speedup'):
+    if plot_type == 'speedup':
+        build_plot_speedup(infile, outfile)
+### Modification start ###
+    elif plot_type == 'absolute':
+        build_plot_absolute(infile, outfile)
+### Modification end ###
+    else:
+        helpers.error_exit(1, 'splash/plot.py: Not supported plot type')
+
+### Modification start ###
+
+def build_plot_absolute(infile: str, outfile: str):
+    metadata_columns = ["benchmark", "type", "subtype", "thread_count"]
+    data_column = "memory"
+    all_columns = metadata_columns + [data_column]
+
+    # load the results into a DataFrame
+    helpers.debug("Loading data")
+    df = read_csv(infile, usecols=all_columns)
+    if df.empty:
+        helpers.error_exit(1, "The input file is empty or not readable")
+
+    # aggregate the results of repeated experiments (i.e., average across all runs of the same experiment)
+    helpers.debug("Processing results")
+    df = DataFrame({data_column: df.groupby(metadata_columns)[data_column].apply(stats.gmean, axis=0)})
+    df = df.reset_index()
+
+    # cleanup
+    df.dropna(inplace=True)
+
+    # To MB
+    df["memory"] = df["memory"] / 1024
+
+    # restructure the table for easier plotting and calculate the overall mean values across all benchmarks
+    pivoted = df.pivot_table(
+        index="benchmark",
+        columns=["type", "subtype", "thread_count"],
+        values=data_column,
+        margins=True,
+        aggfunc=stats.gmean,
+        margins_name="mean"
+    )
+    df = DataFrame(pivoted.to_records()).set_index("benchmark", drop=True)
+
+    # rename builds
+    df.rename(columns=RENAMINGS, inplace=True)
+
+    # the resulting table
+    helpers.debug("Plot data\n" + str(df))
+
+    # build the plot
+    helpers.debug("Building a plot")
+    plt = plot.BarPlot(style=SplashBarPlotStyle)
+    plt.build(df,
+        title="Memory usage compared to GCC -O3 optimizations",
+        ylabel="Memory usage (in MB)",
+        vline_position=11.5
+        )
+
+    plt.savefig(
+        outfile,
+        dpi="figure",
+        pad_inches=0.1,
+        bbox_inches='tight'
+    )
+### Modification end ###
+```
+
+You can test the new code with the following commands:
+```shell script
+$ fex2 run splash -b gcc_native gcc_optimized -t time -m 1 4 -r 10 -o splash-raw-2.txt
+$ fex2 collect splash -t time -i splash-raw-2.txt -o splash-collected-2.csv
+$ fex2 plot splash -p absolute -i splash-collected-2.csv -o splash-2.pdf
+```
+Which should give you the following plot:
+![Plot of example 2](readme/example2_graph.png)
+
+## Smaller inputs
+
+Sometimes, it is necessary to run the benchmarks with some inputs other than default ones.
+For example, it could be useful to quickly test and verify a small change in the experiments.
+
+This can be done by modifying the column `default` of the input table.
+The input table `input.csv` can be found in the respective experiment folder.
+In this example we are going to adapt the splash benchmark.
+The splash input table is located at `experiments/splash/input.csv`.
+
+The `test` column of the input table has easier benchmark inputs then the `default` column.
+We can therefore copy the inputs of the test column into the default column to get smaller benchmarks.
+With that, the `ocean` benchmark is for instance changed from `-p$thread_count -n258` to `-p$thread_count -n18`.
+
+You can test the new inputs with the normal run command:
+```shell script
+$ fex2 run splash -b gcc_native gcc_optimized -t time -m 1 4 -r 10 -o splash-raw-2.txt
+```
+Which should now run a bit faster.
 # Example 3: Creating an experiment from scratch
 
 TBD
@@ -213,4 +402,3 @@ Applications:
 * Nginx [Under reconstruction]
 * PostgreSQL [Under reconstruction]
 * SQLite [Under reconstruction]
-
