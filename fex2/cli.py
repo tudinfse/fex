@@ -122,12 +122,6 @@ def parse_arguments() -> Namespace:
         help="Experiment name"
     )
     parser_collect.add_argument(
-        '-t', '--type',
-        type=str,
-        default='perf',
-        help='Experiment type'
-    )
-    parser_collect.add_argument(
         '-i', '--input',
         type=str,
         required=True,
@@ -291,15 +285,15 @@ class Manager:
         os.putenv("NUM_THREADS", " ".join(self.args.num_threads))
 
         if self.args.no_build:
-            os.putenv("NO_BUILD", "1")
+            os.putenv("NO_BUILD", "true")
         if self.args.no_run:
-            os.putenv("NO_RUN", "1")
+            os.putenv("NO_RUN", "true")
         if self.args.dry_run:
-            os.putenv("DRY_RUN", "1")
+            os.putenv("DRY_RUN", "true")
         if self.args.incremental_build:
-            os.putenv("INCREMENTAL_BUILD", "1")
+            os.putenv("INCREMENTAL_BUILD", "true")
         if self.args.force:
-            os.putenv("FORCE_OUTPUT_OVERWRITE", "1")
+            os.putenv("FORCE_OUTPUT_OVERWRITE", "true")
 
         if getattr(self.args, "output", False):
             os.putenv("EXPERIMENT_OUTPUT", self.args.output)
@@ -309,7 +303,7 @@ class Manager:
             os.putenv("BENCHMARK_NAME", self.args.benchmark_name)
 
         # pass down the global configuration
-        os.putenv("COLORED_LOGS", "1" if c.colored_logs else "0")
+        os.putenv("COLORED_LOGS", "true" if c.colored_logs else "false")
 
         # run the experiment
         try:
@@ -322,7 +316,7 @@ class Manager:
     def collect(self):
         name = self.args.name
         module = helpers.load_module_from_path(f"{name}.collect", f"experiments/{name}/collect.py")
-        module.parse(infile=self.args.input, outfile=self.args.output, experiment_type=self.args.type)
+        module.parse(infile=self.args.input, outfile=self.args.output)
 
     def plot(self):
         name = self.args.name
